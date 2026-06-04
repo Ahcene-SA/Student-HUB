@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student HUB – Stage &amp; Alternance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="stage.css" />
+</head>
+<body>
+  <div class="main_page">
+
+    <!-- NAVBAR -->
+    <header class="home_navbar">
+      <div class="leftnav">
+        <div class="nav_left">
+          <img src="/logo/Student_HUB_LOGO.png" alt="Student HUB" class="logo" />
+        </div>
+
+        <div class="nav_center">
+          <input type="text" placeholder="Search..." class="search_input" />
+        </div>
+      </div>
+
+      <nav class="nav_right">
+        <a href="home.html">Home</a>
+        <a href="immobilier.html">Immobilier</a>
+        <a href="stage.html" class="active">Stage</a>
+        <a href="events.html">Events</a>
+        <a href="mentoring.html">Mentoring</a>
+        <a href="bonplan.html">Bons plans</a>
+        <div class="user-menu">
+          <button class="post_btn user-menu-trigger" tabindex="0">
+            Mon compte ▾
+          </button>
+          <div class="user-menu-dropdown">
+            <a href="/profile/profile.html" class="user-menu-item">
+              <span class="user-menu-icon">👤</span> Profile
+            </a>
+            <a href="/settings.html" class="user-menu-item">
+              <span class="user-menu-icon">⚙️</span> Settings
+            </a>
+            <a href="/help.html" class="user-menu-item">
+              <span class="user-menu-icon">❓</span> Help
+            </a>
+            <div class="user-menu-divider"></div>
+            <a href="/logout.html" class="user-menu-item user-menu-logout">
+              <span class="user-menu-icon">🚪</span> Log out
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- TOP RIBBON -->
+    <div class="stg-ribbon">
+      <div class="stg-ribbon-inner">
+        <span class="stg-ribbon-dot"></span>
+        <span class="stg-ribbon-text">Portail officiel · Conventions de stage validées par les universités partenaires</span>
+        <span class="stg-ribbon-spacer"></span>
+        <span class="stg-ribbon-meta">Mis à jour · Auj. 09:42</span>
+      </div>
+    </div>
+
+    <!-- PAGE STAGE -->
+    <main class="stg-page">
+      <section class="stg-shell">
+
+        <!-- HERO -->
+        <div class="stg-hero-card reveal" data-hero-slider>
+          <img src="/img/stage/557b5e65fd9e202b8c66192b53e5e1d7.jpg" alt="Bureau corporate" class="stg-hero-slide active" />
+          <img src="/img/stage/88c2a619772b9141295e766ca769cd55.jpg" alt="Équipe en réunion" class="stg-hero-slide" />
+          <img src="/img/stage/e043688dbd21ad747965373b9d407fec.jpg" alt="Espace de coworking" class="stg-hero-slide" />
+
+          <div class="stg-hero-gradient"></div>
+          <div class="stg-hero-text">
+            <span class="stg-hero-eyebrow">Carrière · Stage · Alternance</span>
+            <h1>Lance ta carrière.</h1>
+            <p>Des offres vérifiées, des conventions reconnues et des entreprises qui recrutent réellement.</p>
+            <div class="stg-hero-meta">
+              <span><strong>4 800</strong> offres ouvertes</span>
+              <span class="stg-hero-sep"></span>
+              <span><strong>1 100</strong> entreprises</span>
+              <span class="stg-hero-sep"></span>
+              <span><strong>72%</strong> embauche post-stage</span>
+            </div>
+          </div>
+
+          <div class="stg-hero-dots"></div>
+        </div>
+
+        <!-- CAREER STEPPER -->
+        <nav class="stg-stepper reveal" aria-label="Parcours candidat">
+          <div class="stg-step is-active">
+            <span class="stg-step-num">01</span>
+            <div class="stg-step-text">
+              <strong>Découverte</strong>
+              <span>Filtre les offres adaptées à ton profil</span>
+            </div>
+          </div>
+          <div class="stg-step-line"></div>
+          <div class="stg-step">
+            <span class="stg-step-num">02</span>
+            <div class="stg-step-text">
+              <strong>Candidature</strong>
+              <span>Postule en un clic avec ton CV vérifié</span>
+            </div>
+          </div>
+          <div class="stg-step-line"></div>
+          <div class="stg-step">
+            <span class="stg-step-num">03</span>
+            <div class="stg-step-text">
+              <strong>Convention</strong>
+              <span>Signature électronique · établissement validé</span>
+            </div>
+          </div>
+          <div class="stg-step-line"></div>
+          <div class="stg-step">
+            <span class="stg-step-num">04</span>
+            <div class="stg-step-text">
+              <strong>Mission</strong>
+              <span>Suivi mensuel et évaluation finale</span>
+            </div>
+          </div>
+        </nav>
+
+        <!-- TOP BAR -->
+        <div class="stg-top-bar reveal">
+          <div class="stg-search-row">
+            <input type="text" class="stg-search-input" placeholder="Métier, entreprise, ville..." />
+            <button type="button" class="stg-search-btn">Rechercher</button>
+          </div>
+
+          <div class="stg-chips">
+            <button type="button" class="stg-chip active">Informatique</button>
+            <button type="button" class="stg-chip">Marketing</button>
+            <button type="button" class="stg-chip">Finance</button>
+            <button type="button" class="stg-chip">Design</button>
+            <button type="button" class="stg-chip">Ingénierie</button>
+          </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="stg-filters-board reveal">
+          <div class="stg-filter-item">
+            <label for="f-domaine">Domaine</label>
+            <select id="f-domaine" class="stg-select">
+              <option value="">Choisir</option>
+              <option value="info">Informatique</option>
+              <option value="mkt">Marketing</option>
+              <option value="fin">Finance</option>
+            </select>
+          </div>
+
+          <div class="stg-filter-item">
+            <label for="f-duree">Durée</label>
+            <select id="f-duree" class="stg-select">
+              <option value="">Choisir</option>
+              <option value="2">2 mois</option>
+              <option value="4">4 mois</option>
+              <option value="6">6 mois</option>
+              <option value="12">12 mois</option>
+            </select>
+          </div>
+
+          <div class="stg-filter-item">
+            <label for="f-ville">Ville</label>
+            <select id="f-ville" class="stg-select">
+              <option value="">Choisir</option>
+              <option value="alger">Alger</option>
+              <option value="oran">Oran</option>
+              <option value="remote">Remote</option>
+            </select>
+          </div>
+
+          <div class="stg-filter-item">
+            <label for="f-type">Type</label>
+            <select id="f-type" class="stg-select">
+              <option value="">Choisir</option>
+              <option value="stage">Stage</option>
+              <option value="alt">Alternance</option>
+            </select>
+          </div>
+
+          <div class="stg-filter-actions">
+            <button type="button" class="stg-filter-btn apply">Appliquer</button>
+            <button type="button" class="stg-filter-btn reset">Reset</button>
+          </div>
+        </div>
+
+        <!-- LIST -->
+        <section class="stg-list">
+          <header class="stg-list-header reveal">
+            <div>
+              <h2>Offres recommandées</h2>
+              <p>Entreprises vérifiées · Conventions de stage validées · Mise à jour quotidienne.</p>
+            </div>
+            <div class="stg-list-meta">
+              <span class="stg-result-count"><strong>4 800</strong> résultats</span>
+              <span class="stg-sort">Trier : <strong>Pertinence</strong></span>
+            </div>
+          </header>
+
+          <div class="stg-cards">
+
+            <!-- CARD 1 -->
+            <article class="stg-card reveal-left">
+              <header class="stg-card-head">
+                <div class="stg-company-logo" data-c="b">TC</div>
+                <div class="stg-company-info">
+                  <span class="stg-company-name">TechCorp DZ</span>
+                  <span class="stg-company-tag">Tech · 50–200 emp.</span>
+                </div>
+                <span class="stg-match" title="Compatibilité avec ton profil">
+                  <span class="stg-match-num">92%</span>
+                  <span class="stg-match-label">match</span>
+                </span>
+              </header>
+
+              <div class="stg-card-img-wrap" data-slider>
+                <img src="/img/stage/557b5e65fd9e202b8c66192b53e5e1d7.jpg" alt="Stage Développeur Front-End" class="stg-slide active" />
+                <img src="/img/stage/88c2a619772b9141295e766ca769cd55.jpg" alt=Stage Développeur Front-End" class="stg-slide" />
+                <img src="/img/stage/e043688dbd21ad747965373b9d407fec.jpg" alt="Stage Développeur Front-End" class="stg-slide" />
+                <div class="stg-slide-dots"></div>
+                <span class="stg-tag-type">Stage</span>
+                <span class="stg-verified">
+                  <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                    <path d="M3 8.2l3 3 7-7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Vérifié
+                </span>
+              </div>
+
+              <div class="stg-card-body">
+                <h3>Développeur Front-End</h3>
+                <p class="stg-meta-row">
+                  <span>Alger</span><span class="stg-dot"></span>
+                  <span>Hybride</span><span class="stg-dot"></span>
+                  <span>6 mois</span>
+                </p>
+
+                <div class="stg-skills">
+                  <span>React</span>
+                  <span>TypeScript</span>
+                  <span>Git</span>
+                </div>
+
+                <div class="stg-card-foot">
+                  <div class="stg-price-block">
+                    <span class="stg-price">35 000 DA</span>
+                    <span class="stg-price-sub">/ mois</span>
+                  </div>
+                  <button type="button" class="stg-apply-btn">Postuler</button>
+                </div>
+
+                <div class="stg-deadline">
+                  <span class="stg-deadline-dot"></span>
+                  Clôture · <strong>15 juin 2026</strong> · Convention requise
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD 2 -->
+            <article class="stg-card reveal">
+              <header class="stg-card-head">
+                <div class="stg-company-logo" data-c="y">BL</div>
+                <div class="stg-company-info">
+                  <span class="stg-company-name">BrandLab</span>
+                  <span class="stg-company-tag">Marketing · 10–50 emp.</span>
+                </div>
+                <span class="stg-match">
+                  <span class="stg-match-num">85%</span>
+                  <span class="stg-match-label">match</span>
+                </span>
+              </header>
+
+              <div class="stg-card-img-wrap" data-slider>
+                <img src="/pages/stage-2a.jpg" alt="Alternance Marketing Digital" class="stg-slide active" />
+                <img src="/pages/stage-2b.jpg" alt="Alternance Marketing Digital" class="stg-slide" />
+                <img src="/pages/stage-2c.jpg" alt="Alternance Marketing Digital" class="stg-slide" />
+                <div class="stg-slide-dots"></div>
+                <span class="stg-tag-type alt">Alternance</span>
+                <span class="stg-verified">
+                  <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                    <path d="M3 8.2l3 3 7-7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Vérifié
+                </span>
+              </div>
+
+              <div class="stg-card-body">
+                <h3>Marketing Digital</h3>
+                <p class="stg-meta-row">
+                  <span>Oran</span><span class="stg-dot"></span>
+                  <span>Présentiel</span><span class="stg-dot"></span>
+                  <span>12 mois</span>
+                </p>
+
+                <div class="stg-skills">
+                  <span>SEO</span>
+                  <span>Meta Ads</span>
+                  <span>Analytics</span>
+                </div>
+
+                <div class="stg-card-foot">
+                  <div class="stg-price-block">
+                    <span class="stg-price">28 000 DA</span>
+                    <span class="stg-price-sub">/ mois</span>
+                  </div>
+                  <button type="button" class="stg-apply-btn">Postuler</button>
+                </div>
+
+                <div class="stg-deadline">
+                  <span class="stg-deadline-dot"></span>
+                  Clôture · <strong>22 juin 2026</strong> · Contrat 1 an
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD 3 -->
+            <article class="stg-card reveal-right">
+              <header class="stg-card-head">
+                <div class="stg-company-logo" data-c="n">FG</div>
+                <div class="stg-company-info">
+                  <span class="stg-company-name">Finance Group</span>
+                  <span class="stg-company-tag">Banque · 200+ emp.</span>
+                </div>
+                <span class="stg-match">
+                  <span class="stg-match-num">78%</span>
+                  <span class="stg-match-label">match</span>
+                </span>
+              </header>
+
+              <div class="stg-card-img-wrap" data-slider>
+                <img src="/pages/stage-3a.jpg" alt="Stage Analyste Financier" class="stg-slide active" />
+                <img src="/pages/stage-3b.jpg" alt="Stage Analyste Financier" class="stg-slide" />
+                <img src="/pages/stage-3c.jpg" alt="Stage Analyste Financier" class="stg-slide" />
+                <div class="stg-slide-dots"></div>
+                <span class="stg-tag-type">Stage</span>
+                <span class="stg-verified">
+                  <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                    <path d="M3 8.2l3 3 7-7" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Vérifié
+                </span>
+              </div>
+
+              <div class="stg-card-body">
+                <h3>Analyste Financier</h3>
+                <p class="stg-meta-row">
+                  <span>Alger</span><span class="stg-dot"></span>
+                  <span>Présentiel</span><span class="stg-dot"></span>
+                  <span>4 mois</span>
+                </p>
+
+                <div class="stg-skills">
+                  <span>Excel</span>
+                  <span>Power BI</span>
+                  <span>SQL</span>
+                </div>
+
+                <div class="stg-card-foot">
+                  <div class="stg-price-block">
+                    <span class="stg-price">40 000 DA</span>
+                    <span class="stg-price-sub">/ mois</span>
+                  </div>
+                  <button type="button" class="stg-apply-btn">Postuler</button>
+                </div>
+
+                <div class="stg-deadline">
+                  <span class="stg-deadline-dot"></span>
+                  Clôture · <strong>30 mai 2026</strong> · Convention requise
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- PARTNERS -->
+        <section class="stg-partners reveal">
+          <header class="stg-partners-head">
+            <h2>Entreprises partenaires</h2>
+            <span class="stg-partners-sub">Toutes les offres ci-dessous font l'objet d'une convention reconnue.</span>
+          </header>
+          <div class="stg-partners-grid">
+            <div class="stg-partner" data-c="b">TechCorp</div>
+            <div class="stg-partner" data-c="n">Finance Group</div>
+            <div class="stg-partner" data-c="y">BrandLab</div>
+            <div class="stg-partner" data-c="b">Sonatrach</div>
+            <div class="stg-partner" data-c="n">Sonelgaz</div>
+            <div class="stg-partner" data-c="y">Yassir</div>
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="stg-stats reveal">
+          <div class="stg-stat">
+            <span class="stg-stat-key">STG-01</span>
+            <span class="stg-stat-num">4 800</span>
+            <span class="stg-stat-label">offres disponibles</span>
+          </div>
+          <div class="stg-stat">
+            <span class="stg-stat-key">STG-02</span>
+            <span class="stg-stat-num">920 DA</span>
+            <span class="stg-stat-label">gratification moyenne</span>
+          </div>
+          <div class="stg-stat alt">
+            <span class="stg-stat-key">STG-03</span>
+            <span class="stg-stat-num">1 100</span>
+            <span class="stg-stat-label">entreprises partenaires</span>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const hero = document.querySelector("[data-hero-slider]");
+      if (hero) {
+        const slides = hero.querySelectorAll(".stg-hero-slide");
+        const dotsWrap = hero.querySelector(".stg-hero-dots");
+
+        if (slides.length && dotsWrap) {
+          let index = 0;
+          let timer = null;
+
+          slides.forEach((_, i) => {
+            const dot = document.createElement("span");
+            dot.className = "stg-hero-dot" + (i === 0 ? " active" : "");
+            dot.addEventListener("click", () => { index = i; renderHero(); restartHero(); });
+            dotsWrap.appendChild(dot);
+          });
+
+          const dots = dotsWrap.querySelectorAll(".stg-hero-dot");
+
+          function renderHero() {
+            slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+            dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+          }
+          function nextHero() { index = (index + 1) % slides.length; renderHero(); }
+          function startHero() { timer = setInterval(nextHero, 3500); }
+          function stopHero() { clearInterval(timer); timer = null; }
+          function restartHero() { stopHero(); startHero(); }
+
+          hero.addEventListener("mouseenter", stopHero);
+          hero.addEventListener("mouseleave", startHero);
+          hero.addEventListener("touchstart", stopHero, { passive: true });
+          hero.addEventListener("touchend", startHero);
+
+          renderHero();
+          startHero();
+        }
+      }
+
+      const cardSliders = document.querySelectorAll("[data-slider]");
+      cardSliders.forEach((slider) => {
+        const slides = slider.querySelectorAll(".stg-slide");
+        const dotsWrap = slider.querySelector(".stg-slide-dots");
+        if (!slides.length || !dotsWrap) return;
+
+        let index = 0;
+        let timer = null;
+
+        slides.forEach((_, i) => {
+          const dot = document.createElement("span");
+          dot.className = "stg-slide-dot" + (i === 0 ? " active" : "");
+          dot.addEventListener("click", () => { index = i; renderCard(); });
+          dotsWrap.appendChild(dot);
+        });
+
+        const dots = dotsWrap.querySelectorAll(".stg-slide-dot");
+
+        function renderCard() {
+          slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+          dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+        }
+        function nextCard() { index = (index + 1) % slides.length; renderCard(); }
+        function startOnHover() { if (timer) return; timer = setInterval(nextCard, 1200); }
+        function stopOnLeave() { clearInterval(timer); timer = null; index = 0; renderCard(); }
+
+        slider.addEventListener("mouseenter", startOnHover);
+        slider.addEventListener("mouseleave", stopOnLeave);
+        slider.addEventListener("touchstart", startOnHover, { passive: true });
+        slider.addEventListener("touchend", stopOnLeave);
+
+        renderCard();
+      });
+
+      const resetBtn = document.querySelector(".stg-filter-btn.reset");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          document.querySelectorAll(".stg-select").forEach((s) => (s.value = ""));
+        });
+      }
+
+      const chips = document.querySelectorAll(".stg-chip");
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+        });
+      });
+
+      const revealTargets = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+      if (revealTargets.length) {
+        const revealObserver = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+        );
+        revealTargets.forEach((el) => revealObserver.observe(el));
+      }
+    })();
+  </script>
+</body>
+</html>

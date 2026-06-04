@@ -1,0 +1,702 @@
+@font-face {
+  font-family: 'ROBOTO';
+  src: url('../fonts/RobotoCondensed-VariableFont_wght.ttf') format('truetype');
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --brand: #2E5961;
+  --brand2: #3e7b86;
+  --brand-soft: rgba(46, 89, 97, 0.12);
+  --brand-shadow: rgba(46, 89, 97, 0.26);
+  --bg: #F1F5F1;
+  --card: #ffffff;
+  --text: #374151;
+  --heading: #1a2332;
+  --muted: #9ca3af;
+  --line: #e0e0e0;
+  --line-soft: #f0f0f0;
+  --input-bg: #f9f9f9;
+  --ok: #22c55e;
+  --warn: #F59E0B;
+  --err: #EF4444;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'ROBOTO', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  overflow: hidden;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar { display: none; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ═════════════════════ PAGE LAYOUT ═════════════════════ */
+.signin-page {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ═════════════════════ LEFT SIDE ═════════════════════ */
+.signin-left {
+  position: relative;
+  width: 45%;
+  height: 100vh;
+  background: linear-gradient(135deg, #2E5961, #3e7b86);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.signin-left-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 32px;
+}
+
+.signin-logo {
+  width: 300px;
+  height: auto;
+  margin-bottom: 14px;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.18));
+}
+
+.signin-brand {
+  color: #ffffff;
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  margin-bottom: 10px;
+}
+
+.signin-tagline {
+  color: #ffffff;
+  opacity: 0.85;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.55;
+  max-width: 280px;
+}
+
+.signin-social-proof {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatars-row {
+  display: flex;
+  align-items: center;
+}
+
+.mini-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+.mini-avatar + .mini-avatar {
+  margin-left: -10px;
+}
+
+.social-proof-text {
+  color: #ffffff;
+  opacity: 0.7;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ═════════════════════ RIGHT SIDE ═════════════════════ */
+.signin-right {
+  position: relative;
+  width: 55%;
+  height: 100vh;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.signin-right::-webkit-scrollbar { display: none; }
+
+/* ═════════════════════ FORM BOX ═════════════════════ */
+.signin-box {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.12);
+  padding: 36px 36px 32px;
+}
+
+/* ═════════════════════ TABS (CSS-only toggle) ═════════════════════ */
+.signin-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  border-radius: 9px;
+  font-family: 'ROBOTO', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.1px;
+  color: #888;
+  background: transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Default state — Connexion is active */
+.tab-signin {
+  background: #ffffff;
+  color: var(--brand);
+  box-shadow: 0 2px 8px rgba(46, 89, 97, 0.10);
+}
+
+/* When Inscription is targeted — flip active tab */
+.signin-box:has(#form-signup:target) .tab-signin {
+  background: transparent;
+  color: #888;
+  box-shadow: none;
+}
+.signin-box:has(#form-signup:target) .tab-signup {
+  background: #ffffff;
+  color: var(--brand);
+  box-shadow: 0 2px 8px rgba(46, 89, 97, 0.10);
+}
+
+/* ═════════════════════ FORMS ═════════════════════ */
+.auth-form {
+  display: none;
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+/* Default: signin visible */
+#form-signin { display: block; opacity: 1; }
+#form-signup { display: none; }
+
+/* When signup is targeted */
+.signin-box:has(#form-signup:target) #form-signin { display: none; }
+.signin-box:has(#form-signup:target) #form-signup {
+  display: block;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.form-title {
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--heading);
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+/* ═════════════════════ FORM FIELDS ═════════════════════ */
+.form-field {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-field label {
+  display: block;
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--brand);
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+}
+
+.form-field input {
+  width: 100%;
+  height: 50px;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 0 16px;
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--input-bg);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-field input::placeholder {
+  color: #bbb;
+}
+
+.form-field input:focus {
+  border-color: var(--brand);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px var(--brand-soft);
+}
+
+/* Wrapper for input + eye icon so the eye centers on the INPUT only */
+.input-with-icon {
+  position: relative;
+  width: 100%;
+}
+
+/* Password field gets right padding for the eye toggle */
+.password-field input[type="password"],
+.password-field input[type="text"] {
+  padding-right: 48px;
+}
+
+/* ═════════════════════ REAL-TIME VALIDATION ═════════════════════ */
+/* Only style after the user has typed something */
+.form-field input:not(:placeholder-shown):valid {
+  border-color: var(--ok);
+}
+
+.form-field input:not(:placeholder-shown):invalid {
+  border-color: var(--err);
+}
+
+.form-field input:not(:placeholder-shown):valid:focus {
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15);
+}
+
+.form-field input:not(:placeholder-shown):invalid:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* ═════════════════════ SHOW / HIDE PASSWORD ═════════════════════ */
+.show-pwd-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.show-pwd-label {
+  position: absolute;
+  right: 7px;
+  top: 7px;                 /* (50 - 36) / 2 — exact, no % rounding */
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  place-items: center;      /* bulletproof centering for the single SVG child */
+  color: #888;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: color 0.3s ease, background 0.3s ease;
+  user-select: none;
+  z-index: 2;
+  line-height: 0;           /* kill baseline noise */
+  font-size: 0;
+}
+
+.show-pwd-label svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin-top: 8px;
+  padding: 0;
+  grid-area: 1 / 1;         /* both SVGs stack in the same cell */
+}
+
+/* Eye icon swap: show closed eye when password is visible */
+.show-pwd-label .icon-eye-off { display: none; }
+.input-with-icon:has(.show-pwd-toggle:checked) .show-pwd-label .icon-eye { display: none; }
+.input-with-icon:has(.show-pwd-toggle:checked) .show-pwd-label .icon-eye-off { display: block; }
+
+.show-pwd-label:hover {
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.input-with-icon:has(.show-pwd-toggle:checked) .show-pwd-label {
+  color: var(--brand);
+}
+
+/* ═════════════════════ PASSWORD STRENGTH ═════════════════════ */
+.pwd-strength {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 16px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.pwd-strength[data-strength="weak"],
+.pwd-strength[data-strength="medium"],
+.pwd-strength[data-strength="strong"] {
+  opacity: 1;
+}
+
+.pwd-strength-bar {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background: #eee;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.pwd-strength-bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: var(--err);
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+.pwd-strength[data-strength="weak"] .pwd-strength-bar i {
+  width: 33%;
+  background: var(--err);
+}
+.pwd-strength[data-strength="medium"] .pwd-strength-bar i {
+  width: 66%;
+  background: var(--warn);
+}
+.pwd-strength[data-strength="strong"] .pwd-strength-bar i {
+  width: 100%;
+  background: var(--ok);
+}
+
+.pwd-strength-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  min-width: 50px;
+  text-align: right;
+}
+
+.pwd-strength[data-strength="weak"]   .pwd-strength-label { color: var(--err); }
+.pwd-strength[data-strength="medium"] .pwd-strength-label { color: var(--warn); }
+.pwd-strength[data-strength="strong"] .pwd-strength-label { color: var(--ok); }
+
+/* ═════════════════════ FORGOT LINK ═════════════════════ */
+.forgot-link {
+  display: block;
+  text-align: right;
+  color: var(--brand);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: -4px 0 18px;
+  transition: color 0.3s ease;
+}
+
+.forgot-link:hover { color: var(--brand2); text-decoration: underline; }
+
+/* ═════════════════════ PRIMARY BUTTON ═════════════════════ */
+.signin-btn {
+  width: 100%;
+  height: 50px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2E5961, #3e7b86);
+  color: #ffffff;
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 8px 20px var(--brand-shadow);
+  transition: all 0.3s ease;
+}
+
+.signin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px var(--brand-shadow);
+}
+
+.signin-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 10px var(--brand-shadow);
+}
+
+/* ═════════════════════ DIVIDER ═════════════════════ */
+.signin-divider {
+  position: relative;
+  text-align: center;
+  margin: 22px 0 18px;
+}
+
+.signin-divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line);
+}
+
+.signin-divider span {
+  position: relative;
+  display: inline-block;
+  padding: 0 14px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+/* ═════════════════════ GOOGLE BUTTON ═════════════════════ */
+.google-btn {
+  width: 100%;
+  height: 50px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  color: #1a2332;
+  font-family: 'ROBOTO', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.google-btn:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+  border-color: #c8c8c8;
+}
+
+/* ═════════════════════ SWITCH HINT ═════════════════════ */
+.switch-hint {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.switch-hint a {
+  color: var(--brand);
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.switch-hint a:hover { color: var(--brand2); text-decoration: underline; }
+
+/* ═════════════════════ TERMS TEXT ═════════════════════ */
+.terms-text {
+  font-size: 0.75rem;
+  color: #aaa;
+  text-align: center;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+.terms-text a {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.terms-text a:hover { text-decoration: underline; }
+
+/* ═════════════════════ RESPONSIVE ═════════════════════ */
+@media (max-width: 768px) {
+  html, body { overflow: auto; }
+
+  .signin-page {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .signin-left {
+    display: none;
+  }
+
+  .signin-right {
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    padding: 24px 16px;
+  }
+
+  .signin-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+
+  .form-title { font-size: 1.3rem; }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .signin-left { width: 40%; }
+  .signin-right { width: 60%; }
+  .signin-logo { width: 110px; }
+  .signin-brand { font-size: 1.7rem; }
+  .signin-tagline { font-size: 0.95rem; }
+}
+
+/* ═════════════════════ DARK MODE ═════════════════════ */
+@media (prefers-color-scheme: dark) {
+  body { background: #1a2a2d; }
+
+  .signin-right { background: #1a2a2d; }
+
+  .signin-box {
+    background: rgba(30, 45, 48, 0.92);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  }
+
+  .form-title { color: #ffffff; }
+  .form-subtitle { color: rgba(255, 255, 255, 0.55); }
+
+  .form-field label { color: #4a8a96; }
+
+  .form-field input {
+    background: #1f3336;
+    border-color: #2E5961;
+    color: #ffffff;
+  }
+
+  .form-field input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  .form-field input:focus {
+    background: #243c40;
+    border-color: #4a8a96;
+    box-shadow: 0 0 0 3px rgba(74, 138, 150, 0.18);
+  }
+
+  .signin-tabs { background: #1a2a2d; }
+
+  .tab { color: rgba(255, 255, 255, 0.5); }
+
+  .tab-signin,
+  .signin-box:has(#form-signup:target) .tab-signup {
+    background: #2a4548;
+    color: #ffffff;
+  }
+  .signin-box:has(#form-signup:target) .tab-signin {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.5);
+  }
+
+  .signin-divider::before { background: rgba(255, 255, 255, 0.12); }
+  .signin-divider span {
+    background: rgba(30, 45, 48, 0.96);
+    color: rgba(255, 255, 255, 0.55);
+  }
+
+  .google-btn {
+    background: #1f3336;
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+  }
+
+  .switch-hint { color: rgba(255, 255, 255, 0.55); }
+  .terms-text  { color: rgba(255, 255, 255, 0.4); }
+
+  .pwd-strength-bar { background: rgba(255, 255, 255, 0.08); }
+
+  .show-pwd-label { color: rgba(255, 255, 255, 0.5); }
+  .show-pwd-label:hover { color: #ffffff; background: rgba(255,255,255,0.08); }
+}
+
+/* ─── Inline form error (shown after duplicate-key redirect) ─── */
+.form-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--err);
+  color: var(--err);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}

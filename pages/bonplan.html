@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student HUB – Bons Plans</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="bonplan.css" />
+</head>
+<body>
+  <div class="main_page">
+
+    <!-- NAVBAR -->
+    <header class="home_navbar">
+      <div class="leftnav">
+        <div class="nav_left">
+          <img src="/logo/Student_HUB_LOGO.png" alt="Student HUB" class="logo" />
+        </div>
+
+        <div class="nav_center">
+          <input type="text" placeholder="Search..." class="search_input" />
+        </div>
+      </div>
+
+      <nav class="nav_right">
+        <a href="home.html">Home</a>
+        <a href="immobilier.html">Immobilier</a>
+        <a href="stage.html">Stage</a>
+        <a href="events.html">Events</a>
+        <a href="mentoring.html">Mentoring</a>
+        <a href="bonplan.html" class="active">Bons plans</a>
+        <div class="user-menu">
+          <button class="post_btn user-menu-trigger" tabindex="0">
+            Mon compte ▾
+          </button>
+          <div class="user-menu-dropdown">
+            <a href="/profile/profile.html" class="user-menu-item">
+              <span class="user-menu-icon">👤</span> Profile
+            </a>
+            <a href="/settings.html" class="user-menu-item">
+              <span class="user-menu-icon">⚙️</span> Settings
+            </a>
+            <a href="/help.html" class="user-menu-item">
+              <span class="user-menu-icon">❓</span> Help
+            </a>
+            <div class="user-menu-divider"></div>
+            <a href="/logout.html" class="user-menu-item user-menu-logout">
+              <span class="user-menu-icon">🚪</span> Log out
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- PAGE BONS PLANS -->
+    <main class="bp-page">
+      <section class="bp-shell">
+
+        <!-- HERO -->
+        <div class="bp-hero-card reveal" data-hero-slider>
+          <img src="/img/bp/download (1).png" alt="Bons plans étudiants" class="bp-hero-slide active" />
+          <img src="/img/bp/download.png" alt="Marketplace étudiant" class="bp-hero-slide" />
+          <img src="/img/bp/ef0100fbad184d741f743a9b63ee1816.jpg" alt="Annonces étudiantes" class="bp-hero-slide" />
+
+          <div class="bp-hero-gradient"></div>
+          <div class="bp-hero-text">
+            <h1>Bons Plans</h1>
+            <p>Achète, vends, échange entre étudiants — simplement.</p>
+          </div>
+
+          <div class="bp-hero-dots"></div>
+        </div>
+
+        <!-- TOP BAR -->
+        <div class="bp-top-bar reveal">
+          <div class="bp-search-row">
+            <input type="text" class="bp-search-input" placeholder="Titre, catégorie, ville..." />
+            <button type="button" class="bp-search-btn">Rechercher</button>
+          </div>
+
+          <div class="bp-chips">
+            <button type="button" class="bp-chip active">Livres</button>
+            <button type="button" class="bp-chip">Électronique</button>
+            <button type="button" class="bp-chip">Meubles</button>
+            <button type="button" class="bp-chip">Vêtements</button>
+            <button type="button" class="bp-chip">Cours</button>
+            <button type="button" class="bp-chip">Divers</button>
+          </div>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="bp-filters-board reveal">
+          <div class="bp-filter-item">
+            <label for="f-cat">Catégorie</label>
+            <select id="f-cat" class="bp-select">
+              <option value="">Choisir</option>
+              <option value="livres">Livres</option>
+              <option value="elec">Électronique</option>
+              <option value="meubles">Meubles</option>
+              <option value="vetements">Vêtements</option>
+              <option value="cours">Cours</option>
+              <option value="divers">Divers</option>
+            </select>
+          </div>
+
+          <div class="bp-filter-item">
+            <label for="f-prix">Prix max</label>
+            <select id="f-prix" class="bp-select">
+              <option value="">Choisir</option>
+              <option value="1000">1 000 DA</option>
+              <option value="5000">5 000 DA</option>
+              <option value="20000">20 000 DA</option>
+              <option value="50000">50 000 DA</option>
+            </select>
+          </div>
+
+          <div class="bp-filter-item">
+            <label for="f-etat">État</label>
+            <select id="f-etat" class="bp-select">
+              <option value="">Choisir</option>
+              <option value="neuf">Neuf</option>
+              <option value="bon">Bon état</option>
+              <option value="usage">Usagé</option>
+            </select>
+          </div>
+
+          <div class="bp-filter-item">
+            <label for="f-ville">Ville</label>
+            <select id="f-ville" class="bp-select">
+              <option value="">Choisir</option>
+              <option value="alger">Alger</option>
+              <option value="oran">Oran</option>
+              <option value="constantine">Constantine</option>
+            </select>
+          </div>
+
+          <div class="bp-filter-actions">
+            <button type="button" class="bp-filter-btn apply">Appliquer</button>
+            <button type="button" class="bp-filter-btn reset">Reset</button>
+          </div>
+        </div>
+
+        <!-- LIST -->
+        <section class="bp-list">
+          <header class="bp-list-header reveal">
+            <h2>Annonces récentes</h2>
+            <p>Trouve de bonnes affaires partagées par des étudiants près de chez toi.</p>
+          </header>
+
+          <div class="bp-cards">
+
+            <!-- CARD 1 -->
+            <article class="bp-card reveal-left">
+              <div class="bp-card-img-wrap" data-slider>
+                <img src="/img/bp/download (1).png" alt="Pack de livres L2 Informatique" class="bp-slide active" />
+                <img src="/img/bp/download.png" alt="Pack de livres L2 Informatique" class="bp-slide" />
+                <img src="/img/bp/ef0100fbad184d741f743a9b63ee1816.jpg" alt="Pack de livres L2 Informatique" class="bp-slide" />
+                <div class="bp-slide-dots"></div>
+                <span class="bp-badge">Neuf</span>
+                <span class="bp-tag-price">2 500 DA</span>
+              </div>
+              <div class="bp-card-body">
+                <h3>Pack de livres L2 Informatique</h3>
+                <p class="bp-card-loc">Alger • Bab Ezzouar</p>
+                <div class="bp-card-meta">
+                  <span>Livres</span>
+                  <span>Neuf</span>
+                  <span>Étudiant</span>
+                </div>
+                <div class="bp-seller">
+                  <span class="bp-seller-name">Yacine B.</span>
+                  <span class="bp-seller-rating">⭐ 4.8</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD 2 -->
+            <article class="bp-card reveal">
+              <div class="bp-card-img-wrap" data-slider>
+                <img src="/img/bp/download (1).png" alt="Laptop HP 14 pouces" class="bp-slide active" />
+                <img src="/img/bp/download.png" alt="Laptop HP 14 pouces" class="bp-slide" />
+                <img src="/img/bp/ef0100fbad184d741f743a9b63ee1816.jpg" alt="Laptop HP 14 pouces" class="bp-slide" />
+                <div class="bp-slide-dots"></div>
+                <span class="bp-badge bp-badge-urgent">Urgent</span>
+                <span class="bp-tag-price">15 000 DA</span>
+              </div>
+              <div class="bp-card-body">
+                <h3>Laptop HP 14 pouces</h3>
+                <p class="bp-card-loc">Oran • Centre</p>
+                <div class="bp-card-meta">
+                  <span>Électronique</span>
+                  <span>Bon état</span>
+                  <span>Rapide</span>
+                </div>
+                <div class="bp-seller">
+                  <span class="bp-seller-name">Sara M.</span>
+                  <span class="bp-seller-rating">⭐ 4.5</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- CARD 3 -->
+            <article class="bp-card reveal-right">
+              <div class="bp-card-img-wrap" data-slider>
+                <img src="/img/bp/download.png" alt="Bureau étudiant avec chaise" class="bp-slide active" />
+                <img src="/img/bp/download (1).png" alt="Bureau étudiant avec chaise" class="bp-slide" />
+                <img src="/img/bp/ef0100fbad184d741f743a9b63ee1816.jpg" alt="Bureau étudiant avec chaise" class="bp-slide" />
+                <div class="bp-slide-dots"></div>
+                <span class="bp-badge bp-badge-soft">Bon état</span>
+                <span class="bp-tag-price">800 DA</span>
+              </div>
+              <div class="bp-card-body">
+                <h3>Bureau étudiant avec chaise</h3>
+                <p class="bp-card-loc">Constantine • El Khroub</p>
+                <div class="bp-card-meta">
+                  <span>Meubles</span>
+                  <span>Bon état</span>
+                  <span>Livraison</span>
+                </div>
+                <div class="bp-seller">
+                  <span class="bp-seller-name">Amine K.</span>
+                  <span class="bp-seller-rating">⭐ 4.9</span>
+                </div>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="bp-stats reveal">
+          <div class="bp-stat">
+            <span class="bp-stat-num">2 400</span>
+            <span class="bp-stat-label">annonces actives</span>
+          </div>
+          <div class="bp-stat">
+            <span class="bp-stat-num">850</span>
+            <span class="bp-stat-label">étudiants vendeurs</span>
+          </div>
+          <div class="bp-stat">
+            <span class="bp-stat-num">&lt; 24h</span>
+            <span class="bp-stat-label">délai moyen de réponse</span>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const hero = document.querySelector("[data-hero-slider]");
+      if (hero) {
+        const slides = hero.querySelectorAll(".bp-hero-slide");
+        const dotsWrap = hero.querySelector(".bp-hero-dots");
+
+        if (slides.length && dotsWrap) {
+          let index = 0;
+          let timer = null;
+
+          slides.forEach((_, i) => {
+            const dot = document.createElement("span");
+            dot.className = "bp-hero-dot" + (i === 0 ? " active" : "");
+            dot.addEventListener("click", () => { index = i; renderHero(); restartHero(); });
+            dotsWrap.appendChild(dot);
+          });
+
+          const dots = dotsWrap.querySelectorAll(".bp-hero-dot");
+
+          function renderHero() {
+            slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+            dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+          }
+          function nextHero() { index = (index + 1) % slides.length; renderHero(); }
+          function startHero() { timer = setInterval(nextHero, 3500); }
+          function stopHero() { clearInterval(timer); timer = null; }
+          function restartHero() { stopHero(); startHero(); }
+
+          hero.addEventListener("mouseenter", stopHero);
+          hero.addEventListener("mouseleave", startHero);
+          hero.addEventListener("touchstart", stopHero, { passive: true });
+          hero.addEventListener("touchend", startHero);
+
+          renderHero();
+          startHero();
+        }
+      }
+
+      const cardSliders = document.querySelectorAll("[data-slider]");
+      cardSliders.forEach((slider) => {
+        const slides = slider.querySelectorAll(".bp-slide");
+        const dotsWrap = slider.querySelector(".bp-slide-dots");
+        if (!slides.length || !dotsWrap) return;
+
+        let index = 0;
+        let timer = null;
+
+        slides.forEach((_, i) => {
+          const dot = document.createElement("span");
+          dot.className = "bp-slide-dot" + (i === 0 ? " active" : "");
+          dot.addEventListener("click", () => { index = i; renderCard(); });
+          dotsWrap.appendChild(dot);
+        });
+
+        const dots = dotsWrap.querySelectorAll(".bp-slide-dot");
+
+        function renderCard() {
+          slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+          dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+        }
+        function nextCard() { index = (index + 1) % slides.length; renderCard(); }
+        function startOnHover() { if (timer) return; timer = setInterval(nextCard, 1200); }
+        function stopOnLeave() { clearInterval(timer); timer = null; index = 0; renderCard(); }
+
+        slider.addEventListener("mouseenter", startOnHover);
+        slider.addEventListener("mouseleave", stopOnLeave);
+        slider.addEventListener("touchstart", startOnHover, { passive: true });
+        slider.addEventListener("touchend", stopOnLeave);
+
+        renderCard();
+      });
+
+      const resetBtn = document.querySelector(".bp-filter-btn.reset");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          document.querySelectorAll(".bp-select").forEach((s) => (s.value = ""));
+        });
+      }
+
+      const chips = document.querySelectorAll(".bp-chip");
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+        });
+      });
+
+      const revealTargets = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+      if (revealTargets.length) {
+        const revealObserver = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+        );
+        revealTargets.forEach((el) => revealObserver.observe(el));
+      }
+    })();
+  </script>
+</body>
+</html>

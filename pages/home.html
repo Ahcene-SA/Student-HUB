@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student HUB - Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./home.css" />
+</head>
+<body>
+  <div class="main_page">
+
+    <!-- NAVBAR -->
+    <header class="home_navbar">
+      <div class="leftnav">
+        <div class="nav_left">
+          <img src="/logo/Student_HUB_LOGO.png" alt="Student HUB" class="logo" />
+        </div>
+
+        <div class="nav_center">
+          <input type="text" placeholder="Search..." class="search_input" />
+        </div>
+      </div>
+
+      <nav class="nav_right">
+        <a href="home.html" class="active">Home</a>
+        <a href="immobilier.html">Immobilier</a>
+        <a href="stage.html">Stage</a>
+        <a href="events.html">Events</a>
+        <a href="mentoring.html">Mentoring</a>
+        <a href="bonplan.html">Bons plans</a>
+        <div class="user-menu">
+          <button class="post_btn user-menu-trigger" tabindex="0">
+            Mon compte ▾
+          </button>
+          <div class="user-menu-dropdown">
+            <a href="/profile/profile.php" class="user-menu-item">
+              <span class="user-menu-icon">👤</span> Profile
+            </a>
+            <a href="/settings.html" class="user-menu-item">
+              <span class="user-menu-icon">⚙️</span> Settings
+            </a>
+            <a href="/help.html" class="user-menu-item">
+              <span class="user-menu-icon">❓</span> Help
+            </a>
+            <div class="user-menu-divider"></div>
+            <a href="/logout.html" class="user-menu-item user-menu-logout">
+              <span class="user-menu-icon">🚪</span> Log out
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- HOME LAYOUT -->
+    <section class="home_layout">
+
+      <!-- LEFT SIDEBAR -->
+      <aside class="left_sidebar">
+
+        <div class="card profile_card">
+          <div class="profile_top">
+            <div class="avatar">👤</div>
+            <div class="profile_meta">
+              <h3>Nom & Prénom</h3>
+              <p>@studenthub</p>
+            </div>
+          </div>
+          <a  class="voir-btn" href="/profile/profile.html">Voir le profil</a>
+        </div>
+
+        <div class="card nav_card">
+          <a href="#">Live</a>
+          <a href="#">Contacts</a>
+          <a href="#">Video</a>
+          <a href="#">Saved</a>
+        </div>
+
+      </aside>
+
+      <!-- MAIN FEED -->
+      <main class="feed_area">
+
+        <div class="card composer_card">
+          <h2>Create a post</h2>
+          <p class="muted">Share something with the community.</p>
+
+          <textarea placeholder="Share something with the community..."></textarea>
+
+          <div class="composer_actions">
+            <button class="ghost_btn" type="button">Add photo</button>
+            <button class="primary_btn" type="button">Publish</button>
+          </div>
+        </div>
+
+        <!-- POST 1 -->
+        <article class="card post_card">
+
+          <div class="post_head">
+            <div class="post_user">
+              <div class="avatar sm">👤</div>
+              <div class="post_user_meta">
+                <h4>Nom étudiant</h4>
+                <p>Il y a 2h</p>
+              </div>
+            </div>
+
+            <button class="follow_btn" type="button">+ Follow</button>
+          </div>
+
+          <p class="post_desc">
+            Description de la publication ici. Tu peux écrire un texte court ou long selon le post.
+          </p>
+
+          <div class="post_media">
+            <img src="mainpage/image/post-example.jpg" alt="Post image" />
+          </div>
+
+          <div class="post_actions">
+            <button type="button">Like</button>
+            <button type="button">Comment</button>
+            <button type="button">Repost</button>
+            <button type="button">Share</button>
+          </div>
+
+        </article>
+
+        <!-- POST 2 -->
+        <article class="card post_card">
+
+          <div class="post_head">
+            <div class="post_user">
+              <div class="avatar sm">👤</div>
+              <div class="post_user_meta">
+                <h4>Autre membre</h4>
+                <p>Il y a 5h</p>
+              </div>
+            </div>
+
+            <button class="follow_btn" type="button">+ Follow</button>
+          </div>
+
+          <p class="post_desc">
+            Besoin d'aide en math demain matin. Qui est dispo pour une session rapide ?
+          </p>
+
+          <div class="post_media">
+            <img src="mainpage/image/post-example-2.jpg" alt="Post image" />
+          </div>
+
+          <div class="post_actions">
+            <button type="button">Like</button>
+            <button type="button">Comment</button>
+            <button type="button">Repost</button>
+            <button type="button">Share</button>
+          </div>
+
+        </article>
+
+      </main>
+
+      <!-- RIGHT SIDEBAR -->
+      <aside class="right_sidebar">
+
+        <div class="card ads_card">
+          <h3>Publicités</h3>
+          <div class="ad_box">Espace Pub 1</div>
+          <div class="ad_box">Espace Pub 2</div>
+        </div>
+
+        <div class="card tips_card">
+          <h3>Conseils rapides</h3>
+          <ul>
+            <li>Vérifie les profils avant contact</li>
+            <li>Partage uniquement du contenu utile</li>
+            <li>Reste respectueux avec la communauté</li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </section>
+  </div>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student HUB – Immobilier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="immobilier.css" />
+</head>
+<body>
+  <div class="main_page">
+
+    <!-- NAVBAR -->
+    <header class="home_navbar">
+      <div class="leftnav">
+        <div class="nav_left">
+          <img src="/logo/Student_HUB_LOGO.png" alt="Student HUB" class="logo" />
+        </div>
+
+        <div class="nav_center">
+          <input type="text" placeholder="Search..." class="search_input" />
+        </div>
+      </div>
+
+      <nav class="nav_right">
+        <a href="home.html">Home</a>
+        <a href="immobilier.html" class="active">Immobilier</a>
+        <a href="stage.html">Stage</a>
+        <a href="events.html">Events</a>
+        <a href="mentoring.html">Mentoring</a>
+        <a href="bonplan.html">Bons plans</a>
+        <div class="user-menu">
+          <button class="post_btn user-menu-trigger" tabindex="0">
+            Mon compte ▾
+          </button>
+          <div class="user-menu-dropdown">
+            <a href="/profile/profile.html" class="user-menu-item">
+              <span class="user-menu-icon">👤</span> Profile
+            </a>
+            <a href="/settings.html" class="user-menu-item">
+              <span class="user-menu-icon">⚙️</span> Settings
+            </a>
+            <a href="/help.html" class="user-menu-item">
+              <span class="user-menu-icon">❓</span> Help
+            </a>
+            <div class="user-menu-divider"></div>
+            <a href="/logout.html" class="user-menu-item user-menu-logout">
+              <span class="user-menu-icon">🚪</span> Log out
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- PAGE IMMOBILIER -->
+    <main class="imm-page">
+      <section class="imm-shell">
+
+        <!-- HERO -->
+        <div class="imm-hero-card reveal" data-hero-slider>
+          <img src="/img/imo/download.jpg" alt="Immobilier étudiant" class="imm-hero-slide active" />
+          <img src="/img/imo/download (1).jpg" alt="Immobilier étudiant" class="imm-hero-slide" />
+          <img src="/img/imo/Dream home.jpg " alt="Immobilier étudiant" class="imm-hero-slide" />
+
+          <div class="imm-hero-gradient"></div>
+          <div class="imm-hero-text">
+            <h1>Immobilier</h1>
+            <p>Trouvez des loyers et logements pour vos études — rapidement, simplement.</p>
+          </div>
+
+          <div class="imm-hero-dots"></div>
+        </div>
+
+        <!-- TOP BAR -->
+        <div class="imm-top-bar reveal">
+          <div class="imm-search-row">
+            <input type="text" class="imm-search-input" placeholder="Ville, quartier, université..." />
+            <button type="button" class="imm-search-btn">Rechercher</button>
+          </div>
+
+          <div class="imm-chips">
+            <button type="button" class="imm-chip">Studio</button>
+            <button type="button" class="imm-chip">Appartement</button>
+            <button type="button" class="imm-chip">Chambre</button>
+            <button type="button" class="imm-chip">Colocation</button>
+          </div>
+        </div>
+
+        <!-- FILTERS PREMIUM -->
+        <div class="imm-filters-board reveal">
+          <div class="imm-filter-item">
+            <label for="f-prix">Prix max</label>
+            <select id="f-prix" class="imm-select">
+              <option value="">Choisir</option>
+              <option value="50000">50 000 DA</option>
+              <option value="80000">80 000 DA</option>
+              <option value="120000">120 000 DA</option>
+            </select>
+          </div>
+
+          <div class="imm-filter-item">
+            <label for="f-type">Type</label>
+            <select id="f-type" class="imm-select">
+              <option value="">Choisir</option>
+              <option value="studio">Studio</option>
+              <option value="appartement">Appartement</option>
+              <option value="chambre">Chambre</option>
+            </select>
+          </div>
+
+          <div class="imm-filter-item">
+            <label for="f-chambres">Chambres</label>
+            <select id="f-chambres" class="imm-select">
+              <option value="">Choisir</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3+</option>
+            </select>
+          </div>
+
+          <div class="imm-filter-item">
+            <label for="f-meuble">Meublé</label>
+            <select id="f-meuble" class="imm-select">
+              <option value="">Choisir</option>
+              <option value="oui">Oui</option>
+              <option value="non">Non</option>
+            </select>
+          </div>
+
+          <div class="imm-filter-actions">
+            <button type="button" class="imm-filter-btn apply">Appliquer</button>
+            <button type="button" class="imm-filter-btn reset">Reset</button>
+          </div>
+        </div>
+
+        <!-- LIST -->
+        <section class="imm-list">
+          <header class="imm-list-header reveal">
+            <h2>Logements recommandés</h2>
+            <p>Choisis un logement vérifié par la communauté Student HUB.</p>
+          </header>
+
+          <div class="imm-cards">
+            <article class="imm-card reveal-left">
+              <div class="imm-card-img-wrap" data-slider>
+                <img src="/img/imo/download (1).jpg" alt="Studio proche campus" class="imm-slide active" />
+                <img src="/img/imo/download.jpg" alt="Studio proche campus" class="imm-slide" />
+                <img src="/img/imo/Dream home.jpg" alt="Studio proche campus" class="imm-slide" />
+                <div class="imm-slide-dots"></div>
+                <span class="imm-tag-price">45 000 DA / mois</span>
+              </div>
+              <div class="imm-card-body">
+                <h3>Studio proche campus</h3>
+                <p class="imm-card-loc">Alger • Bab Ezzouar</p>
+                <div class="imm-card-meta">
+                  <span>1 pièce</span>
+                  <span>Meublé</span>
+                  <span>Wi‑Fi</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="imm-card reveal">
+              <div class="imm-card-img-wrap" data-slider>
+                <img src="/img/imo/download (1).jpg" alt="Appartement 2 chambres" class="imm-slide active" />
+                <img src="/img/imo/download.jpg" alt="Appartement 2 chambres" class="imm-slide" />
+                <img src="/img/imo/Dream home.jpg" alt="Appartement 2 chambres" class="imm-slide" />
+                <div class="imm-slide-dots"></div>
+                <span class="imm-tag-price">70 000 DA / mois</span>
+              </div>
+              <div class="imm-card-body">
+                <h3>Appartement 2 chambres</h3>
+                <p class="imm-card-loc">Oran • Centre</p>
+                <div class="imm-card-meta">
+                  <span>2 chambres</span>
+                  <span>Proche tram</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="imm-card reveal-right">
+              <div class="imm-card-img-wrap" data-slider>
+                <img src="/img/imo/download.jpg" alt="Chambre en colocation" class="imm-slide active" />
+                <img src="/img/imo/Dream home.jpg" alt="Chambre en colocation" class="imm-slide" />
+                <img src="/img/imo/download (1).jpg" alt="Chambre en colocation" class="imm-slide" />
+                <div class="imm-slide-dots"></div>
+                <span class="imm-tag-price">35 000 DA / mois</span>
+              </div>
+              <div class="imm-card-body">
+                <h3>Chambre en colocation</h3>
+                <p class="imm-card-loc">Constantine • El Khroub</p>
+                <div class="imm-card-meta">
+                  <span>Colocation</span>
+                  <span>Étudiants</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="imm-stats reveal">
+          <div class="imm-stat">
+            <span class="imm-stat-num">1 240</span>
+            <span class="imm-stat-label">annonces actives</span>
+          </div>
+          <div class="imm-stat">
+            <span class="imm-stat-num">320 DA</span>
+            <span class="imm-stat-label">loyer moyen</span>
+          </div>
+          <div class="imm-stat">
+            <span class="imm-stat-num">48h</span>
+            <span class="imm-stat-label">délai réponse</span>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const hero = document.querySelector("[data-hero-slider]");
+      if (hero) {
+        const slides = hero.querySelectorAll(".imm-hero-slide");
+        const dotsWrap = hero.querySelector(".imm-hero-dots");
+
+        if (slides.length && dotsWrap) {
+          let index = 0;
+          let timer = null;
+
+          slides.forEach((_, i) => {
+            const dot = document.createElement("span");
+            dot.className = "imm-hero-dot" + (i === 0 ? " active" : "");
+            dot.addEventListener("click", () => {
+              index = i;
+              renderHero();
+              restartHero();
+            });
+            dotsWrap.appendChild(dot);
+          });
+
+          const dots = dotsWrap.querySelectorAll(".imm-hero-dot");
+
+          function renderHero() {
+            slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+            dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+          }
+          function nextHero() { index = (index + 1) % slides.length; renderHero(); }
+          function startHero() { timer = setInterval(nextHero, 3500); }
+          function stopHero() { clearInterval(timer); timer = null; }
+          function restartHero() { stopHero(); startHero(); }
+
+          hero.addEventListener("mouseenter", stopHero);
+          hero.addEventListener("mouseleave", startHero);
+          hero.addEventListener("touchstart", stopHero, { passive: true });
+          hero.addEventListener("touchend", startHero);
+
+          renderHero();
+          startHero();
+        }
+      }
+
+      const cardSliders = document.querySelectorAll("[data-slider]");
+      cardSliders.forEach((slider) => {
+        const slides = slider.querySelectorAll(".imm-slide");
+        const dotsWrap = slider.querySelector(".imm-slide-dots");
+        if (!slides.length || !dotsWrap) return;
+
+        let index = 0;
+        let timer = null;
+
+        slides.forEach((_, i) => {
+          const dot = document.createElement("span");
+          dot.className = "imm-slide-dot" + (i === 0 ? " active" : "");
+          dot.addEventListener("click", () => { index = i; renderCard(); });
+          dotsWrap.appendChild(dot);
+        });
+
+        const dots = dotsWrap.querySelectorAll(".imm-slide-dot");
+
+        function renderCard() {
+          slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+          dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+        }
+        function nextCard() { index = (index + 1) % slides.length; renderCard(); }
+        function startOnHover() { if (timer) return; timer = setInterval(nextCard, 1200); }
+        function stopOnLeave() { clearInterval(timer); timer = null; index = 0; renderCard(); }
+
+        slider.addEventListener("mouseenter", startOnHover);
+        slider.addEventListener("mouseleave", stopOnLeave);
+        slider.addEventListener("touchstart", startOnHover, { passive: true });
+        slider.addEventListener("touchend", stopOnLeave);
+
+        renderCard();
+      });
+
+      const resetBtn = document.querySelector(".imm-filter-btn.reset");
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          document.querySelectorAll(".imm-select").forEach((s) => (s.value = ""));
+        });
+      }
+
+      const chips = document.querySelectorAll(".imm-chip");
+      chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+          chips.forEach((c) => c.classList.remove("active"));
+          chip.classList.add("active");
+        });
+      });
+
+      const revealTargets = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+      if (revealTargets.length) {
+        const revealObserver = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+        );
+        revealTargets.forEach((el) => revealObserver.observe(el));
+      }
+    })();
+  </script>
+</body>
+</html>
