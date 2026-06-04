@@ -3,6 +3,10 @@
     src: url('../fonts/RobotoCondensed-VariableFont_wght.ttf') format('truetype');
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -11,9 +15,17 @@
 
 body {
     background-color: #F1F5F1;
-    width: 100%;      
+    width: 100%;
     min-height: 100vh;
-    overflow-x: hidden; 
+    overflow-x: hidden;
+}
+
+/* Fixed navbar offset for anchor links */
+#about,
+#services,
+#testimonials,
+#contact {
+    scroll-margin-top: 160px;
 }
 
 .main_page {
@@ -175,7 +187,7 @@ button:active {
 
 /* ── About Section ── */
 .about_us {
-    max-width: 1100px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 80px 24px;
 }
@@ -206,7 +218,7 @@ button:active {
 .down_au {
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: stretch;
     gap: 48px;
 }
 
@@ -217,6 +229,10 @@ button:active {
     padding: 40px 36px;
     border-radius: 20px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
 .description p {
@@ -268,12 +284,15 @@ button:active {
     position: relative;
     display: flex;
     justify-content: center;
+    align-items: stretch;
+    height: 100%;
 }
 
 .about_img_wrapper img {
     width: 100%;
     max-width: 480px;
-    height: 460px;
+    height: 100%;
+    min-height: 360px;
     object-fit: cover;
     border-radius: 20px;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
@@ -319,6 +338,9 @@ button:active {
 .services_header {
     text-align: center;
     margin-bottom: 56px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .services_header h2 {
@@ -351,6 +373,9 @@ button:active {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: stretch;
 }
 
 /* ── Card ── */
@@ -362,6 +387,10 @@ button:active {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
     border: 1px solid #f0f0f0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .service_card:hover {
@@ -395,6 +424,7 @@ button:active {
     color: #666;
     line-height: 1.7;
     font-family: 'ROBOTO', sans-serif;
+    flex: 1;
 }
 
 
