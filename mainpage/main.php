@@ -32,10 +32,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       
-      <a href="#">About us</a>
-      <a href="#">Services</a>
-      <a href="#">Testemonials</a>
-      <a href="#">Contact us</a>
+      <a href="#about">About us</a>
+      <a href="#services">Services</a>
+      <a href="#testimonials">Testimonials</a>
+      <a href="#contact">Contact us</a>
       <form action="">
         <select name="" id="">
           <option value="">FR</option>
@@ -63,7 +63,7 @@
 
 
 
-<div class="about_us">
+<div class="about_us" id="about">
 
   <!-- Title -->
   <div class="about_header">
@@ -97,7 +97,7 @@
 
 
 
-<div class="services">
+<div class="services" id="services">
 
   <!-- Header -->
   <div class="services_header">
@@ -138,7 +138,7 @@
 </div> 
 
 
-<div class="testimonials">
+<div class="testimonials" id="testimonials">
 
   <!-- Background circles -->
   <div class="t_circle tc1"></div>
