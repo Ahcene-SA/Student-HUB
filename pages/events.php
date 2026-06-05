@@ -33,30 +33,30 @@ if ($ville !== '') {
 }
 
 $date = isset($_GET['date']) ? $_GET['date'] : '';
-if ($date === 'today') {
-    $where[] = "p.event_date >= DATE_FORMAT(CURDATE(),'%Y-%m-%d')";
-} elseif ($date === 'week') {
-    $where[] = "p.event_date >= DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 7 DAY),'%Y-%m-%d')";
-} elseif ($date === 'month') {
-    $where[] = "p.event_date >= DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 30 DAY),'%Y-%m-%d')";
+if ($date !== '') {
+    $where[] = "p.event_date >= ?";
+    $params[] = $date;
+    $types .= 's';
 }
 
-$cat = isset($_GET['cat']) ? $_GET['cat'] : '';
-if ($cat === 'party') {
-    $where[] = "(p.type_event LIKE '%soirée%' OR p.type_event LIKE '%party%' OR p.type_event LIKE '%concert%')";
-} elseif ($cat === 'hack') {
-    $where[] = "p.type_event LIKE '%hackathon%'";
-} elseif ($cat === 'conf') {
-    $where[] = "p.type_event LIKE '%conférence%'";
+$cat = isset($_GET['cat']) ? trim($_GET['cat']) : '';
+if ($cat !== '') {
+    $where[] = "p.type_event LIKE ?";
+    $params[] = '%' . $cat . '%';
+    $types .= 's';
 }
 
-$prix = isset($_GET['prix']) ? $_GET['prix'] : '';
-if ($prix === 'free') {
-    $where[] = "(p.is_free = 'gratuit' OR p.tarif = '0')";
-} elseif ($prix === '1000') {
-    $where[] = "CAST(p.tarif AS UNSIGNED) <= 1000";
-} elseif ($prix === '3000') {
-    $where[] = "CAST(p.tarif AS UNSIGNED) <= 3000";
+$gratuit = isset($_GET['gratuit']) ? $_GET['gratuit'] : '';
+if ($gratuit !== '') {
+    $where[] = "(p.is_free = 'gratuit')";
+} else {
+    $prix = isset($_GET['prix']) ? trim($_GET['prix']) : '';
+    if ($prix !== '') {
+        $prixVal = (float)$prix;
+        $where[] = "(CAST(p.tarif AS UNSIGNED) <= ? OR p.is_free = 'gratuit' OR CAST(p.tarif AS UNSIGNED) = 0)";
+        $params[] = $prixVal;
+        $types .= 'd';
+    }
 }
 
 $sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar FROM posts p JOIN user u ON u.id_user = p.user_id WHERE " . implode(' AND ', $where) . " ORDER BY p.created_at DESC";
@@ -203,42 +203,26 @@ function timeAgo($d) {
         <div class="ev-filters-board reveal">
           <div class="ev-filter-item">
             <label for="f-ville">Ville</label>
-            <select name="ville" id="f-ville" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="alger" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'alger') echo 'selected'; ?>>Alger</option>
-              <option value="oran" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'oran') echo 'selected'; ?>>Oran</option>
-              <option value="constantine" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'constantine') echo 'selected'; ?>>Constantine</option>
-            </select>
+            <input type="text" name="ville" id="f-ville" class="ev-select" placeholder="Paris, Lyon, Marseille..." value="<?php echo htmlspecialchars(isset($_GET['ville']) ? $_GET['ville'] : ''); ?>" />
           </div>
 
           <div class="ev-filter-item">
             <label for="f-date">Date</label>
-            <select name="date" id="f-date" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="today" <?php if (isset($_GET['date']) && $_GET['date'] === 'today') echo 'selected'; ?>>Aujourd'hui</option>
-              <option value="week" <?php if (isset($_GET['date']) && $_GET['date'] === 'week') echo 'selected'; ?>>Cette semaine</option>
-              <option value="month" <?php if (isset($_GET['date']) && $_GET['date'] === 'month') echo 'selected'; ?>>Ce mois</option>
-            </select>
+            <input type="date" name="date" id="f-date" class="ev-select" style="appearance:auto;-webkit-appearance:auto;-moz-appearance:auto;padding-right:12px;" value="<?php echo htmlspecialchars(isset($_GET['date']) ? $_GET['date'] : ''); ?>" />
           </div>
 
           <div class="ev-filter-item">
             <label for="f-cat">Catégorie</label>
-            <select name="cat" id="f-cat" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="party" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'party') echo 'selected'; ?>>Soirée</option>
-              <option value="hack" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'hack') echo 'selected'; ?>>Hackathon</option>
-              <option value="conf" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'conf') echo 'selected'; ?>>Conférence</option>
-            </select>
+            <input type="text" name="cat" id="f-cat" class="ev-select" placeholder="Soirée, Concert, Hackathon..." value="<?php echo htmlspecialchars(isset($_GET['cat']) ? $_GET['cat'] : ''); ?>" />
           </div>
 
-          <div class="ev-filter-item">
-            <label for="f-prix">Prix</label>
-            <select name="prix" id="f-prix" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="free" <?php if (isset($_GET['prix']) && $_GET['prix'] === 'free') echo 'selected'; ?>>Gratuit</option>
-              <option value="1000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '1000') echo 'selected'; ?>>≤ 1 000 DA</option>
-              <option value="3000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '3000') echo 'selected'; ?>>≤ 3 000 DA</option>
-            </select>
+          <div class="ev-filter-item" id="prix-wrap">
+            <label for="f-prix" id="prix-label">Prix max (€)</label>
+            <input type="number" name="prix" id="f-prix" class="ev-select" placeholder="Ex: 25" min="0" step="1" value="<?php echo htmlspecialchars(isset($_GET['prix']) ? $_GET['prix'] : ''); ?>" />
+            <label for="f-gratuit" style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:10px;">
+              <input type="checkbox" name="gratuit" id="f-gratuit" value="1" <?php if(isset($_GET['gratuit']) && $_GET['gratuit'] === '1') echo 'checked'; ?> style="width:18px;height:18px;accent-color:var(--brand);" onchange="toggleGratuit(this)">
+              <span style="font-size:0.95rem;">Gratuit</span>
+            </label>
           </div>
 
           <div class="ev-filter-actions">
@@ -436,6 +420,24 @@ function timeAgo($d) {
         );
         revealTargets.forEach((el) => revealObserver.observe(el));
       }
+    })();
+
+    function toggleGratuit(cb) {
+      const prixInput = document.getElementById('f-prix');
+      const prixLabel = document.getElementById('prix-label');
+      if (cb.checked) {
+        prixInput.style.display = 'none';
+        prixLabel.style.display = 'none';
+        prixInput.value = '';
+      } else {
+        prixInput.style.display = '';
+        prixLabel.style.display = '';
+      }
+    }
+    // Init on load
+    (function() {
+      const cb = document.getElementById('f-gratuit');
+      if (cb && cb.checked) toggleGratuit(cb);
     })();
 
     function openPostDetail(el) {
