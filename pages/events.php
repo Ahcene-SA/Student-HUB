@@ -11,11 +11,60 @@ $conn->query("
         INDEX idx_user(user_id), INDEX idx_category(category), INDEX idx_created(created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
-$stmt = $conn->prepare("
-    SELECT p.*, u.prenom, u.nom, u.username, u.avatar
-    FROM posts p JOIN user u ON u.id_user = p.user_id
-    WHERE p.category = 'events' ORDER BY p.created_at DESC
-");
+$where = ["p.category = 'events'"];
+$params = [];
+$types = "";
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if ($search !== '') {
+    $like = '%' . $search . '%';
+    $where[] = "(p.title LIKE ? OR p.content LIKE ? OR p.location LIKE ?)";
+    $params[] = $like;
+    $params[] = $like;
+    $params[] = $like;
+    $types .= 'sss';
+}
+
+$ville = isset($_GET['ville']) ? trim($_GET['ville']) : '';
+if ($ville !== '') {
+    $where[] = "p.location LIKE ?";
+    $params[] = '%' . $ville . '%';
+    $types .= 's';
+}
+
+$date = isset($_GET['date']) ? $_GET['date'] : '';
+if ($date === 'today') {
+    $where[] = "p.event_date >= DATE_FORMAT(CURDATE(),'%Y-%m-%d')";
+} elseif ($date === 'week') {
+    $where[] = "p.event_date >= DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 7 DAY),'%Y-%m-%d')";
+} elseif ($date === 'month') {
+    $where[] = "p.event_date >= DATE_FORMAT(DATE_SUB(CURDATE(),INTERVAL 30 DAY),'%Y-%m-%d')";
+}
+
+$cat = isset($_GET['cat']) ? $_GET['cat'] : '';
+if ($cat === 'party') {
+    $where[] = "(p.type_event LIKE '%soirée%' OR p.type_event LIKE '%party%' OR p.type_event LIKE '%concert%')";
+} elseif ($cat === 'hack') {
+    $where[] = "p.type_event LIKE '%hackathon%'";
+} elseif ($cat === 'conf') {
+    $where[] = "p.type_event LIKE '%conférence%'";
+}
+
+$prix = isset($_GET['prix']) ? $_GET['prix'] : '';
+if ($prix === 'free') {
+    $where[] = "(p.is_free = 'gratuit' OR p.tarif = '0')";
+} elseif ($prix === '1000') {
+    $where[] = "CAST(p.tarif AS UNSIGNED) <= 1000";
+} elseif ($prix === '3000') {
+    $where[] = "CAST(p.tarif AS UNSIGNED) <= 3000";
+}
+
+$sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar FROM posts p JOIN user u ON u.id_user = p.user_id WHERE " . implode(' AND ', $where) . " ORDER BY p.created_at DESC";
+
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
 $stmt->execute();
 $posts = $stmt->get_result();
 
@@ -141,11 +190,12 @@ function timeAgo($d) {
           <div class="ev-hero-dots"></div>
         </div>
 
+        <form method="GET" action="events.php">
         <!-- TOP BAR -->
         <div class="ev-top-bar reveal">
           <div class="ev-search-row">
-            <input type="text" class="ev-search-input" placeholder="Nom d'event, artiste, ville..." />
-            <button type="button" class="ev-search-btn">Rechercher</button>
+            <input type="text" name="search" class="ev-search-input" placeholder="Nom d'event, artiste, ville..." value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>" />
+            <button type="submit" class="ev-search-btn">Rechercher</button>
           </div>
         </div>
 
@@ -153,55 +203,56 @@ function timeAgo($d) {
         <div class="ev-filters-board reveal">
           <div class="ev-filter-item">
             <label for="f-ville">Ville</label>
-            <select id="f-ville" class="ev-select">
+            <select name="ville" id="f-ville" class="ev-select">
               <option value="">Choisir</option>
-              <option value="alger">Alger</option>
-              <option value="oran">Oran</option>
-              <option value="constantine">Constantine</option>
+              <option value="alger" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'alger') echo 'selected'; ?>>Alger</option>
+              <option value="oran" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'oran') echo 'selected'; ?>>Oran</option>
+              <option value="constantine" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'constantine') echo 'selected'; ?>>Constantine</option>
             </select>
           </div>
 
           <div class="ev-filter-item">
             <label for="f-date">Date</label>
-            <select id="f-date" class="ev-select">
+            <select name="date" id="f-date" class="ev-select">
               <option value="">Choisir</option>
-              <option value="today">Aujourd'hui</option>
-              <option value="week">Cette semaine</option>
-              <option value="month">Ce mois</option>
+              <option value="today" <?php if (isset($_GET['date']) && $_GET['date'] === 'today') echo 'selected'; ?>>Aujourd'hui</option>
+              <option value="week" <?php if (isset($_GET['date']) && $_GET['date'] === 'week') echo 'selected'; ?>>Cette semaine</option>
+              <option value="month" <?php if (isset($_GET['date']) && $_GET['date'] === 'month') echo 'selected'; ?>>Ce mois</option>
             </select>
           </div>
 
           <div class="ev-filter-item">
             <label for="f-cat">Catégorie</label>
-            <select id="f-cat" class="ev-select">
+            <select name="cat" id="f-cat" class="ev-select">
               <option value="">Choisir</option>
-              <option value="party">Soirée</option>
-              <option value="hack">Hackathon</option>
-              <option value="conf">Conférence</option>
+              <option value="party" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'party') echo 'selected'; ?>>Soirée</option>
+              <option value="hack" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'hack') echo 'selected'; ?>>Hackathon</option>
+              <option value="conf" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'conf') echo 'selected'; ?>>Conférence</option>
             </select>
           </div>
 
           <div class="ev-filter-item">
             <label for="f-prix">Prix</label>
-            <select id="f-prix" class="ev-select">
+            <select name="prix" id="f-prix" class="ev-select">
               <option value="">Choisir</option>
-              <option value="free">Gratuit</option>
-              <option value="1000">≤ 1 000 DA</option>
-              <option value="3000">≤ 3 000 DA</option>
+              <option value="free" <?php if (isset($_GET['prix']) && $_GET['prix'] === 'free') echo 'selected'; ?>>Gratuit</option>
+              <option value="1000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '1000') echo 'selected'; ?>>≤ 1 000 DA</option>
+              <option value="3000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '3000') echo 'selected'; ?>>≤ 3 000 DA</option>
             </select>
           </div>
 
           <div class="ev-filter-actions">
-            <button type="button" class="ev-filter-btn apply">Appliquer</button>
-            <button type="button" class="ev-filter-btn reset">Reset</button>
+            <button type="submit" class="ev-filter-btn apply">Appliquer</button>
+            <a href="events.php" class="ev-filter-btn reset" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Reset</a>
           </div>
         </div>
+        </form>
 
         <!-- LIST -->
         <section class="ev-list">
           <header class="ev-list-header reveal">
             <h2>Events à ne pas rater</h2>
-            <p>Sélection chaude par la communauté Student HUB.</p>
+            <p><?php echo $posts->num_rows; ?> événement(s)</p>
           </header>
 
           <div class="ev-cards">
@@ -258,7 +309,7 @@ function timeAgo($d) {
             <?php endif; ?>
 
             <?php if ($posts->num_rows === 0): ?>
-              <p style="text-align:center;color:#888;padding:2rem;">Aucun événement pour le moment.</p>
+              <p style="text-align:center;color:#888;padding:2rem;">Aucun événement trouvé pour ces critères.</p>
             <?php endif; ?>
           </div>
         </section>

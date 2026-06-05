@@ -11,11 +11,49 @@ $conn->query("
         INDEX idx_user(user_id), INDEX idx_category(category), INDEX idx_created(created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
-$stmt = $conn->prepare("
-    SELECT p.*, u.prenom, u.nom, u.username, u.avatar
-    FROM posts p JOIN user u ON u.id_user = p.user_id
-    WHERE p.category = 'mentoring' ORDER BY p.created_at DESC
-");
+$search  = isset($_GET['search'])  ? trim($_GET['search']) : '';
+$domaine = isset($_GET['domaine']) ? $_GET['domaine'] : '';
+$niveau  = isset($_GET['niveau'])  ? $_GET['niveau'] : '';
+$dispo   = isset($_GET['dispo'])   ? $_GET['dispo'] : '';
+$langue  = isset($_GET['langue'])  ? $_GET['langue'] : '';
+
+$where = ["p.category = 'mentoring'"];
+
+if ($search !== '') {
+    $s = $conn->real_escape_string($search);
+    $where[] = "(p.title LIKE '%{$s}%' OR p.content LIKE '%{$s}%' OR p.matiere LIKE '%{$s}%')";
+}
+if ($domaine === 'info') {
+    $where[] = "p.matiere LIKE '%informatique%'";
+} elseif ($domaine === 'gc') {
+    $where[] = "(p.matiere LIKE '%génie civil%' OR p.matiere LIKE '%génie%')";
+} elseif ($domaine === 'math') {
+    $where[] = "p.matiere LIKE '%math%'";
+}
+if ($niveau === 'l1') {
+    $where[] = "(p.niveau_mentoring LIKE '%licence 1%' OR p.niveau_mentoring LIKE '%L1%')";
+} elseif ($niveau === 'l3') {
+    $where[] = "(p.niveau_mentoring LIKE '%licence 3%' OR p.niveau_mentoring LIKE '%L3%')";
+} elseif ($niveau === 'm2') {
+    $where[] = "(p.niveau_mentoring LIKE '%master 2%' OR p.niveau_mentoring LIKE '%M2%')";
+}
+if ($dispo === 'week') {
+    $where[] = "STR_TO_DATE(p.disponibilite,'%Y-%m-%d') >= CURDATE() AND STR_TO_DATE(p.disponibilite,'%Y-%m-%d') <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
+} elseif ($dispo === 'weekend') {
+    $where[] = "DAYOFWEEK(STR_TO_DATE(p.disponibilite,'%Y-%m-%d')) IN (1,7)";
+} elseif ($dispo === 'evening') {
+    $where[] = "p.disponibilite LIKE '%soir%'";
+}
+if ($langue === 'fr') {
+    $where[] = "p.langue = 'Français'";
+} elseif ($langue === 'ar') {
+    $where[] = "p.langue = 'Arabe'";
+} elseif ($langue === 'en') {
+    $where[] = "p.langue = 'Anglais'";
+}
+
+$sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar FROM posts p JOIN user u ON u.id_user = p.user_id WHERE " . implode(' AND ', $where) . " ORDER BY p.created_at DESC";
+$stmt = $conn->prepare($sql);
 $stmt->execute();
 $posts = $stmt->get_result();
 
@@ -214,11 +252,12 @@ function timeAgo($d) {
           </div>
         </nav>
 
+        <form method="GET" action="mentoring.php">
         <!-- TOP BAR -->
         <div class="mnt-top-bar reveal">
           <div class="mnt-search-row">
-            <input type="text" class="mnt-search-input" placeholder="Matière, université, langue..." />
-            <button type="button" class="mnt-search-btn">Trouver un mentor</button>
+            <input type="text" name="search" class="mnt-search-input" placeholder="Matière, université, langue..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
+            <button type="submit" class="mnt-search-btn">Trouver un mentor</button>
           </div>
         </div>
 
@@ -226,49 +265,50 @@ function timeAgo($d) {
         <div class="mnt-filters-board reveal">
           <div class="mnt-filter-item">
             <label for="f-domaine">Matière</label>
-            <select id="f-domaine" class="mnt-select">
+            <select id="f-domaine" name="domaine" class="mnt-select">
               <option value="">Choisir</option>
-              <option value="info">Informatique</option>
-              <option value="gc">Génie Civil</option>
-              <option value="math">Mathématiques</option>
+              <option value="info" <?php if (isset($_GET['domaine']) && $_GET['domaine'] === 'info') echo 'selected'; ?>>Informatique</option>
+              <option value="gc" <?php if (isset($_GET['domaine']) && $_GET['domaine'] === 'gc') echo 'selected'; ?>>Génie Civil</option>
+              <option value="math" <?php if (isset($_GET['domaine']) && $_GET['domaine'] === 'math') echo 'selected'; ?>>Mathématiques</option>
             </select>
           </div>
 
           <div class="mnt-filter-item">
             <label for="f-niveau">Niveau</label>
-            <select id="f-niveau" class="mnt-select">
+            <select id="f-niveau" name="niveau" class="mnt-select">
               <option value="">Choisir</option>
-              <option value="l1">Licence 1</option>
-              <option value="l3">Licence 3</option>
-              <option value="m2">Master 2</option>
+              <option value="l1" <?php if (isset($_GET['niveau']) && $_GET['niveau'] === 'l1') echo 'selected'; ?>>Licence 1</option>
+              <option value="l3" <?php if (isset($_GET['niveau']) && $_GET['niveau'] === 'l3') echo 'selected'; ?>>Licence 3</option>
+              <option value="m2" <?php if (isset($_GET['niveau']) && $_GET['niveau'] === 'm2') echo 'selected'; ?>>Master 2</option>
             </select>
           </div>
 
           <div class="mnt-filter-item">
             <label for="f-dispo">Disponibilité</label>
-            <select id="f-dispo" class="mnt-select">
+            <select id="f-dispo" name="dispo" class="mnt-select">
               <option value="">Choisir</option>
-              <option value="week">Cette semaine</option>
-              <option value="weekend">Week-end</option>
-              <option value="evening">Soirées</option>
+              <option value="week" <?php if (isset($_GET['dispo']) && $_GET['dispo'] === 'week') echo 'selected'; ?>>Cette semaine</option>
+              <option value="weekend" <?php if (isset($_GET['dispo']) && $_GET['dispo'] === 'weekend') echo 'selected'; ?>>Week-end</option>
+              <option value="evening" <?php if (isset($_GET['dispo']) && $_GET['dispo'] === 'evening') echo 'selected'; ?>>Soirées</option>
             </select>
           </div>
 
           <div class="mnt-filter-item">
             <label for="f-langue">Langue</label>
-            <select id="f-langue" class="mnt-select">
+            <select id="f-langue" name="langue" class="mnt-select">
               <option value="">Choisir</option>
-              <option value="fr">Français</option>
-              <option value="ar">Arabe</option>
-              <option value="en">Anglais</option>
+              <option value="fr" <?php if (isset($_GET['langue']) && $_GET['langue'] === 'fr') echo 'selected'; ?>>Français</option>
+              <option value="ar" <?php if (isset($_GET['langue']) && $_GET['langue'] === 'ar') echo 'selected'; ?>>Arabe</option>
+              <option value="en" <?php if (isset($_GET['langue']) && $_GET['langue'] === 'en') echo 'selected'; ?>>Anglais</option>
             </select>
           </div>
 
           <div class="mnt-filter-actions">
-            <button type="button" class="mnt-filter-btn apply">Appliquer</button>
-            <button type="button" class="mnt-filter-btn reset">Reset</button>
+            <button type="submit" class="mnt-filter-btn apply">Appliquer</button>
+            <a href="mentoring.php" class="mnt-filter-btn reset" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Reset</a>
           </div>
         </div>
+        </form>
 
         <!-- LIST -->
         <section class="mnt-list">
@@ -278,7 +318,7 @@ function timeAgo($d) {
               <p>Des étudiants avancés certifiés par notre communauté.</p>
             </div>
             <div class="mnt-list-meta">
-              <span class="mnt-result-count"><strong>340</strong> mentors disponibles</span>
+              <span class="mnt-result-count"><strong><?php echo $posts->num_rows; ?></strong> mentor(s)</span>
             </div>
           </header>
 
@@ -348,7 +388,7 @@ function timeAgo($d) {
 
             
             <?php if ($posts->num_rows === 0): ?>
-              <p style="text-align:center;color:#888;padding:2rem;">Aucun mentor pour le moment.</p>
+              <p style="text-align:center;color:#888;padding:2rem;">Aucun mentor trouvé pour ces critères.</p>
             <?php endif; ?>
           </div>
         </section>

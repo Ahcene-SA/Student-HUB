@@ -11,11 +11,64 @@ $conn->query("
         INDEX idx_user(user_id), INDEX idx_category(category), INDEX idx_created(created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
-$stmt = $conn->prepare("
-    SELECT p.*, u.prenom, u.nom, u.username, u.avatar
+$where = ["p.category = 'bonplan'"];
+$params = [];
+$types = "";
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if ($search !== '') {
+    $where[] = "(p.title LIKE ? OR p.content LIKE ? OR p.produit LIKE ? OR p.location LIKE ?)";
+    $like = '%' . $search . '%';
+    $params[] = $like; $params[] = $like; $params[] = $like; $params[] = $like;
+    $types .= "ssss";
+}
+
+$cat = isset($_GET['cat']) ? trim($_GET['cat']) : '';
+if ($cat !== '') {
+    $where[] = "p.bonplan_category = ?";
+    $params[] = $cat;
+    $types .= "s";
+}
+
+$prix = isset($_GET['prix']) ? trim($_GET['prix']) : '';
+if ($prix !== '') {
+    $where[] = "CAST(p.price AS UNSIGNED) <= ?";
+    $params[] = $prix;
+    $types .= "s";
+}
+
+$etat = isset($_GET['etat']) ? trim($_GET['etat']) : '';
+if ($etat !== '') {
+    if ($etat === 'neuf') {
+        $where[] = "p.etat LIKE ?";
+        $params[] = '%neuf%';
+        $types .= "s";
+    } elseif ($etat === 'bon') {
+        $where[] = "p.etat LIKE ?";
+        $params[] = '%bon%';
+        $types .= "s";
+    } elseif ($etat === 'usage') {
+        $where[] = "p.etat LIKE ?";
+        $params[] = '%usag%';
+        $types .= "s";
+    }
+}
+
+$ville = isset($_GET['ville']) ? trim($_GET['ville']) : '';
+if ($ville !== '') {
+    $where[] = "p.location LIKE ?";
+    $params[] = '%' . $ville . '%';
+    $types .= "s";
+}
+
+$sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar
     FROM posts p JOIN user u ON u.id_user = p.user_id
-    WHERE p.category = 'bonplan' ORDER BY p.created_at DESC
-");
+    WHERE " . implode(" AND ", $where) . " ORDER BY p.created_at DESC";
+
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
 $stmt->execute();
 $posts = $stmt->get_result();
 
@@ -141,11 +194,12 @@ function timeAgo($d) {
           <div class="bp-hero-dots"></div>
         </div>
 
+        <form method="GET" action="bonplan.php">
         <!-- TOP BAR -->
         <div class="bp-top-bar reveal">
           <div class="bp-search-row">
-            <input type="text" class="bp-search-input" placeholder="Titre, catégorie, ville..." />
-            <button type="button" class="bp-search-btn">Rechercher</button>
+            <input type="text" name="search" class="bp-search-input" placeholder="Titre, catégorie, ville..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" />
+            <button type="submit" class="bp-search-btn">Rechercher</button>
           </div>
         </div>
 
@@ -153,59 +207,60 @@ function timeAgo($d) {
         <div class="bp-filters-board reveal">
           <div class="bp-filter-item">
             <label for="f-cat">Catégorie</label>
-            <select id="f-cat" class="bp-select">
+            <select id="f-cat" name="cat" class="bp-select">
               <option value="">Choisir</option>
-              <option value="livres">Livres</option>
-              <option value="elec">Électronique</option>
-              <option value="meubles">Meubles</option>
-              <option value="vetements">Vêtements</option>
-              <option value="cours">Cours</option>
-              <option value="divers">Divers</option>
+              <option value="livres" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'livres') echo 'selected'; ?>>Livres</option>
+              <option value="elec" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'elec') echo 'selected'; ?>>Électronique</option>
+              <option value="meubles" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'meubles') echo 'selected'; ?>>Meubles</option>
+              <option value="vetements" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'vetements') echo 'selected'; ?>>Vêtements</option>
+              <option value="cours" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'cours') echo 'selected'; ?>>Cours</option>
+              <option value="divers" <?php if (isset($_GET['cat']) && $_GET['cat'] === 'divers') echo 'selected'; ?>>Divers</option>
             </select>
           </div>
 
           <div class="bp-filter-item">
             <label for="f-prix">Prix max</label>
-            <select id="f-prix" class="bp-select">
+            <select id="f-prix" name="prix" class="bp-select">
               <option value="">Choisir</option>
-              <option value="1000">1 000 DA</option>
-              <option value="5000">5 000 DA</option>
-              <option value="20000">20 000 DA</option>
-              <option value="50000">50 000 DA</option>
+              <option value="1000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '1000') echo 'selected'; ?>>1 000 DA</option>
+              <option value="5000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '5000') echo 'selected'; ?>>5 000 DA</option>
+              <option value="20000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '20000') echo 'selected'; ?>>20 000 DA</option>
+              <option value="50000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '50000') echo 'selected'; ?>>50 000 DA</option>
             </select>
           </div>
 
           <div class="bp-filter-item">
             <label for="f-etat">État</label>
-            <select id="f-etat" class="bp-select">
+            <select id="f-etat" name="etat" class="bp-select">
               <option value="">Choisir</option>
-              <option value="neuf">Neuf</option>
-              <option value="bon">Bon état</option>
-              <option value="usage">Usagé</option>
+              <option value="neuf" <?php if (isset($_GET['etat']) && $_GET['etat'] === 'neuf') echo 'selected'; ?>>Neuf</option>
+              <option value="bon" <?php if (isset($_GET['etat']) && $_GET['etat'] === 'bon') echo 'selected'; ?>>Bon état</option>
+              <option value="usage" <?php if (isset($_GET['etat']) && $_GET['etat'] === 'usage') echo 'selected'; ?>>Usagé</option>
             </select>
           </div>
 
           <div class="bp-filter-item">
             <label for="f-ville">Ville</label>
-            <select id="f-ville" class="bp-select">
+            <select id="f-ville" name="ville" class="bp-select">
               <option value="">Choisir</option>
-              <option value="alger">Alger</option>
-              <option value="oran">Oran</option>
-              <option value="constantine">Constantine</option>
+              <option value="alger" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'alger') echo 'selected'; ?>>Alger</option>
+              <option value="oran" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'oran') echo 'selected'; ?>>Oran</option>
+              <option value="constantine" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'constantine') echo 'selected'; ?>>Constantine</option>
             </select>
           </div>
 
           <div class="bp-filter-actions">
-            <button type="button" class="bp-filter-btn apply">Appliquer</button>
-            <button type="button" class="bp-filter-btn reset">Reset</button>
+            <button type="submit" class="bp-filter-btn apply">Appliquer</button>
+            <a href="bonplan.php" class="bp-filter-btn reset" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Reset</a>
           </div>
         </div>
+        </form>
 
         <!-- LIST -->
         <section class="bp-list">
           <header class="bp-list-header reveal">
             <h2>Annonces récentes</h2>
-            <p>Trouve de bonnes affaires partagées par des étudiants près de chez toi.</p>
+            <p><?php echo $posts->num_rows; ?> annonce(s)</p>
           </header>
 
           <div class="bp-cards">
@@ -260,7 +315,7 @@ function timeAgo($d) {
             <?php endif; ?>
 
             <?php if ($posts->num_rows === 0): ?>
-              <p style="text-align:center;color:#888;padding:2rem;">Aucun bon plan pour le moment.</p>
+              <p style="text-align:center;color:#888;padding:2rem;">Aucune annonce trouvée pour ces critères.</p>
             <?php endif; ?>
           </div>
         </section>
