@@ -990,9 +990,14 @@ $educations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Description -->
         <textarea name="content" placeholder="Description du produit (détails, défauts, raison de vente...)" class="modal-textarea" required></textarea>
         <!-- État -->
-        <input type="text" name="etat" placeholder="État (ex: Neuf, Bon état, Usagé...)" class="modal-input">
+        <select name="etat" class="modal-select" required>
+          <option value="" disabled selected>État — Sélectionner...</option>
+          <option value="Neuf">✨ Neuf</option>
+          <option value="Bon état">👍 Bon état</option>
+          <option value="Usagé">🔧 Usagé</option>
+        </select>
         <!-- Ville -->
-        <input type="text" name="location" placeholder="Ville" class="modal-input">
+        <input type="text" name="location" placeholder="Ville (ex: Paris, Lyon...)" class="modal-input">
         <!-- Prix -->
         <input type="number" name="price" placeholder="Prix en €" class="modal-input" min="0" step="0.01">
         <label class="modal-label">📷 Photo du produit <span style="color:#EF4444;">*</span></label>

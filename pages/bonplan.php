@@ -219,14 +219,8 @@ function timeAgo($d) {
           </div>
 
           <div class="bp-filter-item">
-            <label for="f-prix">Prix max</label>
-            <select id="f-prix" name="prix" class="bp-select">
-              <option value="">Choisir</option>
-              <option value="1000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '1000') echo 'selected'; ?>>1 000 DA</option>
-              <option value="5000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '5000') echo 'selected'; ?>>5 000 DA</option>
-              <option value="20000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '20000') echo 'selected'; ?>>20 000 DA</option>
-              <option value="50000" <?php if (isset($_GET['prix']) && $_GET['prix'] === '50000') echo 'selected'; ?>>50 000 DA</option>
-            </select>
+            <label for="f-prix">Prix max (€)</label>
+            <input type="number" id="f-prix" name="prix" class="bp-select" placeholder="Ex: 50" min="0" step="1" value="<?php echo htmlspecialchars(isset($_GET['prix']) ? $_GET['prix'] : ''); ?>" />
           </div>
 
           <div class="bp-filter-item">
@@ -241,12 +235,7 @@ function timeAgo($d) {
 
           <div class="bp-filter-item">
             <label for="f-ville">Ville</label>
-            <select id="f-ville" name="ville" class="bp-select">
-              <option value="">Choisir</option>
-              <option value="alger" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'alger') echo 'selected'; ?>>Alger</option>
-              <option value="oran" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'oran') echo 'selected'; ?>>Oran</option>
-              <option value="constantine" <?php if (isset($_GET['ville']) && $_GET['ville'] === 'constantine') echo 'selected'; ?>>Constantine</option>
-            </select>
+            <input type="text" id="f-ville" name="ville" class="bp-select" placeholder="Ex: Paris, Lyon..." value="<?php echo htmlspecialchars(isset($_GET['ville']) ? $_GET['ville'] : ''); ?>" />
           </div>
 
           <div class="bp-filter-actions">
