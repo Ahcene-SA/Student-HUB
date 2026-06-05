@@ -195,13 +195,8 @@ function timeAgo($d) {
           <!-- FILTERS PREMIUM -->
           <div class="imm-filters-board reveal">
             <div class="imm-filter-item">
-              <label for="f-prix">Prix max</label>
-              <select id="f-prix" name="price" class="imm-select">
-                <option value="">Choisir</option>
-                <option value="50000" <?php if (($_GET['price'] ?? '') === '50000') echo 'selected="selected"'; ?>>50 000 DA</option>
-                <option value="80000" <?php if (($_GET['price'] ?? '') === '80000') echo 'selected="selected"'; ?>>80 000 DA</option>
-                <option value="120000" <?php if (($_GET['price'] ?? '') === '120000') echo 'selected="selected"'; ?>>120 000 DA</option>
-              </select>
+              <label for="f-prix">Prix max (DA)</label>
+              <input type="number" id="f-prix" name="price" class="imm-select" placeholder="Ex: 50000" min="0" value="<?php echo htmlspecialchars($_GET['price'] ?? ''); ?>" />
             </div>
 
             <div class="imm-filter-item">

@@ -18,6 +18,7 @@ $pdo->exec("
         company     VARCHAR(255),
         chambres    INT,
         meuble      VARCHAR(20),
+        property_type VARCHAR(50),
         type_event  VARCHAR(50),
         tarif       VARCHAR(50),
         is_free     VARCHAR(10),
@@ -87,6 +88,7 @@ $event_date = isset($_POST['event_date']) ? trim($_POST['event_date']) : null;
 $company    = isset($_POST['company'])    ? trim($_POST['company'])    : null;
 $chambres   = isset($_POST['chambres'])  ? (int)$_POST['chambres']   : null;
 $meuble     = isset($_POST['meuble'])    ? trim($_POST['meuble'])     : null;
+$property_type = isset($_POST['property_type']) ? trim($_POST['property_type']) : null;
 $type_event = isset($_POST['type_event']) ? trim($_POST['type_event']) : null;
 $tarif      = isset($_POST['tarif'])     ? trim($_POST['tarif'])      : null;
 $is_free    = isset($_POST['is_free'])   ? trim($_POST['is_free'])    : null;
@@ -106,10 +108,10 @@ $bonplan_category = isset($_POST['bonplan_category']) ? trim($_POST['bonplan_cat
 
 // Insert post with all fields
 $stmt = $pdo->prepare("
-    INSERT INTO posts (user_id, category, title, content, image, price, location, event_date, company, chambres, meuble, type_event, tarif, is_free, domaine, duree, type_stage, niveau_etude, matiere, niveau_mentoring, langue, disponibilite, is_mentor, prix_mentoring, produit, etat, bonplan_category)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO posts (user_id, category, title, content, image, price, location, event_date, company, chambres, meuble, property_type, type_event, tarif, is_free, domaine, duree, type_stage, niveau_etude, matiere, niveau_mentoring, langue, disponibilite, is_mentor, prix_mentoring, produit, etat, bonplan_category)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ");
-$stmt->execute([$user_id, $category, $title, $content, $image, $price, $location, $event_date, $company, $chambres, $meuble, $type_event, $tarif, $is_free, $domaine, $duree, $type_stage, $niveau_etude, $matiere, $niveau_mentoring, $langue, $disponibilite, $is_mentor, $prix_mentoring, $produit, $etat, $bonplan_category]);
+$stmt->execute([$user_id, $category, $title, $content, $image, $price, $location, $event_date, $company, $chambres, $meuble, $property_type, $type_event, $tarif, $is_free, $domaine, $duree, $type_stage, $niveau_etude, $matiere, $niveau_mentoring, $langue, $disponibilite, $is_mentor, $prix_mentoring, $produit, $etat, $bonplan_category]);
 
 // Redirect based on category
 switch ($category) {
