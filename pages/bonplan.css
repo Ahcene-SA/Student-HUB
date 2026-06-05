@@ -303,12 +303,6 @@ h1, h2, h3 {
   filter: brightness(1.04);
 }
 
-.bp-chips{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
 .bp-chip{
   border: 1px solid rgba(245,158,11,0.45);
   background: #ffffff;

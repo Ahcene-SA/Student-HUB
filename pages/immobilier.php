@@ -148,13 +148,6 @@ function timeAgo($d) {
             <input type="text" class="imm-search-input" placeholder="Ville, quartier, université..." />
             <button type="button" class="imm-search-btn">Rechercher</button>
           </div>
-
-          <div class="imm-chips">
-            <button type="button" class="imm-chip">Studio</button>
-            <button type="button" class="imm-chip">Appartement</button>
-            <button type="button" class="imm-chip">Chambre</button>
-            <button type="button" class="imm-chip">Colocation</button>
-          </div>
         </div>
 
         <!-- FILTERS PREMIUM -->

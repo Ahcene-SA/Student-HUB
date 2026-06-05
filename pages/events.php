@@ -147,13 +147,6 @@ function timeAgo($d) {
             <input type="text" class="ev-search-input" placeholder="Nom d'event, artiste, ville..." />
             <button type="button" class="ev-search-btn">Rechercher</button>
           </div>
-
-          <div class="ev-chips">
-            <button type="button" class="ev-chip active">Soirées</button>
-            <button type="button" class="ev-chip">Conférences</button>
-            <button type="button" class="ev-chip">Hackathons</button>
-            <button type="button" class="ev-chip">Ateliers</button>
-          </div>
         </div>
 
         <!-- FILTERS -->

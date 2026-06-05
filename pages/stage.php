@@ -200,14 +200,6 @@ function timeAgo($d) {
             <input type="text" class="stg-search-input" placeholder="Métier, entreprise, ville..." />
             <button type="button" class="stg-search-btn">Rechercher</button>
           </div>
-
-          <div class="stg-chips">
-            <button type="button" class="stg-chip active">Informatique</button>
-            <button type="button" class="stg-chip">Marketing</button>
-            <button type="button" class="stg-chip">Finance</button>
-            <button type="button" class="stg-chip">Design</button>
-            <button type="button" class="stg-chip">Ingénierie</button>
-          </div>
         </div>
 
         <!-- FILTERS -->
