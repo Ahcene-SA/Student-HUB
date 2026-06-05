@@ -12,10 +12,11 @@ $conn->query("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
 $search  = isset($_GET['search'])  ? trim($_GET['search']) : '';
-$domaine = isset($_GET['domaine']) ? $_GET['domaine'] : '';
-$niveau  = isset($_GET['niveau'])  ? $_GET['niveau'] : '';
-$dispo   = isset($_GET['dispo'])   ? $_GET['dispo'] : '';
-$langue  = isset($_GET['langue'])  ? $_GET['langue'] : '';
+$domaine = isset($_GET['domaine']) ? trim($_GET['domaine']) : '';
+$niveau  = isset($_GET['niveau'])  ? trim($_GET['niveau']) : '';
+$dispo   = isset($_GET['dispo'])   ? trim($_GET['dispo']) : '';
+$langue  = isset($_GET['langue'])  ? trim($_GET['langue']) : '';
+$prix    = isset($_GET['prix'])    ? trim($_GET['prix']) : '';
 
 $where = ["p.category = 'mentoring'"];
 
@@ -23,33 +24,25 @@ if ($search !== '') {
     $s = $conn->real_escape_string($search);
     $where[] = "(p.title LIKE '%{$s}%' OR p.content LIKE '%{$s}%' OR p.matiere LIKE '%{$s}%')";
 }
-if ($domaine === 'info') {
-    $where[] = "p.matiere LIKE '%informatique%'";
-} elseif ($domaine === 'gc') {
-    $where[] = "(p.matiere LIKE '%génie civil%' OR p.matiere LIKE '%génie%')";
-} elseif ($domaine === 'math') {
-    $where[] = "p.matiere LIKE '%math%'";
+if ($domaine !== '') {
+    $d = $conn->real_escape_string($domaine);
+    $where[] = "p.matiere LIKE '%{$d}%'";
 }
-if ($niveau === 'l1') {
-    $where[] = "(p.niveau_mentoring LIKE '%licence 1%' OR p.niveau_mentoring LIKE '%L1%')";
-} elseif ($niveau === 'l3') {
-    $where[] = "(p.niveau_mentoring LIKE '%licence 3%' OR p.niveau_mentoring LIKE '%L3%')";
-} elseif ($niveau === 'm2') {
-    $where[] = "(p.niveau_mentoring LIKE '%master 2%' OR p.niveau_mentoring LIKE '%M2%')";
+if ($niveau !== '') {
+    $n = $conn->real_escape_string($niveau);
+    $where[] = "p.niveau_mentoring LIKE '%{$n}%'";
 }
-if ($dispo === 'week') {
-    $where[] = "STR_TO_DATE(p.disponibilite,'%Y-%m-%d') >= CURDATE() AND STR_TO_DATE(p.disponibilite,'%Y-%m-%d') <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)";
-} elseif ($dispo === 'weekend') {
-    $where[] = "DAYOFWEEK(STR_TO_DATE(p.disponibilite,'%Y-%m-%d')) IN (1,7)";
-} elseif ($dispo === 'evening') {
-    $where[] = "p.disponibilite LIKE '%soir%'";
+if ($dispo !== '') {
+    $dp = $conn->real_escape_string($dispo);
+    $where[] = "p.disponibilite LIKE '%{$dp}%'";
 }
-if ($langue === 'fr') {
-    $where[] = "p.langue = 'Français'";
-} elseif ($langue === 'ar') {
-    $where[] = "p.langue = 'Arabe'";
-} elseif ($langue === 'en') {
-    $where[] = "p.langue = 'Anglais'";
+if ($langue !== '') {
+    $l = $conn->real_escape_string($langue);
+    $where[] = "p.langue LIKE '%{$l}%'";
+}
+if ($prix !== '') {
+    $p = (float)$prix;
+    $where[] = "(CAST(p.prix_mentoring AS UNSIGNED) <= {$p} OR p.is_mentor IS NOT NULL AND p.prix_mentoring IS NULL)";
 }
 
 $sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar FROM posts p JOIN user u ON u.id_user = p.user_id WHERE " . implode(' AND ', $where) . " ORDER BY p.created_at DESC";
@@ -265,42 +258,27 @@ function timeAgo($d) {
         <div class="mnt-filters-board reveal">
           <div class="mnt-filter-item">
             <label for="f-domaine">Matière</label>
-            <select id="f-domaine" name="domaine" class="mnt-select">
-              <option value="">Choisir</option>
-              <option value="info" <?php if (isset($_GET['domaine']) && $_GET['domaine'] === 'info') echo 'selected'; ?>>Informatique</option>
-              <option value="gc" <?php if (isset($_GET['domaine']) && $_GET['domaine'] === 'gc') echo 'selected'; ?>>Génie Civil</option>
-              <option value="math" <?php if (isset($_GET['domaine']) && $_GET['domaine'] === 'math') echo 'selected'; ?>>Mathématiques</option>
-            </select>
+            <input type="text" id="f-domaine" name="domaine" class="mnt-select" placeholder="Ex: Mathématiques, Informatique..." value="<?php echo htmlspecialchars(isset($_GET['domaine']) ? $_GET['domaine'] : ''); ?>" />
           </div>
 
           <div class="mnt-filter-item">
             <label for="f-niveau">Niveau</label>
-            <select id="f-niveau" name="niveau" class="mnt-select">
-              <option value="">Choisir</option>
-              <option value="l1" <?php if (isset($_GET['niveau']) && $_GET['niveau'] === 'l1') echo 'selected'; ?>>Licence 1</option>
-              <option value="l3" <?php if (isset($_GET['niveau']) && $_GET['niveau'] === 'l3') echo 'selected'; ?>>Licence 3</option>
-              <option value="m2" <?php if (isset($_GET['niveau']) && $_GET['niveau'] === 'm2') echo 'selected'; ?>>Master 2</option>
-            </select>
+            <input type="text" id="f-niveau" name="niveau" class="mnt-select" placeholder="Ex: Licence, Master..." value="<?php echo htmlspecialchars(isset($_GET['niveau']) ? $_GET['niveau'] : ''); ?>" />
           </div>
 
           <div class="mnt-filter-item">
             <label for="f-dispo">Disponibilité</label>
-            <select id="f-dispo" name="dispo" class="mnt-select">
-              <option value="">Choisir</option>
-              <option value="week" <?php if (isset($_GET['dispo']) && $_GET['dispo'] === 'week') echo 'selected'; ?>>Cette semaine</option>
-              <option value="weekend" <?php if (isset($_GET['dispo']) && $_GET['dispo'] === 'weekend') echo 'selected'; ?>>Week-end</option>
-              <option value="evening" <?php if (isset($_GET['dispo']) && $_GET['dispo'] === 'evening') echo 'selected'; ?>>Soirées</option>
-            </select>
+            <input type="date" id="f-dispo" name="dispo" class="mnt-select" style="appearance:auto;-webkit-appearance:auto;-moz-appearance:auto;padding-right:12px;" value="<?php echo htmlspecialchars(isset($_GET['dispo']) ? $_GET['dispo'] : ''); ?>" />
           </div>
 
           <div class="mnt-filter-item">
             <label for="f-langue">Langue</label>
-            <select id="f-langue" name="langue" class="mnt-select">
-              <option value="">Choisir</option>
-              <option value="fr" <?php if (isset($_GET['langue']) && $_GET['langue'] === 'fr') echo 'selected'; ?>>Français</option>
-              <option value="ar" <?php if (isset($_GET['langue']) && $_GET['langue'] === 'ar') echo 'selected'; ?>>Arabe</option>
-              <option value="en" <?php if (isset($_GET['langue']) && $_GET['langue'] === 'en') echo 'selected'; ?>>Anglais</option>
-            </select>
+            <input type="text" id="f-langue" name="langue" class="mnt-select" placeholder="Ex: Français, Anglais..." value="<?php echo htmlspecialchars(isset($_GET['langue']) ? $_GET['langue'] : ''); ?>" />
+          </div>
+
+          <div class="mnt-filter-item">
+            <label for="f-prix">Prix max (€/heure)</label>
+            <input type="number" id="f-prix" name="prix" class="mnt-select" placeholder="Ex: 20" min="0" step="1" value="<?php echo htmlspecialchars(isset($_GET['prix']) ? $_GET['prix'] : ''); ?>" />
           </div>
 
           <div class="mnt-filter-actions">
