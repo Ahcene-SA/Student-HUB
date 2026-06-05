@@ -25,10 +25,8 @@ if ($search !== '') {
 
 $domaine = isset($_GET['domaine']) ? trim($_GET['domaine']) : '';
 if ($domaine !== '') {
-    $map = ['info' => 'Informatique', 'mkt' => 'Marketing', 'fin' => 'Finance'];
-    $val = isset($map[$domaine]) ? $map[$domaine] : $domaine;
     $where .= " AND p.domaine LIKE ?";
-    $params[] = $val;
+    $params[] = '%' . $domaine . '%';
     $types .= "s";
 }
 
@@ -250,33 +248,17 @@ function timeAgo($d) {
         <div class="stg-filters-board reveal">
           <div class="stg-filter-item">
             <label for="f-domaine">Domaine</label>
-            <select id="f-domaine" name="domaine" class="stg-select">
-              <option value="">Choisir</option>
-              <option value="info" <?php if(($_GET['domaine']??'')==='info') echo 'selected'; ?>>Informatique</option>
-              <option value="mkt" <?php if(($_GET['domaine']??'')==='mkt') echo 'selected'; ?>>Marketing</option>
-              <option value="fin" <?php if(($_GET['domaine']??'')==='fin') echo 'selected'; ?>>Finance</option>
-            </select>
+            <input type="text" id="f-domaine" name="domaine" class="stg-select" placeholder="Ex: Informatique" value="<?php echo htmlspecialchars($_GET['domaine'] ?? ''); ?>" />
           </div>
 
           <div class="stg-filter-item">
             <label for="f-duree">Durée</label>
-            <select id="f-duree" name="duree" class="stg-select">
-              <option value="">Choisir</option>
-              <option value="2" <?php if(($_GET['duree']??'')==='2') echo 'selected'; ?>>2 mois</option>
-              <option value="4" <?php if(($_GET['duree']??'')==='4') echo 'selected'; ?>>4 mois</option>
-              <option value="6" <?php if(($_GET['duree']??'')==='6') echo 'selected'; ?>>6 mois</option>
-              <option value="12" <?php if(($_GET['duree']??'')==='12') echo 'selected'; ?>>12 mois</option>
-            </select>
+            <input type="text" id="f-duree" name="duree" class="stg-select" placeholder="Ex: 6 mois" value="<?php echo htmlspecialchars($_GET['duree'] ?? ''); ?>" />
           </div>
 
           <div class="stg-filter-item">
             <label for="f-ville">Ville</label>
-            <select id="f-ville" name="ville" class="stg-select">
-              <option value="">Choisir</option>
-              <option value="alger" <?php if(($_GET['ville']??'')==='alger') echo 'selected'; ?>>Alger</option>
-              <option value="oran" <?php if(($_GET['ville']??'')==='oran') echo 'selected'; ?>>Oran</option>
-              <option value="remote" <?php if(($_GET['ville']??'')==='remote') echo 'selected'; ?>>Remote</option>
-            </select>
+            <input type="text" id="f-ville" name="ville" class="stg-select" placeholder="Ex: Paris,Lyon,remote" value="<?php echo htmlspecialchars($_GET['ville'] ?? ''); ?>" />
           </div>
 
           <div class="stg-filter-item">
