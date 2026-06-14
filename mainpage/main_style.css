@@ -1114,3 +1114,55 @@ button:active:not(.nav-signin button:active) {
 .footer_legal a:hover {
     color: #ffffff;
 }
+
+/* ==================== RESPONSIVE ==================== */
+
+/* Navbar collapse fix for Bootstrap (must match its lg breakpoint) */
+@media (max-width: 991px) {
+    .navbar-collapse.collapse:not(.show) { display: none !important; }
+    .navbar-collapse.show,
+    .navbar-collapse.collapsing { display: block !important; }
+}
+
+/* Tablet (768px – 1024px) */
+@media (max-width: 1024px) {
+    .content h1 { font-size: 52px; }
+    .content p  { font-size: 1rem; }
+    button:not(.nav-signin button) { font-size: 1rem; padding: 11px 24px; }
+    .about_header h1 { font-size: 2rem; }
+    .services_grid { grid-template-columns: repeat(2, 1fr); }
+    .carousel3d_scene { transform: scale(0.85); margin-top: -30px; }
+    .footer_container { grid-template-columns: 1.2fr 1fr; gap: 36px; }
+    .contact_card { grid-template-columns: 1fr 1fr; gap: 0; }
+    .contact_left,
+    .contact_right { padding: 28px 24px; }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+    .content h1 { font-size: 36px; }
+    .content p  { font-size: 0.95rem; }
+    button:not(.nav-signin button) { font-size: 0.9rem; padding: 10px 20px; min-height: 44px; }
+    .about_header h1 { font-size: 1.75rem; }
+    .about_header { margin-bottom: 36px; }
+    .down_au { flex-direction: column; gap: 28px; }
+    .description { padding: 28px 20px; }
+    .about_img_wrapper img { min-height: 220px; }
+    .services_grid { grid-template-columns: 1fr; gap: 24px; }
+    .carousel3d_scene { height: 300px; transform: scale(0.6); margin-top: -60px; }
+    .carousel3d_text h2 { font-size: 1.5rem; }
+    .carousel3d_text p { font-size: 0.95rem; }
+    .contact_section { padding: 60px 16px; }
+    .contact_title { font-size: 1.75rem; }
+    .contact_card { grid-template-columns: 1fr; }
+    .contact_left,
+    .contact_right { padding: 24px 20px; }
+    .contact_left h3 { font-size: 1.35rem; }
+    .contact_form input,
+    .contact_form textarea { font-size: 1rem; }
+    .contact_submit { min-height: 48px; padding: 12px 16px; }
+    .footer_container { grid-template-columns: 1fr; gap: 28px; text-align: center; }
+    .footer_col h3::after { margin: 8px auto 0; }
+    .footer_socials { justify-content: center; }
+    .footer_legal { flex-direction: column; gap: 8px; text-align: center; }
+}
