@@ -668,7 +668,9 @@ h1, h2, h3 {
 }
 
 /* ====== RESPONSIVE ====== */
-@media (max-width: 992px) {
+
+/* Tablet (768px – 1024px) */
+@media (max-width: 1024px) {
   .bp-filters-board { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .bp-filter-actions { grid-column: span 2; }
   .bp-cards { grid-template-columns: repeat(2,1fr); }
@@ -676,39 +678,46 @@ h1, h2, h3 {
   .bp-stats { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 760px) {
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
   .home_navbar {
     height: auto;
-    min-height: 72px;
-    padding: 10px 12px;
+    min-height: 64px;
+    padding: 8px 10px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
   }
-  .leftnav { width: 100%; gap: 14px; justify-content: space-between; }
-  .nav_center { position: static; }
-  .logo{ width: 140px; height: auto; }
-  .search_input { width: 180px; }
+  .leftnav { width: 100%; gap: 10px; justify-content: space-between; }
+  .nav_center { position: static; flex: 1; height: auto; }
+  .logo { width: 120px; height: auto; }
+  .search_input { width: 100%; min-width: 0; }
   .nav_right {
     position: static;
     width: 100%;
-    gap: 16px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 4px 0;
   }
-  .nav_right a { font-size: 1rem; }
-  .bp-page { padding-top: 30px; }
+  .nav_right a { font-size: 0.9rem; padding: 6px 4px; min-height: 44px; display: inline-flex; align-items: center; }
+  .post_btn { padding: 8px 16px; min-height: 44px; }
+  .bp-page { padding-top: 20px; }
   .bp-shell { width: 100%; border-radius: 0; }
-  .bp-hero-card { height: 300px; }
-  .bp-hero-text h1 { font-size: 2.4rem; }
+  .bp-hero-card { height: 260px; }
+  .bp-hero-text { padding: 0 20px; }
+  .bp-hero-text h1 { font-size: 2rem; }
   .bp-search-row { flex-direction: column; }
   .bp-search-input,
   .bp-search-btn,
-  .bp-select { height: 50px; border-radius: 14px; }
+  .bp-select { height: 50px; border-radius: 14px; font-size: 1rem; }
   .bp-filters-board { grid-template-columns: 1fr; padding: 14px 16px 16px; }
   .bp-filter-actions { grid-column: span 1; justify-content: stretch; }
-  .bp-filter-btn { flex: 1; }
+  .bp-filter-btn { flex: 1; min-height: 44px; }
   .bp-cards { grid-template-columns: 1fr; }
-  .bp-card-img-wrap { height: 230px; }
+  .bp-card-img-wrap { height: auto; max-height: 230px; }
+  .bp-card-body h3 { font-size: 1.05rem; }
+  .bp-chip { padding: 8px 12px; font-size: 0.82rem; }
+  .bp-stats { padding: 4px 16px 24px; }
 }
 
 /* ====== Scroll reveal ====== */
