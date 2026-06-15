@@ -2,7 +2,7 @@
 session_start();
 $user_id = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 
-$conn = new mysqli("127.0.0.1", "root", "", "devweb", 3306);
+$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
 $conn->query("
     CREATE TABLE IF NOT EXISTS posts (
         id INT AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, category VARCHAR(30) DEFAULT 'general',

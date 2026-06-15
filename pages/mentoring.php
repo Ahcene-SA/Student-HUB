@@ -2,7 +2,7 @@
 session_start();
 $user_id = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 
-$conn = new mysqli("127.0.0.1", "root", "", "devweb", 3306);
+$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
 $conn->query("
     CREATE TABLE IF NOT EXISTS posts (
         id INT AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, category VARCHAR(30) DEFAULT 'general',
@@ -27,6 +27,7 @@ function timeAgo($d) {
     if ($diff < 604800) return floor($diff/86400).' j';
     return date('d M Y', strtotime($d));
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -463,6 +464,7 @@ function timeAgo($d) {
             <span class="mnt-stat-label">note moyenne</span>
           </div>
         </section>
+
       </section>
     </main>
   </div>

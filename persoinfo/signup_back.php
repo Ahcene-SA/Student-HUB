@@ -6,7 +6,7 @@ ini_set('display_errors', 1);
 
 require_once __DIR__ . '/../includes/duplicate_error_helper.php';
 
-$db_connect = mysqli_connect("127.0.0.1", "root", "", "devweb", 3306);
+$db_connect = mysqli_connect("127.0.0.1", "root", "root", "studenthub", 8889);
 
 if (!$db_connect) {
     die("Connection failed: " . mysqli_connect_error());

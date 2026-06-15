@@ -5,7 +5,7 @@
  */
 
 function renderCategoryPosts(string $category): void {
-    $conn = new mysqli("127.0.0.1", "root", "", "devweb", 3306);
+    $conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
     if ($conn->connect_error) return;
 
     $conn->query("

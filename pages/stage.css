@@ -197,7 +197,7 @@ h1, h2, h3 {
 
 /* ====== PAGE ====== */
 .stg-page {
-  padding-top: 26px;
+  padding-top: 50px;
   padding-bottom: 60px;
   display: flex;
   justify-content: center;
@@ -1092,7 +1092,7 @@ h1, h2, h3 {
   .nav_right a { font-size: 0.95rem; }
 
   .stg-ribbon-text{ display: none; }
-  .stg-page { padding-top: 16px; }
+  .stg-page { padding-top: 30px; }
   .stg-shell { width: 100%; border-radius: 0; border-left: none; border-right: none; }
   .stg-hero-card { height: 300px; }
   .stg-hero-text { padding: 0 22px; }

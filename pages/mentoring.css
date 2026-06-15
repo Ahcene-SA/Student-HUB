@@ -159,7 +159,7 @@ h1, h2, h3 {
 
 /* ====== PAGE ====== */
 .mnt-page {
-  padding-top: 30px;
+  padding-top: 50px;
   padding-bottom: 60px;
   display: flex;
   justify-content: center;
@@ -1196,7 +1196,7 @@ h1, h2, h3 {
     justify-content: center;
   }
   .nav_right a { font-size: 0.98rem; }
-  .mnt-page { padding-top: 20px; }
+  .mnt-page { padding-top: 30px; }
   .mnt-shell { width: 100%; border-radius: 0; }
   .mnt-hero-card { height: 320px; }
   .mnt-hero-text { padding: 0 22px; }

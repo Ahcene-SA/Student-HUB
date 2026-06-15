@@ -159,7 +159,7 @@ h2, h3, h4 {
 /* ====== LAYOUT ====== */
 .home_layout{
   max-width: 1250px;
-  margin: 18px auto;
+  margin: 30px auto;
   padding: 0 18px 36px;
   display: grid;
   grid-template-columns: 280px minmax(520px, 1fr) 300px;

@@ -158,7 +158,7 @@ h1, h2, h3 {
 
 /* PAGE */
 .ev-page {
-  padding-top: 30px;
+  padding-top: 50px;
   padding-bottom: 60px;
   display: flex;
   justify-content: center;
@@ -668,7 +668,7 @@ h1, h2, h3 {
     justify-content: center;
   }
   .nav_right a { font-size: 1rem; }
-  .ev-page { padding-top: 30px; }
+  .ev-page { padding-top: 40px; }
   .ev-shell { width: 100%; border-radius: 0; }
   .ev-hero-card { height: 300px; }
   .ev-hero-text h1 { font-size: 3rem; }

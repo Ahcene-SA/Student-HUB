@@ -1315,5 +1315,6 @@ $educations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 })();
 </script>
 
+<?php include '../includes/brainpool_widget.php'; ?>
 </body>
 </html>

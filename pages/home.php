@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$conn = new mysqli("127.0.0.1", "root", "", "devweb", 3306);
+$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
 
 if (!isset($_SESSION['id_user'])) {
     header("Location: ../persoinfo/signin.php");
@@ -586,5 +586,6 @@ function timeAgo($datetime) {
       }
     });
   </script>
+<?php include '../includes/brainpool_widget.php'; ?>
 </body>
 </html>
