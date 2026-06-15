@@ -1,7 +1,8 @@
 <?php
 session_start();
 
-$conn = new mysqli("127.0.0.1", "root", "", "devweb", 3306);
+require_once __DIR__ . '/../includes/db_config.php';
+$conn = get_db_connection();
 
 if (!isset($_SESSION['id_user'])) {
     header("Location: ../persoinfo/signin.php");

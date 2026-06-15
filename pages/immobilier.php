@@ -3,7 +3,8 @@ session_start();
 $user_id = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 
 // Fetch real immobilier posts
-$conn = new mysqli("127.0.0.1", "root", "", "devweb", 3306);
+require_once __DIR__ . '/../includes/db_config.php';
+$conn = get_db_connection();
 $conn->query("
     CREATE TABLE IF NOT EXISTS posts (
         id INT AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, category VARCHAR(30) DEFAULT 'general',
