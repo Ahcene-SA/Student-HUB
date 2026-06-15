@@ -26,11 +26,15 @@ ALTER TABLE user ADD COLUMN banner     VARCHAR(255);
 CREATE TABLE IF NOT EXISTS user_sections (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     user_id     INT NOT NULL,
-    type        ENUM('experience','certificate','education') NOT NULL,
-    content     VARCHAR(255) NOT NULL,
+    type        VARCHAR(30) NOT NULL,
+    title       VARCHAR(255),
+    description VARCHAR(150),
+    date_value  VARCHAR(50),
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES user(id_user) ON DELETE CASCADE
-);
+    FOREIGN KEY (user_id) REFERENCES user(id_user) ON DELETE CASCADE,
+    INDEX idx_user (user_id),
+    INDEX idx_type (type)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for Brainpool skill credits widget
 CREATE TABLE IF NOT EXISTS skill_credits (

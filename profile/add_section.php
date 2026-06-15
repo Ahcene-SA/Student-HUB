@@ -7,6 +7,10 @@ if (!isset($_SESSION['id_user'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_section'])) {
     require 'db.php';
 
+    // Ensure table schema is up to date (drop old content column, add new ones)
+    try { $pdo->exec("ALTER TABLE user_sections DROP COLUMN content"); } catch (PDOException $e) {}
+    try { $pdo->exec("ALTER TABLE user_sections ADD COLUMN title VARCHAR(255), ADD COLUMN description VARCHAR(150), ADD COLUMN date_value VARCHAR(50)"); } catch (PDOException $e) {}
+
     $title       = isset($_POST['title'])       ? trim($_POST['title'])       : '';
     $description = isset($_POST['description']) ? substr(trim($_POST['description']), 0, 150) : '';
     $date_value  = isset($_POST['date_value'])  ? trim($_POST['date_value'])  : '';

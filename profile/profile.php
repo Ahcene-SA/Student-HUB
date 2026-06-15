@@ -80,7 +80,12 @@ $pdo->exec("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
 
-// Migrate old schema (add columns if missing)
+// Migrate old schema: drop legacy 'content' column, add new columns if missing
+try {
+    $pdo->exec("ALTER TABLE user_sections DROP COLUMN content");
+} catch (PDOException $e) {
+    // Column likely doesn't exist (already migrated)
+}
 try {
     $pdo->exec("ALTER TABLE user_sections ADD COLUMN title VARCHAR(255), ADD COLUMN description VARCHAR(150), ADD COLUMN date_value VARCHAR(50)");
 } catch (PDOException $e) {
