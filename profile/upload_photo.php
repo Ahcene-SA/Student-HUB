@@ -22,10 +22,12 @@ $banner  = $current['banner'] ?? null;
 $avatarDir = __DIR__ . '/uploads/avatars/';
 $bannerDir = __DIR__ . '/uploads/banners/';
 if (!is_dir($avatarDir)) {
-    @mkdir($avatarDir, 0777, true);
+    $ok = @mkdir($avatarDir, 0777, true);
+    if ($ok) @chmod($avatarDir, 0777);
 }
 if (!is_dir($bannerDir)) {
-    @mkdir($bannerDir, 0777, true);
+    $ok = @mkdir($bannerDir, 0777, true);
+    if ($ok) @chmod($bannerDir, 0777);
 }
 
 $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];

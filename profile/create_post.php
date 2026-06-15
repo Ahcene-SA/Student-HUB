@@ -73,15 +73,28 @@ if (!empty($_FILES['image']['name'])) {
     if (in_array($ext, $allowed_ext)) {
         $uploadDir = __DIR__ . '/uploads/posts/';
         if (!is_dir($uploadDir)) {
-            @mkdir($uploadDir, 0777, true);
+            $made = @mkdir($uploadDir, 0777, true);
+            if (!$made) {
+                error_log("create_post.php: FAILED to mkdir {$uploadDir}. uid=" . getmyuid() . " gid=" . getmygid());
+            } else {
+                @chmod($uploadDir, 0777);
+            }
         }
         $filename = $user_id . '_' . time() . '.' . $ext;
         $absPath  = $uploadDir . $filename;
         $relPath  = 'uploads/posts/' . $filename;
-        if (@move_uploaded_file($_FILES['image']['tmp_name'], $absPath)) {
+
+        $tmpName = $_FILES['image']['tmp_name'] ?? '';
+        if (!is_uploaded_file($tmpName)) {
+            error_log("create_post.php: not an uploaded file. tmp_name={$tmpName} error=" . ($_FILES['image']['error'] ?? 'N/A'));
+        } elseif (!@move_uploaded_file($tmpName, $absPath)) {
+            error_log("create_post.php: move_uploaded_file FAILED. src={$tmpName} dst={$absPath} upload_error=" . $_FILES['image']['error']);
+        } else {
             $image = $relPath;
+            error_log("create_post.php: upload OK. db_path={$relPath} abs_path={$absPath}");
         }
-        // If upload fails, $image stays null and post is still created
+    } else {
+        error_log("create_post.php: disallowed extension: {$ext}");
     }
 }
 
