@@ -73,10 +73,13 @@ if (!empty($_FILES['image']['name'])) {
     if (in_array($ext, $allowed_ext)) {
         $dir = 'uploads/posts/';
         if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+            @mkdir($dir, 0777, true);
         }
-        $image = $dir . $user_id . '_' . time() . '.' . $ext;
-        move_uploaded_file($_FILES['image']['tmp_name'], $image);
+        $tmp = $dir . $user_id . '_' . time() . '.' . $ext;
+        if (@move_uploaded_file($_FILES['image']['tmp_name'], $tmp)) {
+            $image = $tmp;
+        }
+        // If upload fails (e.g. permission denied in Docker), continue without image
     }
 }
 
