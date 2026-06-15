@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 $user_id = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 
