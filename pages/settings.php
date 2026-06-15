@@ -11,7 +11,8 @@ if ($user_id === 0) {
     exit();
 }
 
-$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
+require_once __DIR__ . '/../includes/db_config.php';
+$conn = get_db_connection();
 $stmt = $conn->prepare("SELECT * FROM user WHERE id_user = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -56,10 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     $new = $_POST['new_password'] ?? '';
     $confirm = $_POST['confirm_password'] ?? '';
 
-    if (password_verify($current, $user['password'] ?? '')) {
+    if (password_verify($current, $user['mdp'] ?? '')) {
         if ($new === $confirm && strlen($new) >= 6) {
             $hash = password_hash($new, PASSWORD_DEFAULT);
-            $upd = $conn->prepare("UPDATE user SET password=? WHERE id_user=?");
+            $upd = $conn->prepare("UPDATE user SET mdp=? WHERE id_user=?");
             $upd->bind_param("si", $hash, $user_id);
             $upd->execute();
             $msg = 'Mot de passe changé avec succès !';
