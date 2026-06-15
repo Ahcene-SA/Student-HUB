@@ -71,15 +71,17 @@ if (!empty($_FILES['image']['name'])) {
     $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
     $allowed_ext = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
     if (in_array($ext, $allowed_ext)) {
-        $dir = 'uploads/posts/';
-        if (!is_dir($dir)) {
-            @mkdir($dir, 0777, true);
+        $uploadDir = __DIR__ . '/uploads/posts/';
+        if (!is_dir($uploadDir)) {
+            @mkdir($uploadDir, 0777, true);
         }
-        $tmp = $dir . $user_id . '_' . time() . '.' . $ext;
-        if (@move_uploaded_file($_FILES['image']['tmp_name'], $tmp)) {
-            $image = $tmp;
+        $filename = $user_id . '_' . time() . '.' . $ext;
+        $absPath  = $uploadDir . $filename;
+        $relPath  = 'uploads/posts/' . $filename;
+        if (@move_uploaded_file($_FILES['image']['tmp_name'], $absPath)) {
+            $image = $relPath;
         }
-        // If upload fails (e.g. permission denied in Docker), continue without image
+        // If upload fails, $image stays null and post is still created
     }
 }
 

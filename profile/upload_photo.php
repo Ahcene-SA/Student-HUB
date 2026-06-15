@@ -18,12 +18,14 @@ $current = $stmt->fetch(PDO::FETCH_ASSOC);
 $avatar  = $current['avatar'] ?? null;
 $banner  = $current['banner'] ?? null;
 
-// Ensure upload directories exist
-if (!is_dir('uploads/avatars')) {
-    @mkdir('uploads/avatars', 0777, true);
+// Ensure upload directories exist (absolute paths so they work regardless of PHP working dir)
+$avatarDir = __DIR__ . '/uploads/avatars/';
+$bannerDir = __DIR__ . '/uploads/banners/';
+if (!is_dir($avatarDir)) {
+    @mkdir($avatarDir, 0777, true);
 }
-if (!is_dir('uploads/banners')) {
-    @mkdir('uploads/banners', 0777, true);
+if (!is_dir($bannerDir)) {
+    @mkdir($bannerDir, 0777, true);
 }
 
 $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
@@ -38,11 +40,13 @@ if (!empty($_FILES['avatar']['name'])) {
             $errors[] = 'Format d\'avatar non autorisé. Formats acceptés : jpg, jpeg, png, gif, webp.';
         } else {
             // Delete old avatar if exists
-            if (!empty($avatar) && file_exists($avatar)) {
-                @unlink($avatar);
+            $oldAvatarPath = !empty($avatar) ? (__DIR__ . '/' . $avatar) : null;
+            if ($oldAvatarPath && file_exists($oldAvatarPath)) {
+                @unlink($oldAvatarPath);
             }
-            $avatar = 'uploads/avatars/' . $user_id . '_' . time() . '.' . $ext;
-            if (!move_uploaded_file($_FILES['avatar']['tmp_name'], $avatar)) {
+            $filename = $user_id . '_' . time() . '.' . $ext;
+            $avatar = 'uploads/avatars/' . $filename;
+            if (!@move_uploaded_file($_FILES['avatar']['tmp_name'], $avatarDir . $filename)) {
                 $errors[] = 'Impossible d\'enregistrer l\'avatar sur le serveur.';
                 $avatar = $current['avatar'] ?? null; // rollback path
             }
@@ -60,11 +64,13 @@ if (!empty($_FILES['banner']['name'])) {
             $errors[] = 'Format de bannière non autorisé. Formats acceptés : jpg, jpeg, png, gif, webp.';
         } else {
             // Delete old banner if exists
-            if (!empty($banner) && file_exists($banner)) {
-                @unlink($banner);
+            $oldBannerPath = !empty($banner) ? (__DIR__ . '/' . $banner) : null;
+            if ($oldBannerPath && file_exists($oldBannerPath)) {
+                @unlink($oldBannerPath);
             }
-            $banner = 'uploads/banners/' . $user_id . '_' . time() . '.' . $ext;
-            if (!move_uploaded_file($_FILES['banner']['tmp_name'], $banner)) {
+            $filename = $user_id . '_' . time() . '.' . $ext;
+            $banner = 'uploads/banners/' . $filename;
+            if (!@move_uploaded_file($_FILES['banner']['tmp_name'], $bannerDir . $filename)) {
                 $errors[] = 'Impossible d\'enregistrer la bannière sur le serveur.';
                 $banner = $current['banner'] ?? null; // rollback path
             }
