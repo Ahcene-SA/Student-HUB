@@ -1,5 +1,9 @@
 <?php
 session_start();
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 $user_id = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 
 $conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
@@ -32,6 +36,24 @@ function timeAgo($d) {
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script>
+(function(){
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+      window.location.replace(window.location.href);
+    }
+  });
+  window.addEventListener('unload', function(){});
+  fetch('../check_session.php', {cache: 'no-store'}).then(function(r){ return r.json(); }).then(function(data){
+    if (!data.logged_in) {
+      window.location.replace('../persoinfo/signin.php');
+    }
+  }).catch(function(){});
+})();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Student HUB – Events</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -104,17 +126,20 @@ function timeAgo($d) {
             Mon compte ▾
           </button>
           <div class="user-menu-dropdown">
-            <a href="../profile/profile.php" class="user-menu-item">
+            <a href="../profile/profile.php?id=<?php echo $user_id; ?>" class="user-menu-item">
               <span class="user-menu-icon">👤</span> Profile
             </a>
-            <a href="#" class="user-menu-item">
+            <a href="messages.php" class="user-menu-item">
+              <span class="user-menu-icon">💬</span> Messages
+            </a>
+            <a href="settings.php" class="user-menu-item">
               <span class="user-menu-icon">⚙️</span> Settings
             </a>
-            <a href="#" class="user-menu-item">
+            <a href="help.php" class="user-menu-item">
               <span class="user-menu-icon">❓</span> Help
             </a>
             <div class="user-menu-divider"></div>
-            <a href="#" class="user-menu-item user-menu-logout">
+            <a href="../logout.php" class="user-menu-item user-menu-logout">
               <span class="user-menu-icon">🚪</span> Log out
             </a>
           </div>
@@ -410,6 +435,36 @@ function timeAgo($d) {
       if (e.key === 'Escape') closePostDetail();
     });
   </script>
+
+<script>
+(function(){
+  var btns = document.querySelectorAll(".user-menu-trigger");
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener("click", function(e) {
+      e.stopPropagation();
+      var menu = this.closest(".user-menu");
+      var dd = menu.querySelector(".user-menu-dropdown");
+      if (dd) {
+        var isOpen = dd.style.display === "block";
+        dd.style.display = isOpen ? "none" : "block";
+        dd.style.opacity = isOpen ? "0" : "1";
+        dd.style.pointerEvents = isOpen ? "none" : "all";
+      }
+    });
+  }
+  document.addEventListener("click", function(e) {
+    var menus = document.querySelectorAll(".user-menu");
+    for (var i = 0; i < menus.length; i++) {
+      var dd = menus[i].querySelector(".user-menu-dropdown");
+      if (dd && !menus[i].contains(e.target)) {
+        dd.style.display = "none";
+        dd.style.opacity = "0";
+        dd.style.pointerEvents = "none";
+      }
+    }
+  });
+})();
+</script>
 
   <!-- Post Detail Modal -->
   <div class="post-detail-modal" id="post-detail-modal">

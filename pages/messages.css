@@ -123,7 +123,9 @@ body{
   border: 1px solid rgba(46,89,97,0.12);
 }
 
-.user-menu:focus-within .user-menu-dropdown {
+.user-menu:hover .user-menu-dropdown,
+.user-menu:focus-within .user-menu-dropdown,
+.user-menu-dropdown:hover {
   opacity: 1; transform: translateY(0) scale(1); pointer-events: all;
 }
 

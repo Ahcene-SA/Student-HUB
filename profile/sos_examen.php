@@ -1,5 +1,9 @@
 
 <?php
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 session_start();
 require_once __DIR__ . '/db.php';
 
@@ -42,6 +46,24 @@ $sos_categories = ['Mathématiques', 'Physique', 'Informatique', 'Chimie', 'Lang
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <script>
+(function(){
+  window.addEventListener('pageshow', function(event) {
+    if (event.persisted) {
+      window.location.replace(window.location.href);
+    }
+  });
+  window.addEventListener('unload', function(){});
+  fetch('../check_session.php', {cache: 'no-store'}).then(function(r){ return r.json(); }).then(function(data){
+    if (!data.logged_in) {
+      window.location.replace('../persoinfo/signin.php');
+    }
+  }).catch(function(){});
+})();
+  </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SOS Examen - Student Hub</title>
     <link rel="stylesheet" href="../pages/home.css">
@@ -117,10 +139,10 @@ $sos_categories = ['Mathématiques', 'Physique', 'Informatique', 'Chimie', 'Lang
             <div class="user-menu-dropdown">
                 <a href="profile.php?id=<?php echo $my_id; ?>" class="user-menu-item"><span class="user-menu-icon">👤</span> Profile</a>
                 <a href="../pages/messages.php" class="user-menu-item"><span class="user-menu-icon">💬</span> Messages</a>
-                <a href="#" class="user-menu-item"><span class="user-menu-icon">⚙️</span> Settings</a>
-                <a href="#" class="user-menu-item"><span class="user-menu-icon">❓</span> Help</a>
+                <a href="../pages/settings.php" class="user-menu-item"><span class="user-menu-icon">⚙️</span> Settings</a>
+                <a href="../pages/help.php" class="user-menu-item"><span class="user-menu-icon">❓</span> Help</a>
                 <div class="user-menu-divider"></div>
-                <a href="../persoinfo/signin.php" class="user-menu-item user-menu-logout"><span class="user-menu-icon">🚪</span> Log out</a>
+                <a href="../logout.php" class="user-menu-item user-menu-logout"><span class="user-menu-icon">🚪</span> Log out</a>
             </div>
         </div>
     </nav>

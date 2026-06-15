@@ -754,7 +754,9 @@ h1, h2, h3 {
               transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.user-menu:focus-within .user-menu-dropdown {
+.user-menu:hover .user-menu-dropdown,
+.user-menu:focus-within .user-menu-dropdown,
+.user-menu-dropdown:hover {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: all;

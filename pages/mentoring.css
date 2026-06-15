@@ -1199,14 +1199,9 @@ h1, h2, h3 {
     justify-content: center;
     padding: 4px 0;
   }
-<<<<<<< HEAD
-  .nav_right a { font-size: 0.98rem; }
-  .mnt-page { padding-top: 30px; }
-=======
   .nav_right a { font-size: 0.9rem; padding: 6px 4px; min-height: 44px; display: inline-flex; align-items: center; }
   .post_btn { padding: 8px 16px; min-height: 44px; }
   .mnt-page { padding-top: 16px; }
->>>>>>> 2c32b362aa68f48d549bc0be343fba317fa3a733
   .mnt-shell { width: 100%; border-radius: 0; }
   .mnt-hero-card { height: 280px; }
   .mnt-hero-text { padding: 0 20px; }
@@ -1291,7 +1286,9 @@ h1, h2, h3 {
               transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.user-menu:focus-within .user-menu-dropdown {
+.user-menu:hover .user-menu-dropdown,
+.user-menu:focus-within .user-menu-dropdown,
+.user-menu-dropdown:hover {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: all;
