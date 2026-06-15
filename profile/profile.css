@@ -961,10 +961,12 @@ h2, h3, h4 {
 .modal-submit.mentoring{ background: linear-gradient(135deg, #166534, #15803D); }
 .modal-submit.bonplan  { background: linear-gradient(135deg, #F59E0B, #D97706); }
 
-@media (max-width: 960px) {
+/* Tablet (768px – 1024px) */
+@media (max-width: 1024px) {
     .main-content {
         flex-direction: column;
         align-items: center;
+        padding: 20px 24px 60px;
     }
     .left-column,
     .right-column {
@@ -975,6 +977,7 @@ h2, h3, h4 {
     .right-column {
         position: static;
         gap: 24px;
+        margin-right: 0;
     }
 }
 
@@ -1127,6 +1130,7 @@ textarea.edit-text-input {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin-top: 5px;
 }
 
 .cancel-btn:hover {
@@ -1325,25 +1329,159 @@ textarea.edit-text-input {
     position: relative;
 }
 
-@media (max-width: 760px) {
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
     .home_navbar {
         height: auto;
-        min-height: 72px;
-        padding: 10px 12px;
+        min-height: 64px;
+        padding: 8px 10px;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
     }
-    .leftnav { width: 100%; gap: 14px; justify-content: space-between; }
-    .nav_center { position: static; }
-    .logo{ width: 140px; height: auto; }
-    .search_input { width: 180px; }
+    .leftnav { width: 100%; gap: 10px; justify-content: space-between; }
+    .nav_center { position: static; flex: 1; height: auto; }
+    .logo { width: 120px; height: auto; }
+    .search_input { width: 100%; min-width: 0; }
     .nav_right {
         position: static;
         width: 100%;
-        gap: 16px;
+        gap: 10px;
         flex-wrap: wrap;
         justify-content: center;
-
+        padding: 4px 0;
     }
-    .nav_right a { font-size: 1rem; }
+    .nav_right a { font-size: 0.9rem; padding: 6px 4px; min-height: 44px; display: inline-flex; align-items: center; }
+    .post_btn { padding: 8px 16px; min-height: 44px; }
+
+    .main-content {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px 16px 48px;
+        gap: 16px;
+    }
+    .left-column, .right-column {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+    }
+    .right-column {
+        position: static;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .profile-banner {
+        border-radius: 16px;
+    }
+    .banner-top {
+        height: 140px;
+    }
+    .avatar {
+        width: 80px;
+        height: 80px;
+        top: 40px;
+        font-size: 1.6rem;
+    }
+    .avatar-initials {
+        font-size: 1.6rem;
+    }
+    .profile-info {
+        padding: 48px 16px 20px;
+        gap: 8px;
+    }
+    .profile-info h2 {
+        font-size: 1.25rem;
+    }
+
+    .contact {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .info-block {
+        padding: 16px;
+        border-radius: 14px;
+    }
+    .info-row {
+        flex-direction: column;
+        gap: 2px;
+        padding: 10px 0;
+    }
+
+    .post-card {
+        padding: 14px 16px;
+    }
+    .img-post {
+        border-radius: 10px;
+    }
+
+    .chat-tab {
+        right: 10px;
+        width: calc(100% - 20px);
+        max-width: 360px;
+        height: 380px;
+    }
+
+    .post-bubble-wrapper {
+        bottom: 16px;
+        right: 16px;
+    }
+    .fab-post {
+        width: 48px;
+        height: 48px;
+        font-size: 1.6rem;
+    }
+
+    .modal-card {
+        max-width: calc(100% - 32px);
+        margin: 16px;
+    }
+    .modal-header h3 {
+        font-size: 1rem;
+    }
+    .modal-body {
+        padding: 16px;
+    }
+    .modal-input, .modal-textarea {
+        font-size: 1rem; /* prevent iOS zoom */
+    }
+
+    .activity-item {
+        gap: 6px;
+        padding: 8px 0;
+    }
+    .activity-title {
+        font-size: 0.95rem;
+    }
+    .activity-desc {
+        margin-left: 0;
+    }
+    .activity-date {
+        white-space: normal;
+        border-left: none;
+        padding-left: 0;
+        margin-left: 0;
+        font-size: 0.78rem;
+    }
+    .activity-meta {
+        flex-wrap: wrap;
+    }
+
+    .follow button,
+    .message button.mes-but,
+    .save-btn,
+    .cancel-btn,
+    .edit-submit-btn,
+    .left-edit-btn,
+    .right-edit-btn {
+        min-height: 44px;
+    }
+
+    .edit-field input {
+        height: 48px;
+        font-size: 1rem;
+    }
+    .edit-actions {
+        flex-wrap: wrap;
+    }
 }

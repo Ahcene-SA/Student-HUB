@@ -471,9 +471,12 @@ h2, h3, h4 {
 .tips_card li:last-child{ margin-bottom: 0; }
 
 /* ====== RESPONSIVE ====== */
-@media (max-width: 1100px){
+
+/* Tablet (768px – 1024px) */
+@media (max-width: 1024px){
   .home_layout{
     grid-template-columns: 240px 1fr;
+    padding: 0 14px 28px;
   }
   .right_sidebar{
     grid-column: span 2;
@@ -483,36 +486,49 @@ h2, h3, h4 {
   }
 }
 
-@media (max-width: 820px){
+/* Mobile (max 768px) */
+@media (max-width: 768px){
   .home_layout{
     grid-template-columns: 1fr;
+    padding: 0 12px 24px;
+    gap: 12px;
   }
   .right_sidebar{
     grid-column: auto;
     grid-template-columns: 1fr;
   }
-}
-
-@media (max-width: 760px) {
   .home_navbar {
     height: auto;
-    min-height: 72px;
-    padding: 10px 12px;
+    min-height: 64px;
+    padding: 8px 10px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
   }
-  .leftnav { width: 100%; gap: 14px; justify-content: space-between; }
-  .nav_center { position: static; }
-  .logo{ width: 140px; height: auto; }
-  .search_input { width: 180px; }
+  .leftnav { width: 100%; gap: 10px; justify-content: space-between; }
+  .nav_center { position: static; flex: 1; height: auto; }
+  .logo { width: 120px; height: auto; }
+  .search_input { width: 100%; min-width: 0; }
   .nav_right {
     position: static;
     width: 100%;
-    gap: 16px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 4px 0;
   }
-  .nav_right a { font-size: 1rem; }
+  .nav_right a { font-size: 0.9rem; padding: 6px 4px; min-height: 44px; display: inline-flex; align-items: center; }
+  .post_btn { padding: 8px 16px; min-height: 44px; }
+  .card { padding: 16px; border-radius: 16px; }
+  .composer_card textarea { min-height: 80px; }
+  .composer_actions { flex-wrap: wrap; gap: 8px; }
+  .primary_btn, .ghost_btn, .voir-btn { min-height: 44px; padding: 10px 16px; }
+  .post_media img { height: auto; max-height: 280px; }
+  .post_actions { flex-wrap: wrap; gap: 8px; }
+  .action-btn, .post_actions button { min-height: 44px; padding: 10px 14px; }
+  .avatar { width: 48px; height: 48px; font-size: 1.1rem; }
+  .avatar.sm { width: 36px; height: 36px; }
+  .profile_top { flex-wrap: wrap; }
+  .detail-card { max-width: calc(100% - 32px) !important; margin: 16px !important; }
 }
 
 /* ── USER MENU DROPDOWN ── */
@@ -941,7 +957,7 @@ h2, h3, h4 {
   box-shadow: 0 6px 16px rgba(46,89,97,0.35);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .comment-card {
     max-height: 92vh;
     margin: 0;

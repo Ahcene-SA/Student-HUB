@@ -639,8 +639,10 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
-/* RESPONSIVE */
-@media (max-width: 992px) {
+/* ====== RESPONSIVE ====== */
+
+/* Tablet (768px – 1024px) */
+@media (max-width: 1024px) {
   .ev-filters-board { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .ev-filter-actions { grid-column: span 2; }
   .ev-cards { grid-template-columns: repeat(2,1fr); }
@@ -648,39 +650,46 @@ h1, h2, h3 {
   .ev-stats { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 760px) {
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
   .home_navbar {
     height: auto;
-    min-height: 72px;
-    padding: 10px 12px;
+    min-height: 64px;
+    padding: 8px 10px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
   }
-  .leftnav { width: 100%; gap: 14px; justify-content: space-between; }
-  .nav_center { position: static; }
-  .logo{ width: 140px; height: auto; }
-  .search_input { width: 180px; }
+  .leftnav { width: 100%; gap: 10px; justify-content: space-between; }
+  .nav_center { position: static; flex: 1; height: auto; }
+  .logo { width: 120px; height: auto; }
+  .search_input { width: 100%; min-width: 0; }
   .nav_right {
     position: static;
     width: 100%;
-    gap: 16px;
+    gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 4px 0;
   }
-  .nav_right a { font-size: 1rem; }
-  .ev-page { padding-top: 40px; }
+  .nav_right a { font-size: 0.9rem; padding: 6px 4px; min-height: 44px; display: inline-flex; align-items: center; }
+  .post_btn { padding: 8px 16px; min-height: 44px; }
+  .ev-page { padding-top: 20px; }
   .ev-shell { width: 100%; border-radius: 0; }
-  .ev-hero-card { height: 300px; }
-  .ev-hero-text h1 { font-size: 3rem; }
+  .ev-hero-card { height: 260px; }
+  .ev-hero-text { padding: 0 20px; }
+  .ev-hero-text h1 { font-size: 2.2rem; }
   .ev-search-row { flex-direction: column; }
   .ev-search-input,
   .ev-search-btn,
-  .ev-select { height: 50px; border-radius: 14px; }
+  .ev-select { height: 50px; border-radius: 14px; font-size: 1rem; }
   .ev-filters-board { grid-template-columns: 1fr; padding: 14px 16px 16px; }
   .ev-filter-actions { grid-column: span 1; justify-content: stretch; }
-  .ev-filter-btn { flex: 1; }
+  .ev-filter-btn { flex: 1; min-height: 44px; }
   .ev-cards { grid-template-columns: 1fr; }
-  .ev-card-img-wrap { height: 230px; }
+  .ev-card-img-wrap { height: auto; max-height: 230px; }
+  .ev-card-body h3 { font-size: 1.25rem; }
+  .ev-chip { padding: 8px 12px; font-size: 0.82rem; }
+  .ev-stats { padding: 4px 16px 24px; }
 }
 
 /* ===== Scroll reveal ===== */

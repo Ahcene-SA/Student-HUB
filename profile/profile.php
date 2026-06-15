@@ -179,7 +179,7 @@ $educations = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="profile.css?v=12">
+    <link rel="stylesheet" href="profile.css">
     <style>
       /* Critical bubble + modal styles — fallback if external CSS is cached */
       .post-bubble-wrapper {
