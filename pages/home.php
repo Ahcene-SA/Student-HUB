@@ -349,6 +349,7 @@ function timeAgo($datetime) {
             <li>Reste respectueux avec la communauté</li>
           </ul>
         </div>
+        <?php include '../includes/brainpool_widget.php'; ?>
       </aside>
 
     </section>
