@@ -371,8 +371,7 @@ function timeAgo($datetime) {
             <li>Reste respectueux avec la communauté</li>
           </ul>
         </div>
-        <?php include '../includes/brainpool_widget.php'; ?>
-      </aside>
+              </aside>
 
     </section>
   </div>
@@ -641,6 +640,5 @@ function timeAgo($datetime) {
 })();
 </script>
 
-<?php include '../includes/brainpool_widget.php'; ?>
 </body>
 </html>
