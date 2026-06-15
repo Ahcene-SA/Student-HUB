@@ -1,5 +1,13 @@
 <?php
 /**
+ * Local environment overrides (MAMP, WAMP, etc.)
+ * If this file exists it sets DB_* env vars before production fallbacks kick in.
+ */
+if (file_exists(__DIR__ . '/local.env.php')) {
+    require_once __DIR__ . '/local.env.php';
+}
+
+/**
  * Central database configuration.
  *
  * Production defaults point to the Dokploy MySQL service.
