@@ -1,4 +1,4 @@
--- Active: 1778770129275@@127.0.0.1@3306@devweb
+-- Active: 1778770129275@@studenthub-studenthubdb-swptga@3306@StudenthubDB
 CREATE TABLE user(
    id_user INT PRIMARY KEY AUTO_INCREMENT,  
     prenom VARCHAR(100) NOT NULL ,

@@ -4,7 +4,8 @@ session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$db_connect = mysqli_connect("127.0.0.1", "root", "root", "studenthub", 8889);
+require_once __DIR__ . '/../includes/db_config.php';
+$db_connect = get_db_connection();
 
 if (!$db_connect) {
     die("Connection failed: " . mysqli_connect_error());

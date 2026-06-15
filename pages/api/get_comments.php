@@ -7,7 +7,8 @@ if (!isset($_SESSION['id_user'])) {
     exit();
 }
 
-$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
+require_once __DIR__ . '/../../includes/db_config.php';
+$conn = get_db_connection();
 if ($conn->connect_error) {
     echo json_encode(['error' => 'DB connection failed']);
     exit();

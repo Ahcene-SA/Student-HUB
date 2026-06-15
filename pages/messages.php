@@ -4,7 +4,8 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
-$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
+require_once __DIR__ . '/../includes/db_config.php';
+$conn = get_db_connection();
 
 if (!isset($_SESSION['id_user'])) {
     header("Location: ../persoinfo/signin.php");

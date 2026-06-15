@@ -963,6 +963,54 @@ h2, h3, h4 {
 .modal-submit.mentoring{ background: linear-gradient(135deg, #166534, #15803D); }
 .modal-submit.bonplan  { background: linear-gradient(135deg, #F59E0B, #D97706); }
 
+/* ====== RESPONSIVE ====== */
+
+/* Laptop / MacBook (1025px – 1280px) */
+@media (max-width: 1280px) {
+    .home_navbar {
+        height: 80px;
+        padding: 8px 16px;
+    }
+    .logo {
+        width: 150px;
+        height: auto;
+    }
+    .leftnav {
+        gap: 16px;
+    }
+    .nav_center {
+        position: static;
+        flex: 1;
+        height: auto;
+        max-width: 220px;
+    }
+    .search_input {
+        width: 100%;
+        min-width: 0;
+    }
+    .nav_right {
+        position: static;
+        gap: 14px;
+        flex-shrink: 0;
+    }
+    .nav_right a {
+        font-size: 0.9rem;
+    }
+    .post_btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    .main-content {
+        max-width: 1100px;
+        padding: 20px 24px 60px;
+    }
+    .right-column {
+        flex: 0 0 300px;
+        width: 300px;
+        margin-right: 0;
+    }
+}
+
 /* Tablet (768px – 1024px) */
 @media (max-width: 1024px) {
     .main-content {

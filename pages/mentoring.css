@@ -1166,6 +1166,45 @@ h1, h2, h3 {
 
 /* ====== RESPONSIVE ====== */
 
+/* ====== RESPONSIVE ====== */
+
+/* Laptop / MacBook (1025px – 1280px) */
+@media (max-width: 1280px) {
+  .home_navbar {
+    height: 80px;
+    padding: 8px 16px;
+  }
+  .logo {
+    width: 150px;
+    height: auto;
+  }
+  .leftnav {
+    gap: 16px;
+  }
+  .nav_center {
+    position: static;
+    flex: 1;
+    height: auto;
+    max-width: 220px;
+  }
+  .search_input {
+    width: 100%;
+    min-width: 0;
+  }
+  .nav_right {
+    position: static;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+  .nav_right a {
+    font-size: 0.9rem;
+  }
+  .post_btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+}
+
 /* Tablet (768px – 1024px) */
 @media (max-width: 1024px) {
   .mnt-journey{ grid-template-columns: 1fr 1fr; gap: 14px 18px; padding: 20px; }

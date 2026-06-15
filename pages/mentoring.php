@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 session_start();
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
@@ -6,7 +6,8 @@ header("Pragma: no-cache");
 header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 $user_id = isset($_SESSION['id_user']) ? (int)$_SESSION['id_user'] : 0;
 
-$conn = new mysqli("127.0.0.1", "root", "root", "studenthub", 8889);
+require_once __DIR__ . '/../includes/db_config.php';
+$conn = get_db_connection();
 $conn->query("
     CREATE TABLE IF NOT EXISTS posts (
         id INT AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, category VARCHAR(30) DEFAULT 'general',
@@ -31,7 +32,6 @@ function timeAgo($d) {
     if ($diff < 604800) return floor($diff/86400).' j';
     return date('d M Y', strtotime($d));
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -489,7 +489,6 @@ function timeAgo($d) {
             <span class="mnt-stat-label">note moyenne</span>
           </div>
         </section>
-
       </section>
     </main>
   </div>
