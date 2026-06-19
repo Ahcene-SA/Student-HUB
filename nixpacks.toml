@@ -1,0 +1,17 @@
+
+[phases.setup]
+nixPkgs = ['php83', 'php83Extensions.mysqli', 'php83Extensions.pdo', 'php83Extensions.pdo_mysql', 'apacheHttpd', 'composer']
+
+[phases.build]
+cmds = [
+  'composer install --no-dev --optimize-autoloader --no-interaction --no-scripts'
+]
+
+[phases.start]
+cmds = [
+  'mkdir -p /app/tmp',
+  'httpd -D FOREGROUND'
+]
+
+[variables]
+COMPOSER_ALLOW_SUPERUSER = '1'
