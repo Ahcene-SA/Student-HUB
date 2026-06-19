@@ -1,0 +1,10 @@
+[phases.setup]
+nixPkgs = ['php83', 'php83Extensions.mysqli', 'composer']
+
+[phases.build]
+cmds = [
+  'composer install --no-dev --optimize-autoloader --no-interaction'
+]
+
+[start]
+cmd = 'apache2-foreground'
