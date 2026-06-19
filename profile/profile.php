@@ -42,7 +42,7 @@ if(isset($_GET["code"])){
     if($existing){
         $_SESSION['id_user'] = $existing['id_user'];
     } else {
-        $stmt = $pdo->prepare("INSERT INTO user (email, prenom, nom, name) VALUES (?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO user (email, prenom, nom) VALUES ( ?, ?, ?)");
         $stmt->execute([$email, $givenName, $familyName, $name]);
         $_SESSION['id_user'] = $pdo->lastInsertId();
     }
