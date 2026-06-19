@@ -22,7 +22,7 @@ if(!isset($_GET["code"])){
 
 $token= $client->fetchAccessTokenWithAuthCode($_GET["code"]);
 
-$client->setAccessToken($token["acces_token"]);
+$client->setAccessToken($token["access_token"]);
 
 $oauth= new Google\Service\Oauth2($client);
 
