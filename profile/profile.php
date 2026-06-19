@@ -30,12 +30,12 @@ $userinfo=$oauth->userinfo->get();
 
 
 
-var_dump(
-  $userinfo->email,
-  $userinfo->familyName,
-  $userinfo->givenName,
-  $userinfo->name
-);
+// var_dump(
+//   $userinfo->email,
+//   $userinfo->familyName,
+//   $userinfo->givenName,
+//   $userinfo->name
+// );
 
 
 
