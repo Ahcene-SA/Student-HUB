@@ -127,7 +127,8 @@ $profile_id = isset($_GET['id']) ? (int) $_GET['id'] : $my_id;
 
 // If no one is logged in and no ID provided, send to login
 if ($my_id === 0 && $profile_id === 0) {
-  echo var_dump("verif");
+    // header("Location: ../persoinfo/signin.php");
+    // exit();
 }
 
 // If no ID in URL and user IS logged in, default to their own profile
@@ -142,8 +143,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 // If user doesn't exist, redirect to own profile
 if (!$user) {
-    header("Location: profile.php" . ($my_id ? "?id=" . $my_id : ""));
-    exit();
+    // header("Location: profile.php" . ($my_id ? "?id=" . $my_id : ""));
+    // exit();
 }
 
 // Is this the logged-in user's own profile?
