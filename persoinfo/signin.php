@@ -138,7 +138,7 @@ unset($_SESSION['signup_data']);
 
           <div class="signin-divider"><span>ou</span></div>
 
-          <!-- <button type="button" class="google-btn" >
+          <button type="button" class="google-btn">
 
             <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path fill="#FFC107"
@@ -151,7 +151,7 @@ unset($_SESSION['signup_data']);
                 d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C41 35.8 44 30.4 44 24c0-1.2-.1-2.4-.4-3.5z" />
             </svg>
             Continuer avec Google
-          </button> -->
+          </button>
 
           <p class="switch-hint">
             Pas encore de compte ?
