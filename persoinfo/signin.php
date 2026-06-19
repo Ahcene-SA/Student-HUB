@@ -138,7 +138,7 @@ unset($_SESSION['signup_data']);
 
           <div class="signin-divider"><span>ou</span></div>
 
-          <a type="button" class="google-btn" href='<?= $url ?>'>
+          <a class="google-btn" href='<?= htmlspecialchars($url) ?>'>
 
             <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path fill="#FFC107"
