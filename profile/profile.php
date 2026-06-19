@@ -7,7 +7,7 @@ header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 
 require 'db.php';
 require __DIR__ . "/../vendor/autoload.php";
-
+$db_connect = get_db_connection();
 
 
 
@@ -17,7 +17,26 @@ $client->setClientSecret("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");
 $client->setRedirectUri("https://studenthub.cloud/profile/profile.php");
 
 if(!isset($_GET["code"])){
-  exit("Login failed");
+  echo "erreur";
+ 
+}else {
+  $prenom   = $userinfo->givenName;
+    $nom      =$userinfo->familyName;
+    $username = $userinfo->name;
+     $email   = $userinfo->email;
+
+      $formData = [
+        'firstname'  => $prenom,
+        'lastname'   => $nom,
+        'username'   => $username,
+        'email'      => $email,
+    ];
+$stmt = $db_connect->prepare(
+        "INSERT INTO user (prenom, nom, username, email)
+         VALUES (?, ?, ?, ?)"
+    );
+  
+
 }
 
 $token= $client->fetchAccessTokenWithAuthCode($_GET["code"]);
@@ -29,17 +48,18 @@ $oauth= new Google\Service\Oauth2($client);
 $userinfo=$oauth->userinfo->get();
 
 
+
 //  $email= $userinfo->email,
 //   $familyName=$userinfo->familyName;
 //   $givenName=$userinfo->givenName;
 //   $name= $userinfo->name;
-var_dump(
-  $userinfo->email,
-  $userinfo->familyName,
-  $userinfo->givenName,
-  $userinfo->name
-  );
-  
+
+// $userinfo->email;
+// $userinfo->familyName;
+// $userinfo->givenName;
+// $userinfo->name;
+
+
 
 
 // Auto-create follows table if it doesn't exist (no FK to avoid engine issues)
