@@ -103,7 +103,7 @@ unset($_SESSION['signup_data']);
           <div class="form-error"><?php echo htmlspecialchars($signinError); ?></div>
           <?php endif; ?>
 
-          <h2 class="form-title">Bon retour !</h2>
+          <h2 class="form-title">Bon retour amine!</h2>
           <p class="form-subtitle">Connectez-vous pour continuer.</p>
 
           <div class="form-field">
