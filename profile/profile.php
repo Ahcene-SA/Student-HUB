@@ -31,12 +31,12 @@ $userinfo=$oauth->userinfo->get();
 
 
 // var_dump(
-//   $userinfo->email,
-//   $userinfo->familyName,
-//   $userinfo->givenName,
-//   $userinfo->name
-// );
-
+  // );
+  
+    $userinfo->email;
+    $userinfo->familyName;
+    $userinfo->givenName;
+    $userinfo->name;
 
 
 // Auto-create follows table if it doesn't exist (no FK to avoid engine issues)
