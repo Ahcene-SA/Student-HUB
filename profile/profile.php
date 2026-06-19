@@ -16,9 +16,9 @@ $client->setClientId("669251997046-vbvcsr40nqgc56hsbvorun6honh13smd.apps.googleu
 $client->setClientSecret("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");
 $client->setRedirectUri("https://studenthub.cloud/profile/profile.php");
 
-if(!isset($_GET["code"])){
-  exit("Login failed");
-}
+// if(!isset($_GET["code"])){
+//   exit("Login failed");
+// }
 
 $token= $client->fetchAccessTokenWithAuthCode($_GET["code"]);
 
@@ -33,10 +33,10 @@ $userinfo=$oauth->userinfo->get();
 // var_dump(
   // );
   
-    $userinfo->email;
-    $userinfo->familyName;
-    $userinfo->givenName;
-    $userinfo->name;
+    // $userinfo->email;
+    // $userinfo->familyName;
+    // $userinfo->givenName;
+    // $userinfo->name;
 
 
 // Auto-create follows table if it doesn't exist (no FK to avoid engine issues)
