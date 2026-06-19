@@ -16,71 +16,30 @@ $client->setClientId("669251997046-vbvcsr40nqgc56hsbvorun6honh13smd.apps.googleu
 $client->setClientSecret("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");
 $client->setRedirectUri("https://studenthub.cloud/profile/profile.php");
 
-// 
-if(isset($_GET["code"])){
-    $token = $client->fetchAccessTokenWithAuthCode($_GET["code"]);
-
-    if(isset($token["error"])){
-        header("Location: ../persoinfo/signin.php");
-        exit();
-    }
-
-    $client->setAccessToken($token["access_token"]);
-    $oauth    = new Google\Service\Oauth2($client);
-    $userinfo = $oauth->userinfo->get();
-
-    $email      = $userinfo->email;
-    $familyName = $userinfo->familyName;
-    $givenName  = $userinfo->givenName;
-    $name       = $userinfo->name;
-
-    // Check if user already exists
-    $stmt = $pdo->prepare("SELECT id_user FROM user WHERE email = ?");
-    $stmt->execute([$email]);
-    $existing = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if($existing){
-        $_SESSION['id_user'] = $existing['id_user'];
-    } else {
-        $stmt = $pdo->prepare("INSERT INTO user (email, prenom, nom) VALUES ( ?, ?, ?)");
-        $stmt->execute([$email, $givenName, $familyName, $name]);
-        $_SESSION['id_user'] = $pdo->lastInsertId();
-    }
-
-    header("Location: profile.php");
-    exit();
+if(!isset($_GET["code"])){
+  exit("Login failed");
 }
 
-// Normal login — must come via POST
-if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-    header("Location: ../persoinfo/signin.php");
-    exit();
-}
-// ///////////////////
+$token= $client->fetchAccessTokenWithAuthCode($_GET["code"]);
+
+$client->setAccessToken($token["access_token"]);
+
+$oauth= new Google\Service\Oauth2($client);
+
+$userinfo=$oauth->userinfo->get();
 
 
-
-// if(!isset($_GET["code"])){
-//   exit("Login failed");
-// }
-
-// $token= $client->fetchAccessTokenWithAuthCode($_GET["code"]);
-
-// $client->setAccessToken($token["access_token"]);
-
-// $oauth= new Google\Service\Oauth2($client);
-
-// $userinfo=$oauth->userinfo->get();
-
-
-
-// // var_dump(
-//   // );
+ $email= $userinfo->email;
+  $familyName=$userinfo->familyName;
+  $givenName=$userinfo->givenName;
+  $name= $userinfo->name;
+var_dump(
+  $email,
+  $familyName,
+  $givenName,
+  $name
+  );
   
-//   $email= $userinfo->email;
-//   $familyName=$userinfo->familyName;
-//   $givenName=$userinfo->givenName;
-//   $name= $userinfo->name;
 
 
 // Auto-create follows table if it doesn't exist (no FK to avoid engine issues)
