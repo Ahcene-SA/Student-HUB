@@ -1,6 +1,15 @@
 {
-    "require": {
-        "google/apiclient-services": "^0.445.0",
-        "google/apiclient": "^2.19"
-    }
+    "name": "amine/student-hub",
+    "autoload": {
+        "psr-4": {
+            "Amine\\StudentHub\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "aminetchich",
+            "email": "159770265+aminetchich@users.noreply.github.com"
+        }
+    ],
+    "require": {}
 }
