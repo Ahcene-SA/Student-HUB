@@ -29,15 +29,15 @@ $oauth= new Google\Service\Oauth2($client);
 $userinfo=$oauth->userinfo->get();
 
 
- $email= $userinfo->email;
-  $familyName=$userinfo->familyName;
-  $givenName=$userinfo->givenName;
-  $name= $userinfo->name;
+//  $email= $userinfo->email,
+//   $familyName=$userinfo->familyName;
+//   $givenName=$userinfo->givenName;
+//   $name= $userinfo->name;
 var_dump(
-  $email,
-  $familyName,
-  $givenName,
-  $name
+  $userinfo->email,
+  $userinfo->familyName,
+  $userinfo->givenName,
+  $userinfo->name
   );
   
 
