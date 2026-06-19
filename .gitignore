@@ -3,3 +3,4 @@ includes/local.env.php
 uploads/
 .DS_Store
 Thumbs.db
+/vendor/
