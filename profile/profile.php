@@ -127,8 +127,7 @@ $profile_id = isset($_GET['id']) ? (int) $_GET['id'] : $my_id;
 
 // If no one is logged in and no ID provided, send to login
 if ($my_id === 0 && $profile_id === 0) {
-    header("Location: ../persoinfo/signin.php");
-    exit();
+  echo var_dump("verif");
 }
 
 // If no ID in URL and user IS logged in, default to their own profile

@@ -4,8 +4,6 @@ session_start();
 require __DIR__ . "/../vendor/autoload.php";
 
 
-
-
 $client= new Google\Client;
 $client->setClientId("669251997046-vbvcsr40nqgc56hsbvorun6honh13smd.apps.googleusercontent.com");
 $client->setClientSecret("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");
