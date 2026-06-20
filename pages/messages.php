@@ -35,6 +35,9 @@ $conn->query("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
 
+// Ensure existing tables have the is_deleted column
+$conn->query("ALTER TABLE messages ADD COLUMN IF NOT EXISTS is_deleted TINYINT DEFAULT 0");
+
 $conn->query("
     CREATE TABLE IF NOT EXISTS messages (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,6 +45,7 @@ $conn->query("
         sender_id INT NOT NULL,
         content TEXT NOT NULL,
         is_read TINYINT DEFAULT 0,
+        is_deleted TINYINT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         INDEX idx_conversation (conversation_id),
         INDEX idx_sender (sender_id),
@@ -282,20 +286,56 @@ function timeAgo($datetime) {
           const isMe = msg.sender_id === <?php echo $user_id; ?>;
           const bubbleClass = isMe ? 'chat_bubble_me' : 'chat_bubble_them';
           const time = timeAgoShort(msg.created_at);
+          const existingEl = container.querySelector('.chat_message[data-msg-id="' + msg.id + '"]');
+
+          if (msg.is_deleted) {
+            if (existingEl) existingEl.remove();
+            return;
+          }
+
+          const deleteBtn = isMe
+            ? `<button type="button" class="chat_msg_delete" onclick="deleteMessage(${msg.id}, this)" title="Supprimer">🗑️</button>`
+            : '';
+
           const html = `
-            <div class="chat_message ${isMe ? 'me' : 'them'}">
+            <div class="chat_message ${isMe ? 'me' : 'them'}" data-msg-id="${msg.id}">
               ${isMe ? '' : '<div class="chat_msg_avatar">' + (msg.author_avatar ? '<img src="../profile/' + escapeHtml(msg.author_avatar) + '" />' : '👤') + '</div>'}
               <div class="${bubbleClass}">
+                <div class="chat_msg_actions">${deleteBtn}</div>
                 <div class="chat_msg_text">${escapeHtml(msg.content)}</div>
                 <div class="chat_msg_time">${time} ${isMe ? (msg.is_read ? '✓✓' : '✓') : ''}</div>
               </div>
             </div>
           `;
-          container.insertAdjacentHTML('beforeend', html);
+
+          if (existingEl) {
+            existingEl.outerHTML = html;
+          } else {
+            container.insertAdjacentHTML('beforeend', html);
+          }
         });
 
         if (isFirstLoad || data.messages.length > 0) {
           container.scrollTop = container.scrollHeight;
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    /* ── Delete message ── */
+    async function deleteMessage(messageId, btnElement) {
+      if (!confirm('Supprimer ce message ?')) return;
+
+      const formData = new FormData();
+      formData.append('message_id', messageId);
+
+      try {
+        const res = await fetch('api/delete_message.php', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          const msgEl = btnElement.closest('.chat_message');
+          if (msgEl) msgEl.remove();
+        } else {
+          alert(data.error || 'Erreur lors de la suppression.');
         }
       } catch (e) { console.error(e); }
     }
