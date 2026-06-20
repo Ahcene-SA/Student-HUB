@@ -52,7 +52,7 @@ $conn->query("
 
 // Ensure existing messages tables have the is_deleted column (MySQL-safe check)
 $colCheck = $conn->query("SHOW COLUMNS FROM messages LIKE 'is_deleted'");
-if ($colCheck &amp;&amp; $colCheck->num_rows === 0) {
+if ($colCheck &amp ,&amp , $colCheck->num_rows === 0) {
     $conn->query("ALTER TABLE messages ADD COLUMN is_deleted TINYINT DEFAULT 0");
 }
 
