@@ -35,9 +35,6 @@ $conn->query("
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
 
-// Ensure existing tables have the is_deleted column
-$conn->query("ALTER TABLE messages ADD COLUMN IF NOT EXISTS is_deleted TINYINT DEFAULT 0");
-
 $conn->query("
     CREATE TABLE IF NOT EXISTS messages (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -52,6 +49,12 @@ $conn->query("
         INDEX idx_created (created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
+
+// Ensure existing messages tables have the is_deleted column (MySQL-safe check)
+$colCheck = $conn->query("SHOW COLUMNS FROM messages LIKE 'is_deleted'");
+if ($colCheck &amp;&amp; $colCheck->num_rows === 0) {
+    $conn->query("ALTER TABLE messages ADD COLUMN is_deleted TINYINT DEFAULT 0");
+}
 
 function timeAgo($datetime) {
     $time = strtotime($datetime);
