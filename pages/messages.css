@@ -467,11 +467,16 @@ body{
   opacity: 0.4;
   transition: opacity 0.15s ease;
   flex-shrink: 0;
-  align-self: center;
 }
 
 .chat_message.me .chat_msg_delete {
-  margin-left: 6px;
+  margin-right: 6px;
+  order: -1;
+  align-self: center;
+}
+
+.chat_message.me {
+  align-items: center;
 }
 
 .chat_message:hover .chat_msg_delete,
