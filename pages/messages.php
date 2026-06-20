@@ -302,12 +302,12 @@ function timeAgo($datetime) {
 
           const html = `
             <div class="chat_message ${isMe ? 'me' : 'them'}" data-msg-id="${msg.id}">
-              ${isMe ? deleteBtn : ''}
               ${isMe ? '' : '<div class="chat_msg_avatar">' + (msg.author_avatar ? '<img src="../profile/' + escapeHtml(msg.author_avatar) + '" />' : '👤') + '</div>'}
               <div class="${bubbleClass}">
                 <div class="chat_msg_text">${escapeHtml(msg.content)}</div>
                 <div class="chat_msg_time">${time} ${isMe ? (msg.is_read ? '✓✓' : '✓') : ''}</div>
               </div>
+              ${isMe ? deleteBtn : ''}
             </div>
           `;
 

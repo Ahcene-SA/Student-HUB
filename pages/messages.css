@@ -470,8 +470,7 @@ body{
 }
 
 .chat_message.me .chat_msg_delete {
-  margin-right: 6px;
-  order: -1;
+  margin-left: 6px;
   align-self: center;
 }
 
