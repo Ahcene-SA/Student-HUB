@@ -236,6 +236,7 @@ function timeAgo($datetime) {
 
       document.getElementById('chat-placeholder').style.display = 'none';
       document.getElementById('chat-active').style.display = 'flex';
+      document.getElementById('chat-messages').innerHTML = '';
 
       // Update header
       const avatarHtml = otherAvatar
