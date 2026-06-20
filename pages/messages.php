@@ -184,6 +184,7 @@ function timeAgo($datetime) {
     let lastMessageId = 0;
     let pollingInterval = null;
     let conversationsData = [];
+    let messageAbortController = null;
 
     /* ── Load conversations ── */
     async function loadConversations() {
@@ -257,16 +258,21 @@ function timeAgo($datetime) {
 
       // Start polling
       if (pollingInterval) clearInterval(pollingInterval);
+      if (messageAbortController) messageAbortController.abort();
       pollingInterval = setInterval(() => loadMessages(convId), 3000);
     }
 
     /* ── Load messages ── */
     async function loadMessages(convId) {
+      if (messageAbortController) messageAbortController.abort();
+      messageAbortController = new AbortController();
+
       try {
         const url = 'api/get_messages.php?conversation_id=' + convId + (lastMessageId > 0 ? '&after=' + lastMessageId : '');
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: messageAbortController.signal });
         const data = await res.json();
         if (data.error) return;
+        if (convId !== currentConversationId) return; // ignore stale response
 
         const container = document.getElementById('chat-messages');
         const isFirstLoad = lastMessageId === 0;
