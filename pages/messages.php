@@ -292,7 +292,7 @@ function timeAgo($datetime) {
           const existingEl = container.querySelector('.chat_message[data-msg-id="' + msg.id + '"]');
 
           if (msg.is_deleted) {
-            if (existingEl) existingEl.remove();
+            if (existingEl) existingEl.innerHTML = '<div class="chat_bubble_deleted">Message supprimé</div>';
             return;
           }
 
@@ -302,9 +302,9 @@ function timeAgo($datetime) {
 
           const html = `
             <div class="chat_message ${isMe ? 'me' : 'them'}" data-msg-id="${msg.id}">
+              ${isMe ? deleteBtn : ''}
               ${isMe ? '' : '<div class="chat_msg_avatar">' + (msg.author_avatar ? '<img src="../profile/' + escapeHtml(msg.author_avatar) + '" />' : '👤') + '</div>'}
               <div class="${bubbleClass}">
-                <div class="chat_msg_actions">${deleteBtn}</div>
                 <div class="chat_msg_text">${escapeHtml(msg.content)}</div>
                 <div class="chat_msg_time">${time} ${isMe ? (msg.is_read ? '✓✓' : '✓') : ''}</div>
               </div>
@@ -336,7 +336,9 @@ function timeAgo($datetime) {
         const data = await res.json();
         if (data.success) {
           const msgEl = btnElement.closest('.chat_message');
-          if (msgEl) msgEl.remove();
+          if (msgEl) {
+            msgEl.innerHTML = '<div class="chat_bubble_deleted">Message supprimé</div>';
+          }
         } else {
           alert(data.error || 'Erreur lors de la suppression.');
         }
