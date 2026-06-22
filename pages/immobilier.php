@@ -221,7 +221,7 @@ function timeAgo($d) {
           <!-- FILTERS PREMIUM -->
           <div class="imm-filters-board reveal">
             <div class="imm-filter-item">
-              <label for="f-prix">Prix max (DA)</label>
+              <label for="f-prix">Prix max</label>
               <input type="number" id="f-prix" name="price" class="imm-select" placeholder="Ex: 50000" min="0" value="<?php echo htmlspecialchars($_GET['price'] ?? ''); ?>" />
             </div>
 
