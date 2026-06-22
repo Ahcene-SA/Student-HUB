@@ -445,12 +445,6 @@ h1, h2, h3 {
 
 .stg-search-btn:hover{ background: var(--brand-2); border-color: var(--brand-2); }
 
-.stg-chips{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
 .stg-chip{
   border: 1px solid var(--brand);
   background: #ffffff;

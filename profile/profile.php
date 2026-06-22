@@ -33,6 +33,7 @@ $pdo->exec("
         company     VARCHAR(255),
         chambres    INT,
         meuble      VARCHAR(20),
+        property_type VARCHAR(50),
         created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         INDEX idx_user (user_id),
@@ -64,6 +65,7 @@ try { $pdo->exec("ALTER TABLE posts ADD COLUMN prix_mentoring VARCHAR(50)"); } c
 try { $pdo->exec("ALTER TABLE posts ADD COLUMN produit VARCHAR(255)"); } catch (PDOException $e) {}
 try { $pdo->exec("ALTER TABLE posts ADD COLUMN etat VARCHAR(50)"); } catch (PDOException $e) {}
 try { $pdo->exec("ALTER TABLE posts ADD COLUMN bonplan_category VARCHAR(50)"); } catch (PDOException $e) {}
+try { $pdo->exec("ALTER TABLE posts ADD COLUMN property_type VARCHAR(50)"); } catch (PDOException $e) {}
 
 // Auto-create user_sections table if it doesn't exist
 $pdo->exec("
@@ -853,6 +855,13 @@ $educations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <input type="text" name="title" placeholder="Titre de l'annonce..." class="modal-input" required>
         <!-- Description -->
         <textarea name="content" placeholder="Description du bien..." class="modal-textarea" required></textarea>
+        <!-- Type de logement -->
+        <select name="property_type" class="modal-select" required>
+          <option value="" disabled selected>Type de logement</option>
+          <option value="Studio">Studio</option>
+          <option value="Appartement">Appartement</option>
+          <option value="Chambre">Chambre</option>
+        </select>
         <!-- Chambres -->
         <input type="number" name="chambres" placeholder="Nombre de chambres" class="modal-input" min="0" step="1">
         <!-- Prix -->
@@ -1008,9 +1017,14 @@ $educations = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <!-- Description -->
         <textarea name="content" placeholder="Description du produit (détails, défauts, raison de vente...)" class="modal-textarea" required></textarea>
         <!-- État -->
-        <input type="text" name="etat" placeholder="État (ex: Neuf, Bon état, Usagé...)" class="modal-input">
+        <select name="etat" class="modal-select" required>
+          <option value="" disabled selected>État — Sélectionner...</option>
+          <option value="Neuf">✨ Neuf</option>
+          <option value="Bon état">👍 Bon état</option>
+          <option value="Usagé">🔧 Usagé</option>
+        </select>
         <!-- Ville -->
-        <input type="text" name="location" placeholder="Ville" class="modal-input">
+        <input type="text" name="location" placeholder="Ville (ex: Paris, Lyon...)" class="modal-input">
         <!-- Prix -->
         <input type="number" name="price" placeholder="Prix en €" class="modal-input" min="0" step="0.01">
         <label class="modal-label">📷 Photo du produit <span style="color:#EF4444;">*</span></label>

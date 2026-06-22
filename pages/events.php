@@ -16,11 +16,60 @@ $conn->query("
         INDEX idx_user(user_id), INDEX idx_category(category), INDEX idx_created(created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
-$stmt = $conn->prepare("
-    SELECT p.*, u.prenom, u.nom, u.username, u.avatar
-    FROM posts p JOIN user u ON u.id_user = p.user_id
-    WHERE p.category = 'events' ORDER BY p.created_at DESC
-");
+$where = ["p.category = 'events'"];
+$params = [];
+$types = "";
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if ($search !== '') {
+    $like = '%' . $search . '%';
+    $where[] = "(p.title LIKE ? OR p.content LIKE ? OR p.location LIKE ?)";
+    $params[] = $like;
+    $params[] = $like;
+    $params[] = $like;
+    $types .= 'sss';
+}
+
+$ville = isset($_GET['ville']) ? trim($_GET['ville']) : '';
+if ($ville !== '') {
+    $where[] = "p.location LIKE ?";
+    $params[] = '%' . $ville . '%';
+    $types .= 's';
+}
+
+$date = isset($_GET['date']) ? $_GET['date'] : '';
+if ($date !== '') {
+    $where[] = "p.event_date >= ?";
+    $params[] = $date;
+    $types .= 's';
+}
+
+$cat = isset($_GET['cat']) ? trim($_GET['cat']) : '';
+if ($cat !== '') {
+    $where[] = "p.type_event LIKE ?";
+    $params[] = '%' . $cat . '%';
+    $types .= 's';
+}
+
+$gratuit = isset($_GET['gratuit']) ? $_GET['gratuit'] : '';
+if ($gratuit !== '') {
+    $where[] = "(p.is_free = 'gratuit')";
+} else {
+    $prix = isset($_GET['prix']) ? trim($_GET['prix']) : '';
+    if ($prix !== '') {
+        $prixVal = (float)$prix;
+        $where[] = "(CAST(p.tarif AS UNSIGNED) <= ? OR p.is_free = 'gratuit' OR CAST(p.tarif AS UNSIGNED) = 0)";
+        $params[] = $prixVal;
+        $types .= 'd';
+    }
+}
+
+$sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar FROM posts p JOIN user u ON u.id_user = p.user_id WHERE " . implode(' AND ', $where) . " ORDER BY p.created_at DESC";
+
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
 $stmt->execute();
 $posts = $stmt->get_result();
 
@@ -167,18 +216,12 @@ function timeAgo($d) {
           <div class="ev-hero-dots"></div>
         </div>
 
+        <form method="GET" action="events.php">
         <!-- TOP BAR -->
         <div class="ev-top-bar reveal">
           <div class="ev-search-row">
-            <input type="text" class="ev-search-input" placeholder="Nom d'event, artiste, ville..." />
-            <button type="button" class="ev-search-btn">Rechercher</button>
-          </div>
-
-          <div class="ev-chips">
-            <button type="button" class="ev-chip active">Soirées</button>
-            <button type="button" class="ev-chip">Conférences</button>
-            <button type="button" class="ev-chip">Hackathons</button>
-            <button type="button" class="ev-chip">Ateliers</button>
+            <input type="text" name="search" class="ev-search-input" placeholder="Nom d'event, artiste, ville..." value="<?php echo htmlspecialchars(isset($_GET['search']) ? $_GET['search'] : ''); ?>" />
+            <button type="submit" class="ev-search-btn">Rechercher</button>
           </div>
         </div>
 
@@ -186,55 +229,40 @@ function timeAgo($d) {
         <div class="ev-filters-board reveal">
           <div class="ev-filter-item">
             <label for="f-ville">Ville</label>
-            <select id="f-ville" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="alger">Alger</option>
-              <option value="oran">Oran</option>
-              <option value="constantine">Constantine</option>
-            </select>
+            <input type="text" name="ville" id="f-ville" class="ev-select" placeholder="Paris, Lyon, Marseille..." value="<?php echo htmlspecialchars(isset($_GET['ville']) ? $_GET['ville'] : ''); ?>" />
           </div>
 
           <div class="ev-filter-item">
             <label for="f-date">Date</label>
-            <select id="f-date" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="today">Aujourd'hui</option>
-              <option value="week">Cette semaine</option>
-              <option value="month">Ce mois</option>
-            </select>
+            <input type="date" name="date" id="f-date" class="ev-select" style="appearance:auto;-webkit-appearance:auto;-moz-appearance:auto;padding-right:12px;" value="<?php echo htmlspecialchars(isset($_GET['date']) ? $_GET['date'] : ''); ?>" />
           </div>
 
           <div class="ev-filter-item">
             <label for="f-cat">Catégorie</label>
-            <select id="f-cat" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="party">Soirée</option>
-              <option value="hack">Hackathon</option>
-              <option value="conf">Conférence</option>
-            </select>
+            <input type="text" name="cat" id="f-cat" class="ev-select" placeholder="Soirée, Concert, Hackathon..." value="<?php echo htmlspecialchars(isset($_GET['cat']) ? $_GET['cat'] : ''); ?>" />
           </div>
 
-          <div class="ev-filter-item">
-            <label for="f-prix">Prix</label>
-            <select id="f-prix" class="ev-select">
-              <option value="">Choisir</option>
-              <option value="free">Gratuit</option>
-              <option value="1000">≤ 1 000 DA</option>
-              <option value="3000">≤ 3 000 DA</option>
-            </select>
+          <div class="ev-filter-item" id="prix-wrap">
+            <label for="f-prix" id="prix-label">Prix max (€)</label>
+            <input type="number" name="prix" id="f-prix" class="ev-select" placeholder="Ex: 25" min="0" step="1" value="<?php echo htmlspecialchars(isset($_GET['prix']) ? $_GET['prix'] : ''); ?>" />
+            <label for="f-gratuit" style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:10px;">
+              <input type="checkbox" name="gratuit" id="f-gratuit" value="1" <?php if(isset($_GET['gratuit']) && $_GET['gratuit'] === '1') echo 'checked'; ?> style="width:18px;height:18px;accent-color:var(--brand);" onchange="toggleGratuit(this)">
+              <span style="font-size:0.95rem;">Gratuit</span>
+            </label>
           </div>
 
           <div class="ev-filter-actions">
-            <button type="button" class="ev-filter-btn apply">Appliquer</button>
-            <button type="button" class="ev-filter-btn reset">Reset</button>
+            <button type="submit" class="ev-filter-btn apply">Appliquer</button>
+            <a href="events.php" class="ev-filter-btn reset" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Reset</a>
           </div>
         </div>
+        </form>
 
         <!-- LIST -->
         <section class="ev-list">
           <header class="ev-list-header reveal">
             <h2>Events à ne pas rater</h2>
-            <p>Sélection chaude par la communauté Student HUB.</p>
+            <p><?php echo $posts->num_rows; ?> événement(s)</p>
           </header>
 
           <div class="ev-cards">
@@ -291,7 +319,7 @@ function timeAgo($d) {
             <?php endif; ?>
 
             <?php if ($posts->num_rows === 0): ?>
-              <p style="text-align:center;color:#888;padding:2rem;">Aucun événement pour le moment.</p>
+              <p style="text-align:center;color:#888;padding:2rem;">Aucun événement trouvé pour ces critères.</p>
             <?php endif; ?>
           </div>
         </section>
@@ -418,6 +446,24 @@ function timeAgo($d) {
         );
         revealTargets.forEach((el) => revealObserver.observe(el));
       }
+    })();
+
+    function toggleGratuit(cb) {
+      const prixInput = document.getElementById('f-prix');
+      const prixLabel = document.getElementById('prix-label');
+      if (cb.checked) {
+        prixInput.style.display = 'none';
+        prixLabel.style.display = 'none';
+        prixInput.value = '';
+      } else {
+        prixInput.style.display = '';
+        prixLabel.style.display = '';
+      }
+    }
+    // Init on load
+    (function() {
+      const cb = document.getElementById('f-gratuit');
+      if (cb && cb.checked) toggleGratuit(cb);
     })();
 
     function openPostDetail(el) {

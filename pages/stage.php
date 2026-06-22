@@ -16,11 +16,52 @@ $conn->query("
         INDEX idx_user(user_id), INDEX idx_category(category), INDEX idx_created(created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
-$stmt = $conn->prepare("
-    SELECT p.*, u.prenom, u.nom, u.username, u.avatar
-    FROM posts p JOIN user u ON u.id_user = p.user_id
-    WHERE p.category = 'stage' ORDER BY p.created_at DESC
-");
+$params = [];
+$types = "";
+$where = "WHERE p.category = 'stage'";
+
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+if ($search !== '') {
+    $where .= " AND (p.title LIKE ? OR p.content LIKE ? OR p.company LIKE ?)";
+    $like = '%' . $search . '%';
+    $params[] = $like; $params[] = $like; $params[] = $like;
+    $types .= "sss";
+}
+
+$domaine = isset($_GET['domaine']) ? trim($_GET['domaine']) : '';
+if ($domaine !== '') {
+    $where .= " AND p.domaine LIKE ?";
+    $params[] = '%' . $domaine . '%';
+    $types .= "s";
+}
+
+$duree = isset($_GET['duree']) ? trim($_GET['duree']) : '';
+if ($duree !== '') {
+    $where .= " AND p.duree LIKE ?";
+    $params[] = $duree . '%';
+    $types .= "s";
+}
+
+$ville = isset($_GET['ville']) ? trim($_GET['ville']) : '';
+if ($ville !== '') {
+    $where .= " AND p.location LIKE ?";
+    $params[] = '%' . $ville . '%';
+    $types .= "s";
+}
+
+$type = isset($_GET['type']) ? trim($_GET['type']) : '';
+if ($type !== '') {
+    $val = ($type === 'alt') ? 'alternance' : $type;
+    $where .= " AND p.type_stage = ?";
+    $params[] = $val;
+    $types .= "s";
+}
+
+$sql = "SELECT p.*, u.prenom, u.nom, u.username, u.avatar FROM posts p JOIN user u ON u.id_user = p.user_id $where ORDER BY p.created_at DESC";
+$stmt = $conn->prepare($sql);
+if (!empty($params)) {
+    $stmt->bind_param($types, ...$params);
+}
 $stmt->execute();
 $posts = $stmt->get_result();
 
@@ -220,19 +261,12 @@ function timeAgo($d) {
           </div>
         </nav>
 
+        <form method="GET" action="stage.php">
         <!-- TOP BAR -->
         <div class="stg-top-bar reveal">
           <div class="stg-search-row">
-            <input type="text" class="stg-search-input" placeholder="Métier, entreprise, ville..." />
-            <button type="button" class="stg-search-btn">Rechercher</button>
-          </div>
-
-          <div class="stg-chips">
-            <button type="button" class="stg-chip active">Informatique</button>
-            <button type="button" class="stg-chip">Marketing</button>
-            <button type="button" class="stg-chip">Finance</button>
-            <button type="button" class="stg-chip">Design</button>
-            <button type="button" class="stg-chip">Ingénierie</button>
+            <input type="text" name="search" class="stg-search-input" placeholder="Métier, entreprise, ville..." value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>" />
+            <button type="submit" class="stg-search-btn">Rechercher</button>
           </div>
         </div>
 
@@ -240,49 +274,34 @@ function timeAgo($d) {
         <div class="stg-filters-board reveal">
           <div class="stg-filter-item">
             <label for="f-domaine">Domaine</label>
-            <select id="f-domaine" class="stg-select">
-              <option value="">Choisir</option>
-              <option value="info">Informatique</option>
-              <option value="mkt">Marketing</option>
-              <option value="fin">Finance</option>
-            </select>
+            <input type="text" id="f-domaine" name="domaine" class="stg-select" placeholder="Ex: Informatique" value="<?php echo htmlspecialchars($_GET['domaine'] ?? ''); ?>" />
           </div>
 
           <div class="stg-filter-item">
             <label for="f-duree">Durée</label>
-            <select id="f-duree" class="stg-select">
-              <option value="">Choisir</option>
-              <option value="2">2 mois</option>
-              <option value="4">4 mois</option>
-              <option value="6">6 mois</option>
-              <option value="12">12 mois</option>
-            </select>
+            <input type="text" id="f-duree" name="duree" class="stg-select" placeholder="Ex: 6 mois" value="<?php echo htmlspecialchars($_GET['duree'] ?? ''); ?>" />
           </div>
 
           <div class="stg-filter-item">
             <label for="f-ville">Ville</label>
-            <select id="f-ville" class="stg-select">
-              <option value="">Choisir</option>
-              <option value="alger">Alger</option>
-              <option value="oran">Oran</option>
-              <option value="remote">Remote</option>
-            </select>
+            <input type="text" id="f-ville" name="ville" class="stg-select" placeholder="Ex: Paris,Lyon,remote" value="<?php echo htmlspecialchars($_GET['ville'] ?? ''); ?>" />
           </div>
 
           <div class="stg-filter-item">
             <label for="f-type">Type</label>
-            <select id="f-type" class="stg-select">
+            <select id="f-type" name="type" class="stg-select">
               <option value="">Choisir</option>
-              <option value="stage">Stage</option>
-              <option value="alt">Alternance</option>
+              <option value="stage" <?php if(($_GET['type']??'')==='stage') echo 'selected'; ?>>Stage</option>
+              <option value="alt" <?php if(($_GET['type']??'')==='alt') echo 'selected'; ?>>Alternance</option>
             </select>
           </div>
 
           <div class="stg-filter-actions">
-            <button type="button" class="stg-filter-btn apply">Appliquer</button>
-            <button type="button" class="stg-filter-btn reset">Reset</button>
+            <button type="submit" class="stg-filter-btn apply">Appliquer</button>
+            <a href="stage.php" class="stg-filter-btn reset" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Reset</a>
           </div>
         </div>
+        </form>
 
         <!-- LIST -->
         <section class="stg-list">
@@ -292,7 +311,7 @@ function timeAgo($d) {
               <p>Entreprises vérifiées · Conventions de stage validées · Mise à jour quotidienne.</p>
             </div>
             <div class="stg-list-meta">
-              <span class="stg-result-count"><strong>4 800</strong> résultats</span>
+              <span class="stg-result-count"><strong><?php echo $posts->num_rows; ?></strong> offre(s)</span>
               <span class="stg-sort">Trier : <strong>Pertinence</strong></span>
             </div>
           </header>
@@ -358,7 +377,7 @@ function timeAgo($d) {
             <?php endif; ?>
 
             <?php if ($posts->num_rows === 0): ?>
-              <p style="text-align:center;color:#888;padding:2rem;">Aucune offre pour le moment.</p>
+              <p style="text-align:center;color:#888;padding:2rem;">Aucune offre trouvée pour ces critères.</p>
             <?php endif; ?>
 
           </div>

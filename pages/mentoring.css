@@ -439,12 +439,6 @@ h1, h2, h3 {
   box-shadow: 0 16px 34px rgba(22,101,52,0.38);
 }
 
-.mnt-chips{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
 .mnt-chip{
   border: 1px dashed var(--brand);
   background: #ffffff;

@@ -12,16 +12,57 @@ $conn = get_db_connection();
 $conn->query("
     CREATE TABLE IF NOT EXISTS posts (
         id INT AUTO_INCREMENT PRIMARY KEY, user_id INT NOT NULL, category VARCHAR(30) DEFAULT 'general',
-        title VARCHAR(255), content TEXT NOT NULL, image VARCHAR(255),
+        title VARCHAR(255), content TEXT NOT NULL, image VARCHAR(255), property_type VARCHAR(50),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         INDEX idx_user(user_id), INDEX idx_category(category), INDEX idx_created(created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ");
-$stmt = $conn->prepare("
+$where = ["p.category = 'immobilier'"];
+
+// search
+if (!empty($_GET['search'])) {
+    $s = $conn->real_escape_string($_GET['search']);
+    $where[] = "(p.title LIKE '%$s%' OR p.content LIKE '%$s%' OR p.location LIKE '%$s%')";
+}
+
+// price
+if (!empty($_GET['price'])) {
+    $price = (int)$_GET['price'];
+    $where[] = "CAST(p.price AS UNSIGNED) <= $price";
+}
+
+// chambres
+if (!empty($_GET['chambres'])) {
+    $ch = (int)$_GET['chambres'];
+    if ($ch >= 3) {
+        $where[] = "p.chambres >= 3";
+    } else {
+        $where[] = "p.chambres = $ch";
+    }
+}
+
+// meuble
+if (!empty($_GET['meuble'])) {
+    $meubleVal = ($_GET['meuble'] === 'oui') ? 'meublé' : (($_GET['meuble'] === 'non') ? 'non meublé' : '');
+    if ($meubleVal !== '') {
+        $m = $conn->real_escape_string($meubleVal);
+        $where[] = "p.meuble = '$m'";
+    }
+}
+
+// type (property_type)
+if (!empty($_GET['type'])) {
+    $t = $conn->real_escape_string($_GET['type']);
+    $where[] = "p.property_type = '$t'";
+}
+
+$sql = "
     SELECT p.*, u.prenom, u.nom, u.username, u.avatar
     FROM posts p JOIN user u ON u.id_user = p.user_id
-    WHERE p.category = 'immobilier' ORDER BY p.created_at DESC
-");
+    WHERE " . implode(" AND ", $where) . "
+    ORDER BY p.created_at DESC
+";
+$stmt = $conn->prepare($sql);
 $stmt->execute();
 $posts = $stmt->get_result();
 
@@ -168,73 +209,63 @@ function timeAgo($d) {
           <div class="imm-hero-dots"></div>
         </div>
 
-        <!-- TOP BAR -->
-        <div class="imm-top-bar reveal">
-          <div class="imm-search-row">
-            <input type="text" class="imm-search-input" placeholder="Ville, quartier, université..." />
-            <button type="button" class="imm-search-btn">Rechercher</button>
+        <form method="GET" action="immobilier.php">
+          <!-- TOP BAR -->
+          <div class="imm-top-bar reveal">
+            <div class="imm-search-row">
+              <input type="text" name="search" class="imm-search-input" placeholder="Ville, quartier, université..." value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>" />
+              <button type="submit" class="imm-search-btn">Rechercher</button>
+            </div>
           </div>
 
-          <div class="imm-chips">
-            <button type="button" class="imm-chip">Studio</button>
-            <button type="button" class="imm-chip">Appartement</button>
-            <button type="button" class="imm-chip">Chambre</button>
-            <button type="button" class="imm-chip">Colocation</button>
-          </div>
-        </div>
+          <!-- FILTERS PREMIUM -->
+          <div class="imm-filters-board reveal">
+            <div class="imm-filter-item">
+              <label for="f-prix">Prix max (DA)</label>
+              <input type="number" id="f-prix" name="price" class="imm-select" placeholder="Ex: 50000" min="0" value="<?php echo htmlspecialchars($_GET['price'] ?? ''); ?>" />
+            </div>
 
-        <!-- FILTERS PREMIUM -->
-        <div class="imm-filters-board reveal">
-          <div class="imm-filter-item">
-            <label for="f-prix">Prix max</label>
-            <select id="f-prix" class="imm-select">
-              <option value="">Choisir</option>
-              <option value="50000">50 000 DA</option>
-              <option value="80000">80 000 DA</option>
-              <option value="120000">120 000 DA</option>
-            </select>
-          </div>
+            <div class="imm-filter-item">
+              <label for="f-type">Type</label>
+              <select id="f-type" name="type" class="imm-select">
+                <option value="">Choisir</option>
+                <option value="studio" <?php if (($_GET['type'] ?? '') === 'studio') echo 'selected="selected"'; ?>>Studio</option>
+                <option value="appartement" <?php if (($_GET['type'] ?? '') === 'appartement') echo 'selected="selected"'; ?>>Appartement</option>
+                <option value="chambre" <?php if (($_GET['type'] ?? '') === 'chambre') echo 'selected="selected"'; ?>>Chambre</option>
+              </select>
+            </div>
 
-          <div class="imm-filter-item">
-            <label for="f-type">Type</label>
-            <select id="f-type" class="imm-select">
-              <option value="">Choisir</option>
-              <option value="studio">Studio</option>
-              <option value="appartement">Appartement</option>
-              <option value="chambre">Chambre</option>
-            </select>
-          </div>
+            <div class="imm-filter-item">
+              <label for="f-chambres">Chambres</label>
+              <select id="f-chambres" name="chambres" class="imm-select">
+                <option value="">Choisir</option>
+                <option value="1" <?php if (($_GET['chambres'] ?? '') === '1') echo 'selected="selected"'; ?>>1</option>
+                <option value="2" <?php if (($_GET['chambres'] ?? '') === '2') echo 'selected="selected"'; ?>>2</option>
+                <option value="3" <?php if (($_GET['chambres'] ?? '') === '3') echo 'selected="selected"'; ?>>3+</option>
+              </select>
+            </div>
 
-          <div class="imm-filter-item">
-            <label for="f-chambres">Chambres</label>
-            <select id="f-chambres" class="imm-select">
-              <option value="">Choisir</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3+</option>
-            </select>
-          </div>
+            <div class="imm-filter-item">
+              <label for="f-meuble">Meublé</label>
+              <select id="f-meuble" name="meuble" class="imm-select">
+                <option value="">Choisir</option>
+                <option value="oui" <?php if (($_GET['meuble'] ?? '') === 'oui') echo 'selected="selected"'; ?>>Oui</option>
+                <option value="non" <?php if (($_GET['meuble'] ?? '') === 'non') echo 'selected="selected"'; ?>>Non</option>
+              </select>
+            </div>
 
-          <div class="imm-filter-item">
-            <label for="f-meuble">Meublé</label>
-            <select id="f-meuble" class="imm-select">
-              <option value="">Choisir</option>
-              <option value="oui">Oui</option>
-              <option value="non">Non</option>
-            </select>
+            <div class="imm-filter-actions">
+              <button type="submit" class="imm-filter-btn apply">Appliquer</button>
+              <a href="immobilier.php" class="imm-filter-btn reset" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center;">Reset</a>
+            </div>
           </div>
-
-          <div class="imm-filter-actions">
-            <button type="button" class="imm-filter-btn apply">Appliquer</button>
-            <button type="button" class="imm-filter-btn reset">Reset</button>
-          </div>
-        </div>
+        </form>
 
         <!-- LIST -->
         <section class="imm-list">
           <header class="imm-list-header reveal">
             <h2>Logements recommandés</h2>
-            <p>Choisis un logement vérifié par la communauté Student HUB.</p>
+            <p><?php echo $posts->num_rows; ?> logement(s) trouvé(s) · Choisis un logement vérifié par la communauté Student HUB.</p>
           </header>
 
           <div class="imm-cards">
@@ -289,7 +320,7 @@ function timeAgo($d) {
             <?php endif; ?>
 
             <?php if ($posts->num_rows === 0): ?>
-              <p style="text-align:center;color:#888;padding:2rem;">Aucune annonce pour le moment.</p>
+              <p style="text-align:center;color:#888;padding:2rem;">Aucun logement trouvé pour ces critères.</p>
             <?php endif; ?>
           </div>
         </section>
