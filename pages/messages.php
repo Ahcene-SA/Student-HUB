@@ -42,12 +42,19 @@ $conn->query("
         sender_id INT NOT NULL,
         content TEXT NOT NULL,
         is_read TINYINT DEFAULT 0,
+        is_deleted TINYINT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         INDEX idx_conversation (conversation_id),
         INDEX idx_sender (sender_id),
         INDEX idx_created (created_at)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
 ");
+
+// Ensure existing messages tables have the is_deleted column (MySQL-safe check)
+$colCheck = $conn->query("SHOW COLUMNS FROM messages LIKE 'is_deleted'");
+if ($colCheck && $colCheck->num_rows === 0) {
+    $conn->query("ALTER TABLE messages ADD COLUMN is_deleted TINYINT DEFAULT 0");
+}
 
 function timeAgo($datetime) {
     $time = strtotime($datetime);
@@ -184,6 +191,7 @@ function timeAgo($datetime) {
     let lastMessageId = 0;
     let pollingInterval = null;
     let conversationsData = [];
+    let messageAbortController = null;
 
     /* ── Load conversations ── */
     async function loadConversations() {
@@ -236,6 +244,7 @@ function timeAgo($datetime) {
 
       document.getElementById('chat-placeholder').style.display = 'none';
       document.getElementById('chat-active').style.display = 'flex';
+      document.getElementById('chat-messages').innerHTML = '';
 
       // Update header
       const avatarHtml = otherAvatar
@@ -256,16 +265,21 @@ function timeAgo($datetime) {
 
       // Start polling
       if (pollingInterval) clearInterval(pollingInterval);
+      if (messageAbortController) messageAbortController.abort();
       pollingInterval = setInterval(() => loadMessages(convId), 3000);
     }
 
     /* ── Load messages ── */
     async function loadMessages(convId) {
+      if (messageAbortController) messageAbortController.abort();
+      messageAbortController = new AbortController();
+
       try {
         const url = 'api/get_messages.php?conversation_id=' + convId + (lastMessageId > 0 ? '&after=' + lastMessageId : '');
-        const res = await fetch(url);
+        const res = await fetch(url, { signal: messageAbortController.signal });
         const data = await res.json();
         if (data.error) return;
+        if (convId !== currentConversationId) return; // ignore stale response
 
         const container = document.getElementById('chat-messages');
         const isFirstLoad = lastMessageId === 0;
@@ -275,20 +289,58 @@ function timeAgo($datetime) {
           const isMe = msg.sender_id === <?php echo $user_id; ?>;
           const bubbleClass = isMe ? 'chat_bubble_me' : 'chat_bubble_them';
           const time = timeAgoShort(msg.created_at);
+          const existingEl = container.querySelector('.chat_message[data-msg-id="' + msg.id + '"]');
+
+          if (msg.is_deleted) {
+            if (existingEl) existingEl.innerHTML = '<div class="chat_bubble_deleted">Message supprimé</div>';
+            return;
+          }
+
+          const deleteBtn = isMe
+            ? `<button type="button" class="chat_msg_delete" onclick="deleteMessage(${msg.id}, this)" title="Supprimer">🗑️</button>`
+            : '';
+
           const html = `
-            <div class="chat_message ${isMe ? 'me' : 'them'}">
+            <div class="chat_message ${isMe ? 'me' : 'them'}" data-msg-id="${msg.id}">
               ${isMe ? '' : '<div class="chat_msg_avatar">' + (msg.author_avatar ? '<img src="../profile/' + escapeHtml(msg.author_avatar) + '" />' : '👤') + '</div>'}
               <div class="${bubbleClass}">
                 <div class="chat_msg_text">${escapeHtml(msg.content)}</div>
                 <div class="chat_msg_time">${time} ${isMe ? (msg.is_read ? '✓✓' : '✓') : ''}</div>
               </div>
+              ${isMe ? deleteBtn : ''}
             </div>
           `;
-          container.insertAdjacentHTML('beforeend', html);
+
+          if (existingEl) {
+            existingEl.outerHTML = html;
+          } else {
+            container.insertAdjacentHTML('beforeend', html);
+          }
         });
 
         if (isFirstLoad || data.messages.length > 0) {
           container.scrollTop = container.scrollHeight;
+        }
+      } catch (e) { console.error(e); }
+    }
+
+    /* ── Delete message ── */
+    async function deleteMessage(messageId, btnElement) {
+      if (!confirm('Supprimer ce message ?')) return;
+
+      const formData = new FormData();
+      formData.append('message_id', messageId);
+
+      try {
+        const res = await fetch('api/delete_message.php', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (data.success) {
+          const msgEl = btnElement.closest('.chat_message');
+          if (msgEl) {
+            msgEl.innerHTML = '<div class="chat_bubble_deleted">Message supprimé</div>';
+          }
+        } else {
+          alert(data.error || 'Erreur lors de la suppression.');
         }
       } catch (e) { console.error(e); }
     }

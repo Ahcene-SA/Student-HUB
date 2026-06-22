@@ -41,7 +41,7 @@ $stmt->execute();
 // Fetch messages
 if ($after > 0) {
     $stmt = $conn->prepare("
-        SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
+        SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read, m.is_deleted,
                u.prenom, u.nom, u.avatar
         FROM messages m
         JOIN user u ON u.id_user = m.sender_id
@@ -51,7 +51,7 @@ if ($after > 0) {
     $stmt->bind_param("ii", $conversation_id, $after);
 } else {
     $stmt = $conn->prepare("
-        SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read,
+        SELECT m.id, m.sender_id, m.content, m.created_at, m.is_read, m.is_deleted,
                u.prenom, u.nom, u.avatar
         FROM messages m
         JOIN user u ON u.id_user = m.sender_id
@@ -72,6 +72,7 @@ while ($row = $result->fetch_assoc()) {
         'content' => $row['content'],
         'created_at' => $row['created_at'],
         'is_read' => (bool)$row['is_read'],
+        'is_deleted' => (bool)$row['is_deleted'],
         'author_name' => $row['prenom'] . ' ' . $row['nom'],
         'author_avatar' => $row['avatar']
     ];

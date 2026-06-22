@@ -457,6 +457,43 @@ body{
   word-break: break-word;
 }
 
+.chat_msg_delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px;
+  line-height: 1;
+  opacity: 0.4;
+  transition: opacity 0.15s ease;
+  flex-shrink: 0;
+}
+
+.chat_message.me .chat_msg_delete {
+  margin-left: 6px;
+  align-self: center;
+}
+
+.chat_message.me {
+  align-items: center;
+}
+
+.chat_message:hover .chat_msg_delete,
+.chat_msg_delete:focus {
+  opacity: 0.85;
+}
+
+.chat_bubble_deleted {
+  background: var(--tile);
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 8px 14px;
+  border-radius: 16px;
+  text-align: center;
+  align-self: center;
+}
+
 .chat_msg_time {
   font-size: 0.7rem;
   margin-top: 4px;
