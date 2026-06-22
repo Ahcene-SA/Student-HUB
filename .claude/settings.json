@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell($php = \\(Get-Command php -ErrorAction SilentlyContinue\\).Source; if \\($php\\) { & $php -l includes/google_auth.php; & $php -l profile/profile.php } else { \"PHP introuvable dans le PATH\" })"
+      "PowerShell($php = \\(Get-Command php -ErrorAction SilentlyContinue\\).Source; if \\($php\\) { & $php -l includes/google_auth.php; & $php -l profile/profile.php } else { \"PHP introuvable dans le PATH\" })",
+      "Bash(git rebase *)",
+      "Bash(git stash *)",
+      "Bash(git push *)"
     ]
   }
 }
