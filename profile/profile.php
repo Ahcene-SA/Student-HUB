@@ -7,6 +7,15 @@ header("Expires: Thu, 19 Nov 1981 08:52:00 GMT");
 
 require 'db.php';
 
+// ── Callback OAuth Google ───────────────────────────────────────────────
+// Le redirect_uri Google pointe sur cette page. Si Google nous renvoie un
+// ?code=..., on termine l'authentification AVANT toute autre logique, puis
+// on redirige vers une URL propre (sans le code).
+if (isset($_GET['code']) && !isset($_SESSION['id_user'])) {
+    require_once __DIR__ . '/../includes/google_auth.php';
+    handle_google_callback($pdo);
+}
+
 // Auto-create follows table if it doesn't exist (no FK to avoid engine issues)
 $pdo->exec("
     CREATE TABLE IF NOT EXISTS follows (
