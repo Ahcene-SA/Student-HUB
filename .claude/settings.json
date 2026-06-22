@@ -4,7 +4,11 @@
       "PowerShell($php = \\(Get-Command php -ErrorAction SilentlyContinue\\).Source; if \\($php\\) { & $php -l includes/google_auth.php; & $php -l profile/profile.php } else { \"PHP introuvable dans le PATH\" })",
       "Bash(git rebase *)",
       "Bash(git stash *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(grep -nE \"Google\\\\\\\\\\\\\\\\Client|fetchAccessTokenWithAuthCode|exit\\\\\\('Failed login'\\\\\\)|var_dump\" profile/profile.php)",
+      "Bash(grep -nA 15 \"\\\\.google-btn\" persoinfo/signin.css)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
