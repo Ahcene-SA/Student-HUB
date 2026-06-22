@@ -19,6 +19,24 @@ function get_google_config() {
     );
 }
 
+/**
+ * Construit l'URL d'autorisation Google (étape d'INITIATION).
+ * Le bouton « Continuer avec Google » pointe sur cette URL ; Google
+ * renvoie ensuite l'utilisateur sur le redirect_uri avec un ?code=...
+ */
+function get_google_auth_url() {
+    $cfg = get_google_config();
+    $params = array(
+        'client_id'     => $cfg['client_id'],
+        'redirect_uri'  => $cfg['redirect_uri'],
+        'response_type' => 'code',
+        'scope'         => 'email profile',
+        'access_type'   => 'online',
+        'prompt'        => 'select_account',
+    );
+    return 'https://accounts.google.com/o/oauth2/v2/auth?' . http_build_query($params);
+}
+
 /** Petit helper HTTP POST (form-urlencoded) renvoyant le corps brut. */
 function google_http_post($url, array $fields) {
     $body = http_build_query($fields);
