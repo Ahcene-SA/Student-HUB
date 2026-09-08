@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+// URL d'autorisation Google pour le bouton « Continuer avec Google »
+require_once __DIR__ . '/../includes/google_auth.php';
+$googleAuthUrl = get_google_auth_url();
+
 // Flash error message from signup_back.php
 $signupError = '';
 if (!empty($_SESSION['signup_error'])) {
@@ -123,7 +127,7 @@ if (!empty($_SESSION['signup_data'])) {
 
           <div class="signin-divider"><span>ou</span></div>
 
-          <button type="button" class="google-btn">
+          <a class="google-btn" href="<?php echo htmlspecialchars($googleAuthUrl); ?>">
             <svg width="20" height="20" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8a12 12 0 1 1 0-24c3 0 5.7 1.1 7.8 3l5.7-5.7A20 20 0 1 0 44 24c0-1.2-.1-2.4-.4-3.5z"/>
               <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.5 18.9 12 24 12c3 0 5.7 1.1 7.8 3l5.7-5.7A20 20 0 0 0 6.3 14.7z"/>
@@ -131,7 +135,7 @@ if (!empty($_SESSION['signup_data'])) {
               <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C41 35.8 44 30.4 44 24c0-1.2-.1-2.4-.4-3.5z"/>
             </svg>
             Continuer avec Google
-          </button>
+          </a>
 
           <p class="switch-hint">
             Pas encore de compte ?
